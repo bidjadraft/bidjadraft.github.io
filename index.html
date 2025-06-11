@@ -275,7 +275,6 @@
 
   <script>
     const githubUser = "bidjadraft";
-    const repo = "bidjadraft.github.io";
     const folder = "news";
 
     function parseFrontMatter(mdText) {
@@ -295,7 +294,7 @@
 
     async function loadNews() {
       try {
-        const res = await fetch(`https://api.github.com/repos/${githubUser}/${repo}/contents/${folder}`);
+        const res = await fetch(`https://api.github.com/repos/${githubUser}/${githubUser}.github.io/contents/${folder}`);
         const files = await res.json();
 
         if (!Array.isArray(files)) {
@@ -316,7 +315,7 @@
             category: meta.category || "غير مصنف",
             badge: (meta.badge && meta.badge.toLowerCase() !== "لا شيء") ? meta.badge : "",
             date: meta.date || "",
-            pageUrl: `https://${githubUser}.github.io/${repo}/${folder}/${file.name.replace(/\.md$/, '')}`
+            pageUrl: `https://${githubUser}.github.io/${folder}/${file.name.replace(/\.md$/, '')}`
           });
         }
 
