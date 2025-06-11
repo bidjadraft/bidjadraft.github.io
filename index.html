@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>أخبار التقنية | بجاد الأثري</title>
+  <!-- تحميل سكريبت AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9593085803586600"
+     crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
   <style>
@@ -179,10 +182,6 @@
       padding: 0;
       display: block;
     }
-    .news-title.red {
-      color: #f87171;
-      font-weight: bold;
-    }
     .news-title:hover {
       color: #60a5fa;
     }
@@ -207,38 +206,12 @@
     footer:hover {
       color: #60a5fa;
     }
-    @media (max-width: 600px) {
-      header {
-        padding: 12px 10px;
-      }
-      .profile-img {
-        width: 38px;
-        height: 38px;
-      }
-      .username {
-        font-size: 1em;
-        gap: 4px;
-      }
-      main {
-        margin-top: 8px;
-        padding: 0 2px;
-      }
-      .main-news-img {
-        height: 170px;
-      }
-      .main-news-title {
-        font-size: 0.98em;
-        padding: 10px 8px 7px 8px;
-      }
-      .news-thumb {
-        width: 140px;
-        height: 90px;
-      }
-      .news-item {
-        min-height: 60px;
-        gap: 8px;
-        padding: 10px 0;
-      }
+    .adsbygoogle {
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+      overflow: hidden;
+      max-width: 600px;
     }
   </style>
 </head>
@@ -246,11 +219,7 @@
   <header>
     <div class="profile">
       <a href="https://bidjadraft.github.io/links" title="زيارة صفحة بجاد الأثري" aria-label="زيارة صفحة بجاد الأثري">
-        <img
-          class="profile-img"
-          src="https://i.imgur.com/zTwTusT.jpeg"
-          alt="Profile"
-        />
+        <img class="profile-img" src="https://i.imgur.com/zTwTusT.jpeg" alt="Profile" />
       </a>
       <div class="username">
         <a href="https://bidjadraft.github.io/blog" title="زيارة صفحة بجاد الأثري" aria-label="زيارة صفحة بجاد الأثري">
@@ -266,15 +235,21 @@
   </header>
 
   <main id="news-container" tabindex="-1" aria-live="polite" aria-label="أخبار التقنية بجاد الأثري">
-    <!-- سيتم توليد الأخبار هنا ديناميكياً -->
+    <!-- سيتم توليد الأخبار هنا -->
   </main>
 
   <footer>
-    &copy; جميع الحقوق محفوظة بجاد الأثري
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-9593085803586600"
+      data-ad-slot="6084230413"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
   </footer>
 
   <script>
     const githubUser = "bidjadraft";
+    const repoName = "bidjadraft.github.io";
     const folder = "news";
 
     function parseFrontMatter(mdText) {
@@ -283,10 +258,8 @@
       if (fmMatch) {
         const lines = fmMatch[1].split('\n');
         lines.forEach(line => {
-          const match = line.match(/^(\w+):\s*["']?(.+?)["']?$/);
-          if (match) {
-            meta[match[1].trim()] = match[2].trim();
-          }
+          const match = line.match(/^([\w\u0600-\u06FF\-]+):\s*["']?(.+?)["']?$/);
+          if (match) meta[match[1].trim()] = match[2].trim();
         });
       }
       return meta;
@@ -294,7 +267,7 @@
 
     async function loadNews() {
       try {
-        const res = await fetch(`https://api.github.com/repos/${githubUser}/${githubUser}.github.io/contents/${folder}`);
+        const res = await fetch(`https://api.github.com/repos/${githubUser}/${repoName}/contents/${folder}`);
         const files = await res.json();
 
         if (!Array.isArray(files)) {
@@ -312,18 +285,12 @@
           news.push({
             title: meta.title || file.name.replace('.md', '').replace(/-/g, ' '),
             image: meta.image || "https://via.placeholder.com/600x400?text=خبر",
-            category: meta.category || "غير مصنف",
-            badge: (meta.badge && meta.badge.toLowerCase() !== "لا شيء") ? meta.badge : "",
             date: meta.date || "",
             pageUrl: `https://${githubUser}.github.io/${folder}/${file.name.replace(/\.md$/, '')}`
           });
         }
 
         news.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        if (news.length > 0 && !news[0].badge) {
-          news[0].badge = "جديد";
-        }
 
         const mainContainer = document.getElementById('news-container');
         mainContainer.innerHTML = "";
@@ -361,6 +328,9 @@
 
           mainContainer.appendChild(newsList);
         }
+
+        // تفعيل إعلان الفوتر
+        (adsbygoogle = window.adsbygoogle || []).push();
 
       } catch (error) {
         console.error("حدث خطأ أثناء جلب الأخبار:", error);
