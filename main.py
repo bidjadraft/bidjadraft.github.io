@@ -43,7 +43,6 @@ def make_markdown(entry, arabic_title, arabic_body):
     title = arabic_title.strip()
     date = entry.get('published', '')[:10] or datetime.now().strftime('%Y-%m-%d')
     category = "التقنية"
-    # محاولة جلب صورة الخبر من الخلاصة
     image = None
     if 'media_content' in entry and len(entry.media_content) > 0:
         image = entry.media_content[0]['url']
