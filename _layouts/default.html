@@ -420,8 +420,14 @@
     const repoName = "bidjadraft.github.io";
     const folder = "news";
 
-    // رابط المقال الحالي بدون / في النهاية
-    const currentPageUrl = window.location.href.replace(/\/$/, "");
+    function normalizeUrl(url) {
+      url = decodeURIComponent(url.toLowerCase());
+      url = url.replace(/\/(index\.(html?|php))$/, "");
+      url = url.replace(/\/$/, "");
+      return url;
+    }
+
+    const currentPageUrl = normalizeUrl(window.location.href);
 
     function parseFrontMatter(mdText) {
       const fmMatch = mdText.match(/^---\s*([\s\S]*?)\s*---/);
@@ -454,8 +460,10 @@
           const mdText = await fetch(file.download_url).then(r => r.text());
           const meta = parseFrontMatter(mdText);
 
-          const pageUrl = `https://${githubUser}.github.io/${folder}/${file.name.replace(/\.md$/, '')}`;
-          if (pageUrl.replace(/\/$/, "") === currentPageUrl) continue; // استثناء المقال الحالي
+          let pageUrl = `https://${githubUser}.github.io/${folder}/${file.name.replace(/\.md$/, '')}`;
+          pageUrl = normalizeUrl(pageUrl);
+
+          if (pageUrl === currentPageUrl) continue; // استثناء المقال الحالي
 
           news.push({
             title: meta.title || file.name.replace('.md', '').replace(/-/g, ' '),
