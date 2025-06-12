@@ -317,38 +317,10 @@
       }
     }
 
-    /* تنسيق عرض آخر المقالات بنفس index.html */
+    /* تنسيق عرض الأخبار (مثل index.html) */
     #related-articles {
       max-width: 600px;
       margin: 40px auto 20px auto;
-    }
-    #related-articles .main-news-box {
-      position: relative;
-      width: 100%;
-      margin-bottom: 18px;
-    }
-    #related-articles .main-news-img {
-      width: 100%;
-      height: 260px;
-      object-fit: cover;
-      border-radius: 8px;
-      display: block;
-    }
-    #related-articles .main-news-title {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      left: 0;
-      color: #fff;
-      font-size: 1.1em;
-      font-weight: bold;
-      padding: 16px 14px 10px 14px;
-      z-index: 2;
-      text-shadow: 0 2px 8px #000a, 0 1px 2px #000a;
-      background: none;
-      border-radius: 0 0 8px 8px;
-      margin: 0;
-      box-sizing: border-box;
     }
     #related-articles .news-list {
       display: flex;
@@ -440,8 +412,7 @@
 
   <!-- قسم آخر المقالات -->
   <section id="related-articles" aria-label="آخر المقالات">
-    <div id="related-main-news"></div>
-    <div id="related-news-list"></div>
+    <div class="news-list" id="related-news-list">جارٍ تحميل المقالات...</div>
   </section>
 
   <script>
@@ -469,6 +440,7 @@
 
         if (!Array.isArray(files)) {
           console.error("لم يتم جلب الملفات بشكل صحيح");
+          document.getElementById('related-news-list').innerText = "خطأ في جلب المقالات.";
           return;
         }
 
@@ -489,24 +461,10 @@
 
         news.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-        // عرض الخبر الرئيسي
-        const mainNews = news[0];
-        const mainNewsContainer = document.getElementById('related-main-news');
-        mainNewsContainer.innerHTML = `
-          <div class="main-news-box">
-            <a href="${mainNews.pageUrl}" target="_blank" rel="noopener noreferrer" aria-label="الخبر الرئيسي: ${mainNews.title}">
-              <img class="main-news-img" src="${mainNews.image}" alt="صورة الخبر الرئيسي: ${mainNews.title}">
-              <div class="main-news-title">${mainNews.title}</div>
-            </a>
-          </div>
-        `;
+        const container = document.getElementById('related-news-list');
+        container.innerHTML = "";
 
-        // عرض باقي الأخبار (9 مقالات)
-        const newsListContainer = document.getElementById('related-news-list');
-        newsListContainer.innerHTML = '<div class="news-list"></div>';
-        const newsList = newsListContainer.querySelector('.news-list');
-
-        news.slice(1, 10).forEach(n => {
+        news.slice(0, 10).forEach(n => {
           const newsItem = document.createElement('div');
           newsItem.className = 'news-item';
           newsItem.innerHTML = `
@@ -518,11 +476,12 @@
               <span class="news-time">${n.date}</span>
             </div>
           `;
-          newsList.appendChild(newsItem);
+          container.appendChild(newsItem);
         });
 
       } catch (error) {
         console.error("حدث خطأ أثناء جلب المقالات:", error);
+        document.getElementById('related-news-list').innerText = "حدث خطأ أثناء تحميل المقالات.";
       }
     }
 
