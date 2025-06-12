@@ -1,9 +1,9 @@
 name: Generate News Markdown
 
 on:
-  workflow_dispatch:    # تشغيل يدوي من GitHub
+  workflow_dispatch:    # تشغيل يدوي من صفحة Actions في GitHub
   schedule:
-    - cron: '0 */6 * * *'   # كل 6 ساعات (يمكنك التعديل)
+    - cron: '0 */6 * * *'   # تشغيل تلقائي كل 6 ساعات (يمكنك التعديل)
 
 jobs:
   build:
@@ -22,7 +22,7 @@ jobs:
       run: pip install -r requirements.txt
 
     - name: Run news script
-      run: python script.py
+      run: python main.py
       env:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
