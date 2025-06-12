@@ -43,22 +43,20 @@ def make_markdown(entry, arabic_title, arabic_body):
     title = arabic_title.strip()
     date = entry.get('published', '')[:10] or datetime.now().strftime('%Y-%m-%d')
     category = "التقنية"
-    image = None
     # محاولة جلب صورة الخبر من الخلاصة
+    image = None
     if 'media_content' in entry and len(entry.media_content) > 0:
         image = entry.media_content[0]['url']
     elif 'enclosures' in entry and len(entry.enclosures) > 0:
         image = entry.enclosures[0]['url']
     if not image:
         image = "https://via.placeholder.com/600x400.png?text=No+Image"
-    url = entry.get('link', '')
-
     md = f"""---
+layout: default
 title: "{title}"
-date: {date}
+image: "{image}"
 category: {category}
-image: {image}
-source: {url}
+date: {date}
 ---
 
 {arabic_body.strip()}
