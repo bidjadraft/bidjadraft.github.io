@@ -5,14 +5,12 @@ import requests
 from datetime import datetime
 import re
 
-# إعدادات أساسية
 RSS_URL = "https://feed.alternativeto.net/news/all"
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 NEWS_DIR = "news"
 LASTPOST_FILE = os.path.join(NEWS_DIR, "lastpost.txt")
 os.makedirs(NEWS_DIR, exist_ok=True)
 
-# دالة للتواصل مع Gemini API
 def gemini_ask(prompt, max_retries=8, wait_seconds=10):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
     payload = {
@@ -36,18 +34,19 @@ def gemini_ask(prompt, max_retries=8, wait_seconds=10):
             return None
     return None
 
-# دالة تنسيق اسم الملف
 def sanitize_filename(text):
-    text = re.sub(r'[\\/*?:"<>|]', '', text)
-    text = text.replace(' ', '-')
+    # حذف كل الرموز والإبقاء فقط على الحروف والأرقام والمسافات
+    text = re.sub(r'[^a-zA-Z0-9\u0600-\u06FF\s]', '', text)
+    # استبدال الفراغات بشرطة
+    text = re.sub(r'\s+', '-', text)
+    # إزالة أي شرطات من البداية والنهاية
+    text = text.strip('-')
     return text[:60]
 
-# دالة إنشاء ملف Markdown بالتنسيق المطلوب
 def make_markdown(entry, arabic_title, arabic_body):
     title = arabic_title.strip()
     date = entry.get('published', '')[:10] or datetime.now().strftime('%Y-%m-%d')
     category = "التقنية"
-    # جلب صورة الخبر أو صورة افتراضية
     image = None
     if 'media_content' in entry and len(entry.media_content) > 0:
         image = entry.media_content[0]['url']
@@ -67,19 +66,16 @@ date: {date}
 """
     return md
 
-# قراءة آخر خبر تم نشره
 def read_last_post():
     if not os.path.exists(LASTPOST_FILE):
         return None
     with open(LASTPOST_FILE, "r", encoding="utf-8") as f:
         return f.read().strip()
 
-# كتابة رابط آخر خبر تم نشره
 def write_last_post(link):
     with open(LASTPOST_FILE, "w", encoding="utf-8") as f:
         f.write(link)
 
-# الدالة الرئيسية
 def main():
     feed = feedparser.parse(RSS_URL)
     entries = feed.entries
@@ -90,7 +86,6 @@ def main():
     last_post_link = read_last_post()
     entries = sorted(entries, key=lambda e: e.get('published_parsed', 0))
 
-    # إذا لم يوجد lastpost.txt، أنشئ فقط أحدث مقال
     if not last_post_link:
         entries_to_process = [entries[-1]]
     else:
@@ -114,10 +109,10 @@ def main():
         description = entry.get('summary', '')
         link = entry.get('link', '')
 
-        # تلخيص العنوان (9 كلمات فقط)
+        # تلخيص العنوان (9 كلمات فقط، بدون رموز)
         prompt_title = f"""العنوان التالي هو لخبر تقني:
 {original_title}
-رجاءً لخص العنوان إلى عنوان صحفي جذاب باللغة العربية لا يتعدى 9 كلمات فقط، ولا تضف أي تفاصيل أخرى."""
+رجاءً لخص العنوان إلى عنوان صحفي جذاب باللغة العربية لا يتعدى 9 كلمات فقط، ولا تضف أي رموز أو علامات ترقيم أو أرقام أو تفاصيل أخرى."""
         arabic_title = gemini_ask(prompt_title)
         if not arabic_title:
             print("فشل تلخيص العنوان.")
@@ -144,7 +139,6 @@ def main():
             f.write(md)
         print(f"تم إنشاء: {filepath}")
 
-        # تحديث رابط آخر مقال
         write_last_post(link)
 
 if __name__ == "__main__":
