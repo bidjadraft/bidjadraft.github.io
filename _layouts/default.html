@@ -12,6 +12,7 @@
        crossorigin="anonymous"></script>
 
   <style>
+    /* أنماط الصفحة كما في index.html */
     body {
       margin: 0;
       font-family: "Cairo", "Segoe UI", "Arial", sans-serif;
@@ -316,8 +317,7 @@
         border-top-left-radius: 8px;
       }
     }
-
-    /* تنسيق عرض الأخبار (مثل index.html) */
+    /* تنسيق عرض الأخبار */
     #related-articles {
       max-width: 600px;
       margin: 40px auto 20px auto;
@@ -420,6 +420,9 @@
     const repoName = "bidjadraft.github.io";
     const folder = "news";
 
+    // رابط المقال الحالي بدون / في النهاية
+    const currentPageUrl = window.location.href.replace(/\/$/, "");
+
     function parseFrontMatter(mdText) {
       const fmMatch = mdText.match(/^---\s*([\s\S]*?)\s*---/);
       let meta = {};
@@ -451,11 +454,14 @@
           const mdText = await fetch(file.download_url).then(r => r.text());
           const meta = parseFrontMatter(mdText);
 
+          const pageUrl = `https://${githubUser}.github.io/${folder}/${file.name.replace(/\.md$/, '')}`;
+          if (pageUrl.replace(/\/$/, "") === currentPageUrl) continue; // استثناء المقال الحالي
+
           news.push({
             title: meta.title || file.name.replace('.md', '').replace(/-/g, ' '),
             image: meta.image || "https://via.placeholder.com/600x400?text=خبر",
             date: meta.date || "",
-            pageUrl: `https://${githubUser}.github.io/${folder}/${file.name.replace(/\.md$/, '')}`
+            pageUrl: pageUrl
           });
         }
 
