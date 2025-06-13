@@ -35,11 +35,9 @@ def gemini_ask(prompt, max_retries=8, wait_seconds=10):
     return None
 
 def sanitize_filename(text):
-    # حذف كل الرموز والإبقاء فقط على الحروف والأرقام والمسافات
-    text = re.sub(r'[^a-zA-Z0-9\u0600-\u06FF\s]', '', text)
-    # استبدال الفراغات بشرطة
+    text = re.sub(r'[^\w\s\u0600-\u06FF]', '', text)
+    text = re.sub(r'_', '', text)
     text = re.sub(r'\s+', '-', text)
-    # إزالة أي شرطات من البداية والنهاية
     text = text.strip('-')
     return text[:60]
 
@@ -109,23 +107,33 @@ def main():
         description = entry.get('summary', '')
         link = entry.get('link', '')
 
-        # تلخيص العنوان (9 كلمات فقط، بدون رموز)
-        prompt_title = f"""العنوان التالي هو لخبر تقني:
+        arabic_title = None
+        for attempt in range(10):
+            prompt_title = f"""العنوان التالي هو لخبر تقني:
 {original_title}
-رجاءً لخص العنوان إلى عنوان صحفي جذاب باللغة العربية لا يتعدى 9 كلمات فقط، ولا تضف أي رموز أو علامات ترقيم أو أرقام أو تفاصيل أخرى."""
-        arabic_title = gemini_ask(prompt_title)
-        if not arabic_title:
-            print("فشل تلخيص العنوان.")
-            continue
+رجاءً لخص العنوان إلى عنوان صحفي جذاب باللغة العربية لا يتعدى 9 كلمات فقط.
+يجب أن يحتوي العنوان فقط على كلمات عربية أو إنجليزية بدون أي رموز أو علامات ترقيم مثل (، . : * - _ " ' ! ؟) أو أرقام أو رموز خاصة أخرى.
+لا تضف أي علامات أو رموز، فقط الكلمات مفصولة بمسافات."""
+            arabic_title = gemini_ask(prompt_title)
+            if arabic_title:
+                break
+            print(f"فشل تلخيص العنوان، محاولة {attempt+1}/10...")
+        else:
+            print("فشل تلخيص العنوان بعد 10 محاولات. إيقاف البرنامج.")
+            return
 
-        # تلخيص الخبر (فقرتين أو ثلاث فقط)
-        prompt_body = f"""النص التالي هو خبر تقني:
+        arabic_body = None
+        for attempt in range(10):
+            prompt_body = f"""النص التالي هو خبر تقني:
 {description}
 رجاءً لخص الخبر إلى فقرتين أو ثلاث فقرات تسرد كل ما يخص الموضوع باللغة العربية، مع الحفاظ على الأسلوب الصحفي الجذاب والواضح. لا تكرر العنوان ولا تضف عناوين فرعية."""
-        arabic_body = gemini_ask(prompt_body)
-        if not arabic_body:
-            print("فشل تلخيص الخبر.")
-            continue
+            arabic_body = gemini_ask(prompt_body)
+            if arabic_body:
+                break
+            print(f"فشل تلخيص الخبر، محاولة {attempt+1}/10...")
+        else:
+            print("فشل تلخيص الخبر بعد 10 محاولات. إيقاف البرنامج.")
+            return
 
         filename = sanitize_filename(arabic_title or original_title) + ".md"
         filepath = os.path.join(NEWS_DIR, filename)
@@ -142,4 +150,7 @@ def main():
         write_last_post(link)
 
 if __name__ == "__main__":
-    main()
+    while True:
+        main()
+        print("انتظار ساعة قبل التشغيل التالي...")
+        time.sleep(3600)  # الانتظار ساعة واحدة (3600 ثانية)
