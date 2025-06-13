@@ -1,201 +1,376 @@
-import os
-import time
-import feedparser
-import requests
-from datetime import datetime
-import re
-import xml.etree.ElementTree as ET
-from dateutil import parser  # تحتاج تثبيت المكتبة: pip install python-dateutil
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>أخبار التقنية | بجاد الأثري</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9593085803586600"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Cairo", "Segoe UI", "Arial", sans-serif;
+      background: #18181b;
+      color: #e5e7eb;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #18181b;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #23232a;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px #0008;
+    }
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .profile a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .profile-img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #23232a;
+      box-shadow: 0 2px 8px #0003;
+      transition: transform 0.3s ease;
+    }
+    .profile-img:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 16px #2563ebaa;
+    }
+    .username {
+      font-size: 1.1em;
+      color: #e5e7eb;
+      font-weight: 700;
+      margin-left: 10px;
+      font-family: "Cairo", "Segoe UI", "Arial", sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+    .username a {
+      color: #e5e7eb;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .username a:hover,
+    .username a:focus {
+      color: #60a5fa;
+      outline: none;
+      text-decoration: none;
+    }
+    .username .blue {
+      color: #60a5fa;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .socials {
+      display: flex;
+      gap: 16px;
+    }
+    .socials a {
+      color: #a1a1aa;
+      font-size: 1.6em;
+      transition: color 0.3s, transform 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+    .socials a:hover,
+    .socials a:focus {
+      color: #60a5fa;
+      transform: scale(1.2);
+      outline: none;
+    }
+    main {
+      max-width: 600px;
+      margin: 24px auto 0 auto;
+      padding: 0 8px;
+      flex-grow: 1;
+      outline: none;
+    }
+    .main-news-box {
+      position: relative;
+      width: 100%;
+      margin-bottom: 18px;
+    }
+    .main-news-img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block;
+    }
+    .main-news-title {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      color: #fff;
+      font-size: 1.1em;
+      font-weight: bold;
+      padding: 16px 14px 10px 14px;
+      z-index: 2;
+      text-shadow: 0 2px 8px #000a, 0 1px 2px #000a;
+      background: none;
+      border-radius: 0 0 8px 8px;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    .news-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 8px;
+    }
+    .news-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid #fff;
+      background: none;
+      border-radius: 0;
+      min-height: 90px;
+    }
+    .news-item:last-child {
+      border-bottom: none;
+    }
+    .news-thumb {
+      width: 180px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      flex-shrink: 0;
+      background: #23232a;
+    }
+    .news-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+    }
+    .news-title {
+      color: #e5e7eb;
+      font-size: 1em;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s;
+      margin: 0 0 4px 0;
+      padding: 0;
+      display: block;
+    }
+    .news-title:hover {
+      color: #60a5fa;
+    }
+    .news-time {
+      color: #a1a1aa;
+      font-size: 0.85em;
+      margin-top: 2px;
+    }
+    footer {
+      text-align: center;
+      color: #71717a;
+      font-size: 1.05em;
+      padding: 28px 12px 24px 12px;
+      margin-top: 40px;
+      border-top: 1px solid #2c2c36;
+      letter-spacing: 0.06em;
+      font-family: "Cairo", "Segoe UI", "Arial", sans-serif;
+      user-select: none;
+      background: #18181b;
+      transition: color 0.3s ease;
+    }
+    footer:hover {
+      color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="profile">
+      <a href="https://bidjadraft.github.io/links" title="زيارة صفحة بجاد الأثري" aria-label="زيارة صفحة بجاد الأثري">
+        <img class="profile-img" src="https://i.imgur.com/zTwTusT.jpeg" alt="Profile" />
+      </a>
+      <div class="username">
+        <a href="https://bidjadraft.github.io/blog" title="زيارة صفحة بجاد الأثري" aria-label="زيارة صفحة بجاد الأثري">
+          <span>بجاد</span> <span class="blue">الأثري</span>
+        </a>
+      </div>
+    </div>
+    <nav aria-label="روابط التواصل الاجتماعي" class="socials">
+      <a href="https://github.com/bidjadraft" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+      <a href="https://youtube.com/@bidjadraft" title="يوتيوب" aria-label="يوتيوب" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
+      <a href="https://t.me/s/bidjadraft" title="تلغرام" aria-label="تلغرام" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i></a>
+    </nav>
+  </header>
 
-# إعدادات عامة
-RSS_URL = "https://feed.alternativeto.net/news/all"
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-NEWS_DIR = "news"
-LASTPOST_FILE = os.path.join(NEWS_DIR, "lastpost.txt")
-FEED_FILE = os.path.join(NEWS_DIR, "feed.xml")
-SITE_URL = "https://bidjadraft.github.io"
+  <main id="news-container" tabindex="-1" aria-live="polite" aria-label="أخبار التقنية بجاد الأثري">
+      </main>
 
-os.makedirs(NEWS_DIR, exist_ok=True)
+  <footer>
+    © جميع الحقوق محفوظة بجاد الأثري
+  </footer>
 
-def gemini_ask(prompt, max_retries=8, wait_seconds=10):
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
-    payload = {"contents": [{"parts": [{"text": prompt}]}]}
-    headers = {'Content-Type': 'application/json'}
-    for attempt in range(max_retries):
-        r = requests.post(url, json=payload, headers=headers)
-        if r.status_code == 200:
-            try:
-                return r.json()['candidates'][0]['content']['parts'][0]['text']
-            except Exception:
-                return None
-        if r.status_code == 503 or "overloaded" in r.text:
-            print(f"ازدحام Gemini، إعادة المحاولة بعد {wait_seconds} ثانية...")
-            time.sleep(wait_seconds)
-        else:
-            print(f"خطأ في Gemini: {r.text}")
-            return None
-    return None
+  <script>
+    const githubUser = "bidjadraft";
+    const repoName = "bidjadraft.github.io";
+    const folder = "news";
 
-def sanitize_filename(text):
-    text = re.sub(r'[^\w\s\u0600-\u06FF]', '', text)
-    text = re.sub(r'_', '', text)
-    text = re.sub(r'\s+', '-', text)
-    text = text.strip('-')
-    return text[:60]
+    // دالة تحويل التاريخ إلى نص نسبي بالعربية
+    function timeAgo(dateString) {
+      const now = new Date();
+      const date = new Date(dateString);
+      const seconds = Math.floor((now - date) / 1000);
 
-def make_markdown(title, image, date, body):
-    category = "التقنية"
-    md = f"""---
-layout: default
-title: "{title}"
-image: "{image}"
-category: {category}
-date: {date}
----
+      if (isNaN(seconds) || seconds < 0) return "";
 
-{body.strip()}
-"""
-    return md
+      const intervals = [
+        { label: "سنة", singular: "سنة", dual: "سنتين", plural_3_10: "سنوات", plural_11_plus: "سنة", seconds: 31536000 }, // 365 days
+        { label: "شهر", singular: "شهر", dual: "شهرين", plural_3_10: "أشهر", plural_11_plus: "شهر", seconds: 2592000 }, // 30 days
+        { label: "يوم", singular: "يوم", dual: "يومين", plural_3_10: "أيام", plural_11_plus: "يوم", seconds: 86400 },
+        { label: "ساعة", singular: "ساعة", dual: "ساعتين", plural_3_10: "ساعات", plural_11_plus: "ساعة", seconds: 3600 },
+        { label: "دقيقة", singular: "دقيقة", dual: "دقيقتين", plural_3_10: "دقائق", plural_11_plus: "دقيقة", seconds: 60 },
+        { label: "ثانية", singular: "ثانية", dual: "ثانيتين", plural_3_10: "ثواني", plural_11_plus: "ثانية", seconds: 1 }
+      ];
 
-def read_last_post():
-    if not os.path.exists(LASTPOST_FILE):
-        return None
-    with open(LASTPOST_FILE, "r", encoding="utf-8") as f:
-        return f.read().strip()
+      for (const interval of intervals) {
+        const count = Math.floor(seconds / interval.seconds);
+        if (count >= 1) {
+          if (interval.label === "ثانية" && count < 10) {
+            return "الآن";
+          }
+          if (count === 1) {
+            return `قبل ${interval.singular} واحد`; // Example: قبل ساعة واحدة
+          } else if (count === 2) {
+            return `قبل ${interval.dual}`; // Example: قبل ساعتين
+          } else if (count >= 3 && count <= 10) {
+            return `قبل ${count} ${interval.plural_3_10}`; // Example: قبل 3 ساعات
+          } else {
+            return `قبل ${count} ${interval.plural_11_plus}`; // Example: قبل 11 ساعة
+          }
+        }
+      }
+      return "";
+    }
 
-def write_last_post(link):
-    with open(LASTPOST_FILE, "w", encoding="utf-8") as f:
-        f.write(link)
+    // تحديث جميع عناصر الوقت النسبي في الصفحة
+    function updateTimes() {
+      const timeElements = document.querySelectorAll('.news-time');
+      timeElements.forEach(el => {
+        const dateStr = el.getAttribute('data-date'); // تأكد من وجود data-date
+        el.textContent = timeAgo(dateStr);
+      });
+    }
 
-def append_to_feed_xml(title, link, image):
-    if not os.path.exists(FEED_FILE) or os.stat(FEED_FILE).st_size == 0:
-        xml_content = '''<?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0">
-  <channel>
-    <title>أخبار مدونتي</title>
-    <link>https://bidjadraft.github.io/news/</link>
-    <description>تحديثات الأخبار التقنية</description>
-  </channel>
-</rss>
-'''
-        with open(FEED_FILE, "w", encoding="utf-8") as f:
-            f.write(xml_content)
+    function parseFrontMatter(mdText) {
+      const fmMatch = mdText.match(/^---\s*([\s\S]*?)\s*---/);
+      let meta = {};
+      if (fmMatch) {
+        const lines = fmMatch[1].split('\n');
+        lines.forEach(line => {
+          const match = line.match(/^([\w\u0600-\u06FF\-]+):\s*["']?(.+?)["']?$/);
+          if (match) meta[match[1].trim()] = match[2].trim();
+        });
+      }
+      return meta;
+    }
 
-    tree = ET.parse(FEED_FILE)
-    root = tree.getroot()
-    channel = root.find('channel')
+    async function loadNews() {
+      try {
+        const res = await fetch(`https://api.github.com/repos/${githubUser}/${repoName}/contents/${folder}`);
+        const files = await res.json();
 
-    item = ET.Element('item')
-    ET.SubElement(item, 'title').text = title
-    ET.SubElement(item, 'link').text = link
-    if image:
-        ext = os.path.splitext(image)[-1].lower()
-        mime = "image/png" if ext == ".png" else "image/jpeg" if ext in [".jpg", ".jpeg"] else "image/webp"
-        ET.SubElement(item, 'enclosure', url=image, type=mime)
+        if (!Array.isArray(files)) {
+          console.error("لم يتم جلب الملفات بشكل صحيح");
+          return;
+        }
 
-    channel.insert(0, item)
-    tree.write(FEED_FILE, encoding='utf-8', xml_declaration=True)
-    print(f"تمت إضافة خبر جديد إلى {FEED_FILE}")
+        const mdFiles = files.filter(f => f.name.endsWith('.md'));
+        const news = [];
 
-def main():
-    feed = feedparser.parse(RSS_URL)
-    entries = feed.entries
-    if not entries:
-        print("لا توجد منشورات في الخلاصة.")
-        return
+        for (const file of mdFiles) {
+          const mdText = await fetch(file.download_url).then(r => r.text());
+          const meta = parseFrontMatter(mdText);
 
-    last_post_link = read_last_post()
-    entries = sorted(entries, key=lambda e: e.get('published_parsed', 0))
+          news.push({
+            title: meta.title || file.name.replace('.md', '').replace(/-/g, ' '),
+            image: meta.image || "https://via.placeholder.com/600x400?text=خبر",
+            date: meta.date || "",
+            pageUrl: `https://${githubUser}.github.io/${folder}/${file.name.replace(/\.md$/, '')}`
+          });
+        }
 
-    if not last_post_link:
-        entries_to_process = [entries[-1]]
-    else:
-        entries_to_process = []
-        found_last = False
-        for entry in entries:
-            link = entry.get('link', '')
-            if found_last:
-                entries_to_process.append(entry)
-            elif link == last_post_link:
-                found_last = True
-        if not found_last:
-            entries_to_process = [entries[-1]]
+        news.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    if not entries_to_process:
-        print("لا توجد منشورات جديدة.")
-        return
+        const mainContainer = document.getElementById('news-container');
+        mainContainer.innerHTML = "";
 
-    for entry in entries_to_process:
-        original_title = entry.get('title', '')
-        description = entry.get('summary', '')
-        link = entry.get('link', '')
+        if (news.length > 0) {
+          const mainNewsBox = document.createElement('div');
+          mainNewsBox.className = 'main-news-box';
+          mainNewsBox.innerHTML = `
+            <a href="${news[0].pageUrl}" target="_blank" rel="noopener noreferrer" aria-label="الخبر الرئيسي: ${news[0].title}">
+              <img class="main-news-img" src="${news[0].image}" alt="صورة الخبر الرئيسي: ${news[0].title}">
+              <div class="main-news-title">${news[0].title}</div>
+            </a>
+          `;
+          mainContainer.appendChild(mainNewsBox);
+        }
 
-        # استخراج التاريخ والوقت بصيغة ISO 8601
-        published_str = entry.get('published', '')
-        if published_str:
-            try:
-                dt = parser.parse(published_str)
-                date = dt.strftime('%Y-%m-%dT%H:%M:%S')
-            except Exception:
-                date = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
-        else:
-            date = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+        if (news.length > 1) {
+          const newsList = document.createElement('section');
+          newsList.className = 'news-list';
 
-        # استخراج الصورة
-        image = None
-        if 'media_content' in entry and len(entry.media_content) > 0:
-            image = entry.media_content[0]['url']
-        elif 'enclosures' in entry and len(entry.enclosures) > 0:
-            image = entry.enclosures[0]['url']
-        if not image:
-            image = "https://via.placeholder.com/600x400.png?text=No+Image"
+          news.slice(1).forEach(n => {
+            const newsItem = document.createElement('div');
+            newsItem.className = 'news-item';
+            newsItem.innerHTML = `
+              <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-thumb-link" aria-label="خبر: ${n.title}">
+                <img class="news-thumb" src="${n.image}" alt="صورة الخبر: ${n.title}">
+              </a>
+              <div class="news-info">
+                <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-title">${n.title}</a>
+                <span class="news-time" data-date="${n.date}"></span>
+              </div>
+            `;
+            newsList.appendChild(newsItem);
+          });
 
-        # تلخيص العنوان
-        arabic_title = None
-        for attempt in range(10):
-            prompt_title = f"""العنوان التالي هو لخبر تقني:
-{original_title}
-رجاءً لخص العنوان إلى عنوان صحفي جذاب باللغة العربية لا يتعدى 9 كلمات فقط.
-يجب أن يحتوي العنوان فقط على كلمات عربية أو إنجليزية بدون أي رموز أو علامات ترقيم مثل (، . : * - _ " ' ! ؟) أو أرقام أو رموز خاصة أخرى.
-لا تضف أي علامات أو رموز، فقط الكلمات مفصولة بمسافات."""
-            arabic_title = gemini_ask(prompt_title)
-            if arabic_title:
-                break
-            print(f"فشل تلخيص العنوان، محاولة {attempt+1}/10...")
-        else:
-            print("فشل تلخيص العنوان بعد 10 محاولات. إيقاف البرنامج.")
-            return
+          mainContainer.appendChild(newsList);
+        }
+        // قم بتحديث الأوقات بعد تحميل الأخبار
+        updateTimes();
+      } catch (error) {
+        console.error("حدث خطأ أثناء جلب الأخبار:", error);
+      }
+    }
 
-        # تلخيص الخبر
-        arabic_body = None
-        for attempt in range(10):
-            prompt_body = f"""النص التالي هو خبر تقني:
-{description}
-رجاءً لخص الخبر إلى فقرتين أو ثلاث فقرات تسرد كل ما يخص الموضوع باللغة العربية، مع الحفاظ على الأسلوب الصحفي الجذاب والواضح. لا تكرر العنوان ولا تضف عناوين فرعية."""
-            arabic_body = gemini_ask(prompt_body)
-            if arabic_body:
-                break
-            print(f"فشل تلخيص الخبر، محاولة {attempt+1}/10...")
-        else:
-            print("فشل تلخيص الخبر بعد 10 محاولات. إيقاف البرنامج.")
-            return
+    loadNews();
 
-        # إنشاء ملف md
-        filename = sanitize_filename(arabic_title or original_title) + ".md"
-        filepath = os.path.join(NEWS_DIR, filename)
-        if not os.path.exists(filepath):
-            md = make_markdown(arabic_title, image, date, arabic_body)
-            with open(filepath, "w", encoding="utf-8") as f:
-                f.write(md)
-            print(f"تم إنشاء: {filepath}")
-
-        # إنشاء الرابط
-        html_link = f"{SITE_URL}/news/{os.path.splitext(filename)[0]}.html"
-        # إضافة الخبر مباشرة إلى feed.xml
-        append_to_feed_xml(arabic_title, html_link, image)
-
-        # تحديث آخر منشور
-        write_last_post(link)
-
-if __name__ == "__main__":
-    main()
+    // تحديث الوقت النسبي كل دقيقة تلقائيًا
+    setInterval(updateTimes, 60000); // 60000 مللي ثانية = 1 دقيقة
+  </script>
+</body>
+</html>
