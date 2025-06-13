@@ -11,7 +11,7 @@ RSS_URL = "https://feed.alternativeto.net/news/all"
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 NEWS_DIR = "news"
 LASTPOST_FILE = os.path.join(NEWS_DIR, "lastpost.txt")
-FEED_FILE = os.path.join(NEWS_DIR, "feed.xml")
+FEED_FILE = "feed.xml"  # في المجلد الجذري
 SITE_URL = "https://bidjadraft.github.io"
 
 os.makedirs(NEWS_DIR, exist_ok=True)
@@ -65,6 +65,30 @@ def read_last_post():
 def write_last_post(link):
     with open(LASTPOST_FILE, "w", encoding="utf-8") as f:
         f.write(link)
+
+def gemini_check_image(image_url, title, description):
+    # اسأل Gemini: هل الصورة تحتوي على امرأة؟
+    prompt = f"""هل الصورة في الرابط التالي تحتوي على امرأة؟ أجب فقط بنعم أو لا بدون شرح.
+رابط الصورة: {image_url}
+عنوان الخبر: {title}
+وصف الخبر: {description}
+"""
+    answer = gemini_ask(prompt)
+    if answer and "نعم" in answer.strip():
+        # إذا كانت الصورة فيها امرأة، اطلب صورة بديلة لنفس الموضوع
+        prompt2 = f"""أعطني رابط صورة بديلة من منصة مجانية (مثل Unsplash أو Pixabay) لموضوع الخبر التالي:
+العنوان: {title}
+الوصف: {description}
+يجب أن تكون الصورة مناسبة للخبر ولا تحتوي على نساء. أعد فقط الرابط المباشر للصورة بدون أي شرح."""
+        new_image = gemini_ask(prompt2)
+        if new_image and new_image.startswith("http"):
+            print(f"تم استبدال الصورة بصورة بديلة: {new_image}")
+            return new_image.strip()
+        else:
+            print("لم يتم العثور على صورة بديلة مناسبة، سيتم استخدام صورة افتراضية.")
+            return "https://via.placeholder.com/600x400.png?text=No+Image"
+    else:
+        return image_url
 
 def append_to_feed_xml(title, link, image):
     # إذا لم يوجد feed.xml أو كان فارغًا، أنشئه بالهيكل الأساسي
@@ -141,6 +165,9 @@ def main():
             image = entry.enclosures[0]['url']
         if not image:
             image = "https://via.placeholder.com/600x400.png?text=No+Image"
+
+        # تحقق من الصورة واستبدلها إذا كانت تحتوي على امرأة
+        image = gemini_check_image(image, original_title, description)
 
         # تلخيص العنوان
         arabic_title = None
