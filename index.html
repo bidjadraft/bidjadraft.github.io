@@ -6,9 +6,9 @@
   <title>أخبار التقنية | بجاد الأثري</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9593085803586600"
      crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
-  <style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <style>
     body {
       margin: 0;
       font-family: "Cairo", "Segoe UI", "Arial", sans-serif;
@@ -138,11 +138,6 @@
       margin: 0;
       box-sizing: border-box;
     }
-    .news-time {
-      color: #a1a1aa;
-      font-size: 0.85em;
-      margin-top: 2px;
-    }
     .news-list {
       display: flex;
       flex-direction: column;
@@ -270,11 +265,13 @@
 
         let interval = seconds / 31536000; // سنوات
         if (interval > 1) {
-            return `منذ ${Math.floor(interval)} سنة${Math.floor(interval) >= 3 && Math.floor(interval) <= 10 ? 'وات' : ''}`;
+            const years = Math.floor(interval);
+            return `منذ ${years} سنة${years >= 3 && years <= 10 ? 'وات' : ''}`;
         }
         interval = seconds / 2592000; // شهور
         if (interval > 1) {
-            return `منذ ${Math.floor(interval)} شهرًا`;
+            const months = Math.floor(interval);
+            return `منذ ${months} شهرًا`;
         }
         interval = seconds / 86400; // أيام
         if (interval > 1) {
