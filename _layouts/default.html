@@ -412,6 +412,7 @@
       return meta;
     }
 
+    // دالة الجمع العربي الصحيحة
     function timeAgo(dateString) {
       if (!dateString) return "تاريخ غير متوفر";
       const date = new Date(dateString);
@@ -421,22 +422,27 @@
       const seconds = Math.floor((now - date) / 1000);
       if (seconds < 0) return "في المستقبل";
 
+      function pluralize(count, singular, dual, plural) {
+        if (count === 1) return singular;
+        if (count === 2) return dual;
+        if (count >= 3 && count <= 10) return plural;
+        return plural; // للجمع فوق 10 نستخدم الجمع أيضًا
+      }
+
       const intervals = [
-        { label: "شهر", seconds: 2592000 },
-        { label: "يوم", seconds: 86400 },
-        { label: "ساعة", seconds: 3600 },
-        { label: "دقيقة", seconds: 60 },
-        { label: "ثانية", seconds: 1 }
+        { label: ["شهر", "شهران", "أشهر"], seconds: 2592000 },
+        { label: ["يوم", "يومان", "أيام"], seconds: 86400 },
+        { label: ["ساعة", "ساعتان", "ساعات"], seconds: 3600 },
+        { label: ["دقيقة", "دقيقتان", "دقائق"], seconds: 60 },
+        { label: ["ثانية", "ثانيتان", "ثوانٍ"], seconds: 1 }
       ];
 
       for (const interval of intervals) {
         const count = Math.floor(seconds / interval.seconds);
         if (count >= 1) {
-          if (interval.label === "ثانية" && count < 10) return "الآن";
-          if (count === 1) return `منذ ${count} ${interval.label}`;
-          if (count === 2) return `منذ ${count} ${interval.label}ين`;
-          if (count >= 3 && count <= 10) return `منذ ${count} ${interval.label}ات`;
-          return `منذ ${count} ${interval.label}`;
+          if (interval.label[0] === "ثانية" && count < 10) return "الآن";
+          const word = pluralize(count, interval.label[0], interval.label[1], interval.label[2]);
+          return `منذ ${count} ${word}`;
         }
       }
       return "الآن";
