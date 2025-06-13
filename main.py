@@ -4,12 +4,14 @@ import feedparser
 import requests
 from datetime import datetime
 import re
+import xml.etree.ElementTree as ET
 
 # إعدادات عامة
 RSS_URL = "https://feed.alternativeto.net/news/all"
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 NEWS_DIR = "news"
 LASTPOST_FILE = os.path.join(NEWS_DIR, "lastpost.txt")
+FEED_FILE = os.path.join(NEWS_DIR, "feed.xml")
 SITE_URL = "https://bidjadraft.github.io"
 
 os.makedirs(NEWS_DIR, exist_ok=True)
@@ -64,30 +66,39 @@ def write_last_post(link):
     with open(LASTPOST_FILE, "w", encoding="utf-8") as f:
         f.write(link)
 
-def check_and_replace_image(image_url, title, description):
-    # 1. اسأل Gemini: هل الصورة تحتوي على امرأة أو فتاة أو طفلة؟
-    prompt_check = f"""هل الصورة التالية تحتوي على امرأة أو فتاة أو طفلة؟ أجب فقط بنعم أو لا بدون شرح.
-رابط الصورة: {image_url}
-عنوان الخبر: {title}
-وصف الخبر: {description}
-"""
-    answer = gemini_ask(prompt_check)
-    if answer and "نعم" in answer.strip():
-        # 2. إذا كانت نعم، اطلب من Gemini صورة بديلة لنفس الموضوع من منصة مجانية
-        prompt_replace = f"""أعطني رابط صورة بديلة من منصة مجانية (مثل Unsplash أو Pixabay) لموضوع الخبر التالي:
-العنوان: {title}
-الوصف: {description}
-يجب أن تكون الصورة مناسبة للخبر ولا تحتوي على نساء أو فتيات أو طفلات. أعد فقط الرابط المباشر للصورة بدون أي شرح."""
-        new_image = gemini_ask(prompt_replace)
-        if new_image and new_image.startswith("http"):
-            print(f"تم استبدال الصورة بصورة بديلة: {new_image}")
-            return new_image.strip()
-        else:
-            print("لم يتم العثور على صورة بديلة مناسبة، سيتم استخدام صورة افتراضية.")
-            return "https://via.placeholder.com/600x400.png?text=No+Image"
-    else:
-        print("الصورة لا تحتوي على نساء، سيتم استخدامها كما هي.")
-        return image_url
+def append_to_feed_xml(title, link, image):
+    # إذا لم يوجد feed.xml أو كان فارغًا، أنشئه بالهيكل الأساسي
+    if not os.path.exists(FEED_FILE) or os.stat(FEED_FILE).st_size == 0:
+        xml_content = '''<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>أخبار مدونتي</title>
+    <link>https://bidjadraft.github.io/news/</link>
+    <description>تحديثات الأخبار التقنية</description>
+  </channel>
+</rss>
+'''
+        with open(FEED_FILE, "w", encoding="utf-8") as f:
+            f.write(xml_content)
+
+    # قراءة feed.xml الحالي
+    tree = ET.parse(FEED_FILE)
+    root = tree.getroot()
+    channel = root.find('channel')
+
+    # إنشاء عنصر جديد
+    item = ET.Element('item')
+    ET.SubElement(item, 'title').text = title
+    ET.SubElement(item, 'link').text = link
+    if image:
+        ext = os.path.splitext(image)[-1].lower()
+        mime = "image/png" if ext == ".png" else "image/jpeg" if ext in [".jpg", ".jpeg"] else "image/webp"
+        ET.SubElement(item, 'enclosure', url=image, type=mime)
+
+    # إدراج العنصر في أول القناة (أحدث خبر أولًا)
+    channel.insert(0, item)
+    tree.write(FEED_FILE, encoding='utf-8', xml_declaration=True)
+    print(f"تمت إضافة خبر جديد إلى {FEED_FILE}")
 
 def main():
     feed = feedparser.parse(RSS_URL)
@@ -131,9 +142,6 @@ def main():
         if not image:
             image = "https://via.placeholder.com/600x400.png?text=No+Image"
 
-        # تحقق من الصورة واستبدلها إذا كانت تحتوي على امرأة
-        image = check_and_replace_image(image, original_title, description)
-
         # تلخيص العنوان
         arabic_title = None
         for attempt in range(10):
@@ -172,6 +180,11 @@ def main():
             with open(filepath, "w", encoding="utf-8") as f:
                 f.write(md)
             print(f"تم إنشاء: {filepath}")
+
+        # إنشاء الرابط
+        html_link = f"{SITE_URL}/news/{os.path.splitext(filename)[0]}.html"
+        # إضافة الخبر مباشرة إلى feed.xml
+        append_to_feed_xml(arabic_title, html_link, image)
 
         # تحديث آخر منشور
         write_last_post(link)
