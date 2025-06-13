@@ -240,6 +240,46 @@
     const repoName = "bidjadraft.github.io";
     const folder = "news";
 
+    // دالة تحويل التاريخ إلى نص نسبي بالعربية
+    function timeAgo(dateString) {
+      const now = new Date();
+      const date = new Date(dateString);
+      const seconds = Math.floor((now - date) / 1000);
+
+      if (isNaN(seconds) || seconds < 0) return "";
+
+      const intervals = [
+        { label: "شهر", seconds: 2592000 }, // 30 يوم تقريبًا
+        { label: "يوم", seconds: 86400 },
+        { label: "ساعة", seconds: 3600 },
+        { label: "دقيقة", seconds: 60 },
+        { label: "ثانية", seconds: 1 }
+      ];
+
+      for (const interval of intervals) {
+        const count = Math.floor(seconds / interval.seconds);
+        if (count >= 1) {
+          if (interval.label === "ثانية" && count < 10) {
+            return "الآن";
+          }
+          if (count === 1) return `منذ ${count} ${interval.label}`;
+          if (count === 2) return `منذ ${count} ${interval.label}ين`;
+          if (count >= 3 && count <= 10) return `منذ ${count} ${interval.label}ات`;
+          return `منذ ${count} ${interval.label}`;
+        }
+      }
+      return "";
+    }
+
+    // تحديث جميع عناصر الوقت النسبي في الصفحة
+    function updateTimes() {
+      const timeElements = document.querySelectorAll('.news-time');
+      timeElements.forEach(el => {
+        const dateStr = el.getAttribute('data-date');
+        el.textContent = timeAgo(dateStr);
+      });
+    }
+
     function parseFrontMatter(mdText) {
       const fmMatch = mdText.match(/^---\s*([\s\S]*?)\s*---/);
       let meta = {};
@@ -308,7 +348,7 @@
               </a>
               <div class="news-info">
                 <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-title">${n.title}</a>
-                <span class="news-time">${n.date}</span>
+                <span class="news-time" data-date="${n.date}">${timeAgo(n.date)}</span>
               </div>
             `;
             newsList.appendChild(newsItem);
@@ -316,12 +356,19 @@
 
           mainContainer.appendChild(newsList);
         }
+
+        // تحديث الوقت النسبي فورًا بعد تحميل الأخبار
+        updateTimes();
+
       } catch (error) {
         console.error("حدث خطأ أثناء جلب الأخبار:", error);
       }
     }
 
     loadNews();
+
+    // تحديث الوقت النسبي كل 60 ثانية تلقائيًا
+    setInterval(updateTimes, 60000);
   </script>
 </body>
 </html>
