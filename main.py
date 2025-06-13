@@ -5,6 +5,7 @@ import requests
 from datetime import datetime
 import re
 import xml.etree.ElementTree as ET
+from dateutil import parser  # تحتاج تثبيت المكتبة: pip install python-dateutil
 
 # إعدادات عامة
 RSS_URL = "https://feed.alternativeto.net/news/all"
@@ -67,7 +68,6 @@ def write_last_post(link):
         f.write(link)
 
 def append_to_feed_xml(title, link, image):
-    # إذا لم يوجد feed.xml أو كان فارغًا، أنشئه بالهيكل الأساسي
     if not os.path.exists(FEED_FILE) or os.stat(FEED_FILE).st_size == 0:
         xml_content = '''<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
@@ -81,12 +81,10 @@ def append_to_feed_xml(title, link, image):
         with open(FEED_FILE, "w", encoding="utf-8") as f:
             f.write(xml_content)
 
-    # قراءة feed.xml الحالي
     tree = ET.parse(FEED_FILE)
     root = tree.getroot()
     channel = root.find('channel')
 
-    # إنشاء عنصر جديد
     item = ET.Element('item')
     ET.SubElement(item, 'title').text = title
     ET.SubElement(item, 'link').text = link
@@ -95,7 +93,6 @@ def append_to_feed_xml(title, link, image):
         mime = "image/png" if ext == ".png" else "image/jpeg" if ext in [".jpg", ".jpeg"] else "image/webp"
         ET.SubElement(item, 'enclosure', url=image, type=mime)
 
-    # إدراج العنصر في أول القناة (أحدث خبر أولًا)
     channel.insert(0, item)
     tree.write(FEED_FILE, encoding='utf-8', xml_declaration=True)
     print(f"تمت إضافة خبر جديد إلى {FEED_FILE}")
@@ -132,7 +129,18 @@ def main():
         original_title = entry.get('title', '')
         description = entry.get('summary', '')
         link = entry.get('link', '')
-        date = entry.get('published', '')[:10] or datetime.now().strftime('%Y-%m-%d')
+
+        # استخراج التاريخ والوقت بصيغة ISO 8601
+        published_str = entry.get('published', '')
+        if published_str:
+            try:
+                dt = parser.parse(published_str)
+                date = dt.strftime('%Y-%m-%dT%H:%M:%S')
+            except Exception:
+                date = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+        else:
+            date = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+
         # استخراج الصورة
         image = None
         if 'media_content' in entry and len(entry.media_content) > 0:
