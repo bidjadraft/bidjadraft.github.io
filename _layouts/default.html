@@ -18,7 +18,6 @@
       min-height: 100vh;
     }
     * { box-sizing: border-box; }
-
     header {
       background: #18181b;
       padding: 16px 18px;
@@ -106,7 +105,6 @@
       transform: scale(1.2);
       outline: none;
     }
-
     .container {
       max-width: 1000px;
       width: 100%;
@@ -116,8 +114,6 @@
       flex-direction: column;
       min-height: 100vh;
     }
-
-    /* المسافة الداخلية المتناسقة لكل العناصر */
     .article-container,
     .article-content,
     .article-title,
@@ -130,7 +126,6 @@
       padding-left: 24px;
       padding-right: 24px;
     }
-
     .article-container {
       max-width: 600px;
       margin: 24px auto 0 auto;
@@ -195,7 +190,6 @@
       margin-right: 2px;
       user-select: none;
     }
-    /* تم تغيير هذا ليتوافق مع .news-time */
     .article-date.news-time {
       color: #a1a1aa;
       font-size: 0.98em;
@@ -235,7 +229,6 @@
       border-radius: 10px;
       box-shadow: 0 2px 8px #0004;
     }
-
     .full-width-news-bar {
       max-width: 600px;
       width: 100%;
@@ -254,7 +247,6 @@
       border-bottom: 2px solid #60a5fa;
       border-radius: 0;
     }
-
     #related-articles {
       max-width: 600px;
       margin: 0 auto 40px auto;
@@ -310,7 +302,6 @@
       font-size: 0.85em;
       margin-top: 2px;
     }
-
     @media (max-width: 900px) {
       .article-container,
       .article-content,
@@ -377,8 +368,7 @@
         <div class="article-title">{{ page.title }}</div>
         <div class="article-meta-row">
           <span class="article-meta">{{ page.category }}</span>
-          <!-- تم تعديل هذا العنصر لإضافة data-date والفئة news-time -->
-          <span class="article-date news-time" data-date="{{ page.date | date: "%Y-%m-%d" }}"></span>
+          <span class="article-date news-time" data-date="{{ page.date }}"></span>
         </div>
         <div class="article-body">
           {{ content }}
@@ -422,7 +412,6 @@
       return meta;
     }
 
-    // دالة تحويل التاريخ إلى نص نسبي بالعربية
     function timeAgo(dateString) {
       if (!dateString) return "تاريخ غير متوفر";
       const date = new Date(dateString);
@@ -453,10 +442,8 @@
       return "الآن";
     }
 
-    // دالة لتحديث جميع عناصر الوقت النسبي في الصفحة (بفئة news-time)
     function updateTimes() {
-      const timeElements = document.querySelectorAll('.news-time');
-      timeElements.forEach(el => {
+      document.querySelectorAll('.news-time').forEach(el => {
         const dateStr = el.getAttribute('data-date');
         el.textContent = timeAgo(dateStr);
       });
@@ -506,7 +493,6 @@
             </a>
             <div class="news-info">
               <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-title">${n.title}</a>
-              <!-- تم تعديل هذا العنصر لإضافة data-date -->
               <span class="news-time" data-date="${n.date}"></span>
             </div>
           `;
@@ -517,7 +503,6 @@
           container.innerHTML = "<div style='color:#aaa;text-align:center;padding:20px'>لا توجد مقالات أخرى</div>";
         }
 
-        // تحديث الوقت النسبي فورًا بعد تحميل المقالات المرتبطة
         updateTimes();
 
       } catch (error) {
@@ -525,14 +510,11 @@
       }
     }
 
-    // استدعاء updateTimes عند تحميل الصفحة لأول مرة (لتاريخ المقال الرئيسي)
-    document.addEventListener('DOMContentLoaded', updateTimes);
-
-    // تحميل المقالات المرتبطة
-    loadRelatedArticles();
-
-    // تحديث الوقت النسبي كل 60 ثانية (لجميع التواريخ)
-    setInterval(updateTimes, 60000);
+    document.addEventListener('DOMContentLoaded', () => {
+      updateTimes();
+      loadRelatedArticles();
+      setInterval(updateTimes, 60000);
+    });
   </script>
 </body>
 </html>
