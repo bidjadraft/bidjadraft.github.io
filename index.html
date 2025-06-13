@@ -138,6 +138,11 @@
       margin: 0;
       box-sizing: border-box;
     }
+    .news-time {
+      color: #a1a1aa;
+      font-size: 0.85em;
+      margin-top: 2px;
+    }
     .news-list {
       display: flex;
       flex-direction: column;
@@ -238,54 +243,6 @@
     const repoName = "bidjadraft.github.io";
     const folder = "news";
 
-    // هذه هي الدالة التي تم تعديلها لعرض الوقت بصيغة "قبل X ساعة/يوم..."
-    function timeAgo(dateString) {
-      const now = new Date();
-      const date = new Date(dateString);
-      const seconds = Math.floor((now - date) / 1000);
-
-      if (isNaN(seconds) || seconds < 0) return "";
-
-      const intervals = [
-        { label: "سنة", singular: "سنة", dual: "سنتين", plural_3_10: "سنوات", plural_11_plus: "سنة", seconds: 31536000 },
-        { label: "شهر", singular: "شهر", dual: "شهرين", plural_3_10: "أشهر", plural_11_plus: "شهر", seconds: 2592000 },
-        { label: "يوم", singular: "يوم", dual: "يومين", plural_3_10: "أيام", plural_11_plus: "يوم", seconds: 86400 },
-        { label: "ساعة", singular: "ساعة", dual: "ساعتين", plural_3_10: "ساعات", plural_11_plus: "ساعة", seconds: 3600 },
-        { label: "دقيقة", singular: "دقيقة", dual: "دقيقتين", plural_3_10: "دقائق", plural_11_plus: "دقيقة", seconds: 60 },
-        { label: "ثانية", singular: "ثانية", dual: "ثانيتين", plural_3_10: "ثواني", plural_11_plus: "ثانية", seconds: 1 }
-      ];
-
-      for (const interval of intervals) {
-        const count = Math.floor(seconds / interval.seconds);
-        if (count >= 1) {
-          if (interval.label === "ثانية" && count < 10) {
-            return "الآن";
-          }
-          if (count === 1) {
-            return `قبل ${interval.singular} واحد`;
-          } else if (count === 2) {
-            return `قبل ${interval.dual}`;
-          } else if (count >= 3 && count <= 10) {
-            return `قبل ${count} ${interval.plural_3_10}`;
-          } else {
-            return `قبل ${count} ${interval.plural_11_plus}`;
-          }
-        }
-      }
-      return "";
-    }
-
-    // دالة لتحديث جميع عناصر الوقت في الصفحة
-    function updateTimes() {
-      const timeElements = document.querySelectorAll('.news-time');
-      timeElements.forEach(el => {
-        const dateStr = el.getAttribute('data-date'); // نستخدم data-date لجلب التاريخ الأصلي
-        if (dateStr) {
-          el.textContent = timeAgo(dateStr);
-        }
-      });
-    }
-
     function parseFrontMatter(mdText) {
       const fmMatch = mdText.match(/^---\s*([\s\S]*?)\s*---/);
       let meta = {};
@@ -298,6 +255,47 @@
       }
       return meta;
     }
+
+    /**
+     * يحول تاريخ ISO 8601 إلى نص يصف المدة الزمنية منذ ذلك التاريخ (مثلاً: "منذ ساعة").
+     * @param {string} isoDateString - التاريخ بصيغة ISO 8601 (مثل "2025-06-13T18:17:24").
+     * @returns {string} النص الذي يصف المدة الزمنية.
+     */
+    function formatRelativeTime(isoDateString) {
+        if (!isoDateString) return '';
+
+        const date = new Date(isoDateString);
+        const now = new Date();
+        const seconds = Math.floor((now - date) / 1000);
+
+        let interval = seconds / 31536000; // سنوات
+        if (interval > 1) {
+            return `منذ ${Math.floor(interval)} سنة${Math.floor(interval) >= 3 && Math.floor(interval) <= 10 ? 'وات' : ''}`;
+        }
+        interval = seconds / 2592000; // شهور
+        if (interval > 1) {
+            return `منذ ${Math.floor(interval)} شهرًا`;
+        }
+        interval = seconds / 86400; // أيام
+        if (interval > 1) {
+            const days = Math.floor(interval);
+            if (days === 1) return 'أمس';
+            return `منذ ${days} أيام`;
+        }
+        interval = seconds / 3600; // ساعات
+        if (interval > 1) {
+            const hours = Math.floor(interval);
+            if (hours === 1) return 'منذ ساعة';
+            return `منذ ${hours} ساعات`;
+        }
+        interval = seconds / 60; // دقائق
+        if (interval > 1) {
+            const minutes = Math.floor(interval);
+            if (minutes === 1) return 'منذ دقيقة';
+            return `منذ ${minutes} دقائق`;
+        }
+        return 'الآن';
+    }
 
     async function loadNews() {
       try {
@@ -319,7 +317,8 @@
           news.push({
             title: meta.title || file.name.replace('.md', '').replace(/-/g, ' '),
             image: meta.image || "https://via.placeholder.com/600x400?text=خبر",
-            date: meta.date || "",
+            date: meta.date || "", // احتفظ بالتاريخ الخام هنا لفرزه
+            formattedDate: formatRelativeTime(meta.date || ""), // التاريخ بعد التنسيق
             pageUrl: `https://${githubUser}.github.io/${folder}/${file.name.replace(/\.md$/, '')}`
           });
         }
@@ -354,24 +353,20 @@
               </a>
               <div class="news-info">
                 <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-title">${n.title}</a>
-                <span class="news-time" data-date="${n.date}"></span>               </div>
+                <span class="news-time">${n.formattedDate}</span>
+              </div>
             `;
             newsList.appendChild(newsItem);
           });
 
           mainContainer.appendChild(newsList);
         }
-        // يتم استدعاء دالة تحديث الوقت هنا بعد بناء جميع عناصر الأخبار
-        updateTimes();
       } catch (error) {
         console.error("حدث خطأ أثناء جلب الأخبار:", error);
       }
     }
 
     loadNews();
-
-    // تحديث الوقت كل دقيقة واحدة (60000 مللي ثانية) لضمان دقة "الوقت منذ"
-    setInterval(updateTimes, 60000);
   </script>
 </body>
 </html>
