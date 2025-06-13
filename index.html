@@ -264,12 +264,12 @@
       const diffMonths = Math.floor(diffDays / 30);
 
       if (diffSeconds < 60) return "الآن";
-      if (diffMinutes < 60) return diffMinutes + (diffMinutes === 1 ? " دقيقة" : " دقائق");
-      if (diffHours < 24) return diffHours + (diffHours === 1 ? " ساعة" : " ساعات");
-      if (diffDays < 30) return diffDays + (diffDays === 1 ? " يوم" : " أيام");
-      if (diffMonths < 12) return diffMonths + (diffMonths === 1 ? " شهر" : " أشهر");
+      if (diffMinutes < 60) return `منذ ${diffMinutes} ${diffMinutes === 1 ? "دقيقة" : "دقائق"}`;
+      if (diffHours < 24) return `منذ ${diffHours} ${diffHours === 1 ? "ساعة" : "ساعات"}`;
+      if (diffDays < 30) return `منذ ${diffDays} ${diffDays === 1 ? "يوم" : "أيام"}`;
+      if (diffMonths < 12) return `منذ ${diffMonths} ${diffMonths === 1 ? "شهر" : "أشهر"}`;
       const diffYears = Math.floor(diffMonths / 12);
-      return diffYears + (diffYears === 1 ? " سنة" : " سنوات");
+      return `منذ ${diffYears} ${diffYears === 1 ? "سنة" : "سنوات"}`;
     }
 
     async function loadNews() {
