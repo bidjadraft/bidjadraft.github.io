@@ -97,6 +97,37 @@ def append_to_feed_xml(title, link, image):
     tree.write(FEED_FILE, encoding='utf-8', xml_declaration=True)
     print(f"تمت إضافة خبر جديد إلى {FEED_FILE}")
 
+def time_ago_ar(past_datetime, now=None):
+    if now is None:
+        now = datetime.now()
+    diff = now - past_datetime
+    seconds = int(diff.total_seconds())
+
+    intervals = [
+        ('شهر', 2592000),
+        ('يوم', 86400),
+        ('ساعة', 3600),
+        ('دقيقة', 60),
+        ('ثانية', 1)
+    ]
+
+    for label, count_seconds in intervals:
+        count = seconds // count_seconds
+        if count >= 1:
+            if label == 'ساعة':
+                if count == 1:
+                    return f"منذ {count} ساعة"
+                else:
+                    return f"منذ {count} ساعات"
+            if count == 1:
+                return f"منذ {count} {label}"
+            if count == 2:
+                return f"منذ {count} {label}ين"
+            if 3 <= count <= 10:
+                return f"منذ {count} {label}ات"
+            return f"منذ {count} {label}"
+    return "الآن"
+
 def main():
     feed = feedparser.parse(RSS_URL)
     entries = feed.entries
@@ -137,9 +168,11 @@ def main():
                 dt = parser.parse(published_str)
                 date = dt.strftime('%Y-%m-%dT%H:%M:%S')
             except Exception:
-                date = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+                dt = datetime.now()
+                date = dt.strftime('%Y-%m-%dT%H:%M:%S')
         else:
-            date = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+            dt = datetime.now()
+            date = dt.strftime('%Y-%m-%dT%H:%M:%S')
 
         # استخراج الصورة
         image = None
