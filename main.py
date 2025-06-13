@@ -35,9 +35,10 @@ def gemini_ask(prompt, max_retries=8, wait_seconds=10):
     return None
 
 def sanitize_filename(text):
+    # حذف كل الرموز غير الحروف والأرقام والمسافات (يشمل العربية)
     text = re.sub(r'[^\w\s\u0600-\u06FF]', '', text)
-    text = re.sub(r'_', '', text)
-    text = re.sub(r'\s+', '-', text)
+    text = re.sub(r'_', '', text)  # إزالة الشرطة السفلية إن وجدت
+    text = re.sub(r'\s+', '-', text)  # استبدال الفراغات بشرطة
     text = text.strip('-')
     return text[:60]
 
@@ -107,6 +108,7 @@ def main():
         description = entry.get('summary', '')
         link = entry.get('link', '')
 
+        # محاولة توليد العنوان مع إعادة المحاولة حتى 10 مرات
         arabic_title = None
         for attempt in range(10):
             prompt_title = f"""العنوان التالي هو لخبر تقني:
@@ -122,6 +124,7 @@ def main():
             print("فشل تلخيص العنوان بعد 10 محاولات. إيقاف البرنامج.")
             return
 
+        # محاولة توليد ملخص الخبر مع إعادة المحاولة حتى 10 مرات
         arabic_body = None
         for attempt in range(10):
             prompt_body = f"""النص التالي هو خبر تقني:
@@ -147,10 +150,8 @@ def main():
             f.write(md)
         print(f"تم إنشاء: {filepath}")
 
+        # فقط بعد نجاح إنشاء الملف يتم تحديث آخر منشور
         write_last_post(link)
 
 if __name__ == "__main__":
-    while True:
-        main()
-        print("انتظار ساعة قبل التشغيل التالي...")
-        time.sleep(3600)  # الانتظار ساعة واحدة (3600 ثانية)
+    main()
