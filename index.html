@@ -1,369 +1,346 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>أخبار التقنية | بجاد الأثري</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9593085803586600"
-     crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
-    <style>
-    body {
-      margin: 0;
-      font-family: "Cairo", "Segoe UI", "Arial", sans-serif;
-      background: #18181b;
-      color: #e5e7eb;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    header {
-      background: #18181b;
-      padding: 16px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #23232a;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 8px #0008;
-    }
-    .profile {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .profile a {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-    }
-    .profile-img {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #23232a;
-      box-shadow: 0 2px 8px #0003;
-      transition: transform 0.3s ease;
-    }
-    .profile-img:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 16px #2563ebaa;
-    }
-    .username {
-      font-size: 1.1em;
-      color: #e5e7eb;
-      font-weight: 700;
-      margin-left: 10px;
-      font-family: "Cairo", "Segoe UI", "Arial", sans-serif;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      user-select: none;
-    }
-    .username a {
-      color: #e5e7eb;
-      font-weight: 700;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .username a:hover,
-    .username a:focus {
-      color: #60a5fa;
-      outline: none;
-      text-decoration: none;
-    }
-    .username .blue {
-      color: #60a5fa;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-    }
-    .socials {
-      display: flex;
-      gap: 16px;
-    }
-    .socials a {
-      color: #a1a1aa;
-      font-size: 1.6em;
-      transition: color 0.3s, transform 0.3s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-    }
-    .socials a:hover,
-    .socials a:focus {
-      color: #60a5fa;
-      transform: scale(1.2);
-      outline: none;
-    }
-    main {
-      max-width: 600px;
-      margin: 24px auto 0 auto;
-      padding: 0 8px;
-      flex-grow: 1;
-      outline: none;
-    }
-    .main-news-box {
-      position: relative;
-      width: 100%;
-      margin-bottom: 18px;
-    }
-    .main-news-img {
-      width: 100%;
-      height: 260px;
-      object-fit: cover;
-      border-radius: 8px;
-      display: block;
-    }
-    .main-news-title {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      left: 0;
-      color: #fff;
-      font-size: 1.1em;
-      font-weight: bold;
-      padding: 16px 14px 10px 14px;
-      z-index: 2;
-      text-shadow: 0 2px 8px #000a, 0 1px 2px #000a;
-      background: none;
-      border-radius: 0 0 8px 8px;
-      margin: 0;
-      box-sizing: border-box;
-    }
-    .news-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      margin-top: 8px;
-    }
-    .news-item {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 16px 0;
-      border-bottom: 1px solid #fff;
-      background: none;
-      border-radius: 0;
-      min-height: 90px;
-    }
-    .news-item:last-child {
-      border-bottom: none;
-    }
-    .news-thumb {
-      width: 180px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 8px;
-      flex-shrink: 0;
-      background: #23232a;
-    }
-    .news-info {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      height: 100%;
-    }
-    .news-title {
-      color: #e5e7eb;
-      font-size: 1em;
-      font-weight: 500;
-      text-decoration: none;
-      transition: color 0.2s;
-      margin: 0 0 4px 0;
-      padding: 0;
-      display: block;
-    }
-    .news-title:hover {
-      color: #60a5fa;
-    }
-    .news-time {
-      color: #a1a1aa;
-      font-size: 0.85em;
-      margin-top: 2px;
-    }
-    footer {
-      text-align: center;
-      color: #71717a;
-      font-size: 1.05em;
-      padding: 28px 12px 24px 12px;
-      margin-top: 40px;
-      border-top: 1px solid #2c2c36;
-      letter-spacing: 0.06em;
-      font-family: "Cairo", "Segoe UI", "Arial", sans-serif;
-      user-select: none;
-      background: #18181b;
-      transition: color 0.3s ease;
-    }
-    footer:hover {
-      color: #60a5fa;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>أخبار التقنية | بجاد الأثري</title>
+  <!-- سكريبت إعلانات Google AdSense التلقائية -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9593085803586600"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Cairo", "Segoe UI", "Arial", sans-serif;
+      background: #18181b;
+      color: #e5e7eb;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #18181b;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #23232a;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px #0008;
+    }
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .profile a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .profile-img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #23232a;
+      box-shadow: 0 2px 8px #0003;
+      transition: transform 0.3s ease;
+    }
+    .profile-img:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 16px #2563ebaa;
+    }
+    .username {
+      font-size: 1.1em;
+      color: #e5e7eb;
+      font-weight: 700;
+      margin-left: 10px;
+      font-family: "Cairo", "Segoe UI", "Arial", sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+    .username a {
+      color: #e5e7eb;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .username a:hover,
+    .username a:focus {
+      color: #60a5fa;
+      outline: none;
+      text-decoration: none;
+    }
+    .username .blue {
+      color: #60a5fa;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .socials {
+      display: flex;
+      gap: 16px;
+    }
+    .socials a {
+      color: #a1a1aa;
+      font-size: 1.6em;
+      transition: color 0.3s, transform 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+    .socials a:hover,
+    .socials a:focus {
+      color: #60a5fa;
+      transform: scale(1.2);
+      outline: none;
+    }
+    main {
+      max-width: 600px;
+      margin: 24px auto 0 auto;
+      padding: 0 8px;
+      flex-grow: 1;
+      outline: none;
+    }
+    .main-news-box {
+      position: relative;
+      width: 100%;
+      margin-bottom: 18px;
+    }
+    .main-news-img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block;
+    }
+    .main-news-title {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      color: #fff;
+      font-size: 1.1em;
+      font-weight: bold;
+      padding: 16px 14px 10px 14px;
+      z-index: 2;
+      text-shadow: 0 2px 8px #000a, 0 1px 2px #000a;
+      background: none;
+      border-radius: 0 0 8px 8px;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    .news-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 8px;
+    }
+    .news-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid #fff;
+      background: none;
+      border-radius: 0;
+      min-height: 90px;
+    }
+    .news-item:last-child {
+      border-bottom: none;
+    }
+    .news-thumb {
+      width: 180px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      flex-shrink: 0;
+      background: #23232a;
+    }
+    .news-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+    }
+    .news-title {
+      color: #e5e7eb;
+      font-size: 1em;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s;
+      margin: 0 0 4px 0;
+      padding: 0;
+      display: block;
+    }
+    .news-title:hover {
+      color: #60a5fa;
+    }
+    .news-time {
+      color: #a1a1aa;
+      font-size: 0.85em;
+      margin-top: 2px;
+    }
+    footer {
+      text-align: center;
+      color: #71717a;
+      font-size: 1.05em;
+      padding: 28px 12px 24px 12px;
+      margin-top: 40px;
+      border-top: 1px solid #2c2c36;
+      letter-spacing: 0.06em;
+      font-family: "Cairo", "Segoe UI", "Arial", sans-serif;
+      user-select: none;
+      background: #18181b;
+      transition: color 0.3s ease;
+    }
+    footer:hover {
+      color: #60a5fa;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <div class="profile">
-      <a href="https://bidjadraft.github.io/links" title="زيارة صفحة بجاد الأثري" aria-label="زيارة صفحة بجاد الأثري">
-        <img class="profile-img" src="https://i.imgur.com/zTwTusT.jpeg" alt="Profile" />
-      </a>
-      <div class="username">
-        <a href="https://bidjadraft.github.io/blog" title="زيارة صفحة بجاد الأثري" aria-label="زيارة صفحة بجاد الأثري">
-          <span>بجاد</span> <span class="blue">الأثري</span>
-        </a>
-      </div>
-    </div>
-    <nav aria-label="روابط التواصل الاجتماعي" class="socials">
-      <a href="https://github.com/bidjadraft" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
-      <a href="https://youtube.com/@bidjadraft" title="يوتيوب" aria-label="يوتيوب" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
-      <a href="https://t.me/s/bidjadraft" title="تلغرام" aria-label="تلغرام" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i></a>
-    </nav>
-  </header>
+  <header>
+    <div class="profile">
+      <a href="https://bidjadraft.github.io/links" title="زيارة صفحة بجاد الأثري" aria-label="زيارة صفحة بجاد الأثري">
+        <img class="profile-img" src="https://i.imgur.com/zTwTusT.jpeg" alt="Profile" />
+      </a>
+      <div class="username">
+        <a href="https://bidjadraft.github.io/blog" title="زيارة صفحة بجاد الأثري" aria-label="زيارة صفحة بجاد الأثري">
+          <span>بجاد</span> <span class="blue">الأثري</span>
+        </a>
+      </div>
+    </div>
+    <nav aria-label="روابط التواصل الاجتماعي" class="socials">
+      <a href="https://github.com/bidjadraft" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+      <a href="https://youtube.com/@bidjadraft" title="يوتيوب" aria-label="يوتيوب" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
+      <a href="https://t.me/s/bidjadraft" title="تلغرام" aria-label="تلغرام" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i></a>
+    </nav>
+  </header>
 
-  <main id="news-container" tabindex="-1" aria-live="polite" aria-label="أخبار التقنية بجاد الأثري">
-      </main>
+  <main id="news-container" tabindex="-1" aria-live="polite" aria-label="أخبار التقنية بجاد الأثري">
+    <!-- سيتم توليد الأخبار هنا -->
+  </main>
 
-  <footer>
-    © جميع الحقوق محفوظة بجاد الأثري
-  </footer>
+  <footer>
+    &copy; جميع الحقوق محفوظة بجاد الأثري
+  </footer>
 
-  <script>
-    const githubUser = "bidjadraft";
-    const repoName = "bidjadraft.github.io";
-    const folder = "news";
+  <script>
+    const githubUser = "bidjadraft";
+    const repoName = "bidjadraft.github.io";
+    const folder = "news";
 
-    function parseFrontMatter(mdText) {
-      const fmMatch = mdText.match(/^---\s*([\s\S]*?)\s*---/);
-      let meta = {};
-      if (fmMatch) {
-        const lines = fmMatch[1].split('\n');
-        lines.forEach(line => {
-          const match = line.match(/^([\w\u0600-\u06FF\-]+):\s*["']?(.+?)["']?$/);
-          if (match) meta[match[1].trim()] = match[2].trim();
-        });
-      }
-      return meta;
-    }
-
-    /**
-     * يحول تاريخ ISO 8601 إلى نص يصف المدة الزمنية منذ ذلك التاريخ (مثلاً: "منذ ساعة").
-     * @param {string} isoDateString - التاريخ بصيغة ISO 8601 (مثل "2025-06-13T18:17:24").
-     * @returns {string} النص الذي يصف المدة الزمنية.
-     */
-    function formatRelativeTime(isoDateString) {
-        if (!isoDateString) return '';
-
-        const date = new Date(isoDateString);
-        const now = new Date();
-        const seconds = Math.floor((now - date) / 1000);
-
-        let interval = seconds / 31536000; // سنوات
-        if (interval > 1) {
-            const years = Math.floor(interval);
-            return `منذ ${years} سنة${years >= 3 && years <= 10 ? 'وات' : ''}`;
-        }
-        interval = seconds / 2592000; // شهور
-        if (interval > 1) {
-            const months = Math.floor(interval);
-            return `منذ ${months} شهرًا`;
-        }
-        interval = seconds / 86400; // أيام
-        if (interval > 1) {
-            const days = Math.floor(interval);
-            if (days === 1) return 'أمس';
-            return `منذ ${days} أيام`;
-        }
-        interval = seconds / 3600; // ساعات
-        if (interval > 1) {
-            const hours = Math.floor(interval);
-            if (hours === 1) return 'منذ ساعة';
-            return `منذ ${hours} ساعات`;
-        }
-        interval = seconds / 60; // دقائق
-        if (interval > 1) {
-            const minutes = Math.floor(interval);
-            if (minutes === 1) return 'منذ دقيقة';
-            return `منذ ${minutes} دقائق`;
-        }
-        return 'الآن';
+    function parseFrontMatter(mdText) {
+      const fmMatch = mdText.match(/^---\s*([\s\S]*?)\s*---/);
+      let meta = {};
+      if (fmMatch) {
+        const lines = fmMatch[1].split('\n');
+        lines.forEach(line => {
+          const match = line.match(/^([\w\u0600-\u06FF\-]+):\s*["']?(.+?)["']?$/);
+          if (match) meta[match[1].trim()] = match[2].trim();
+        });
+      }
+      return meta;
     }
 
-    async function loadNews() {
-      try {
-        const res = await fetch(`https://api.github.com/repos/${githubUser}/${repoName}/contents/${folder}`);
-        const files = await res.json();
+    function timeAgo(dateString) {
+      const now = new Date();
+      const past = new Date(dateString);
+      const diffMs = now - past;
+      const diffSeconds = Math.floor(diffMs / 1000);
+      const diffMinutes = Math.floor(diffSeconds / 60);
+      const diffHours = Math.floor(diffMinutes / 60);
+      const diffDays = Math.floor(diffHours / 24);
+      const diffMonths = Math.floor(diffDays / 30);
 
-        if (!Array.isArray(files)) {
-          console.error("لم يتم جلب الملفات بشكل صحيح");
-          return;
-        }
+      if (diffSeconds < 60) return "الآن";
+      if (diffMinutes < 60) return diffMinutes + (diffMinutes === 1 ? " دقيقة" : " دقائق");
+      if (diffHours < 24) return diffHours + (diffHours === 1 ? " ساعة" : " ساعات");
+      if (diffDays < 30) return diffDays + (diffDays === 1 ? " يوم" : " أيام");
+      if (diffMonths < 12) return diffMonths + (diffMonths === 1 ? " شهر" : " أشهر");
+      const diffYears = Math.floor(diffMonths / 12);
+      return diffYears + (diffYears === 1 ? " سنة" : " سنوات");
+    }
 
-        const mdFiles = files.filter(f => f.name.endsWith('.md'));
-        const news = [];
+    async function loadNews() {
+      try {
+        const res = await fetch(`https://api.github.com/repos/${githubUser}/${repoName}/contents/${folder}`);
+        const files = await res.json();
 
-        for (const file of mdFiles) {
-          const mdText = await fetch(file.download_url).then(r => r.text());
-          const meta = parseFrontMatter(mdText);
+        if (!Array.isArray(files)) {
+          console.error("لم يتم جلب الملفات بشكل صحيح");
+          return;
+        }
 
-          news.push({
-            title: meta.title || file.name.replace('.md', '').replace(/-/g, ' '),
-            image: meta.image || "https://via.placeholder.com/600x400?text=خبر",
-            date: meta.date || "", // احتفظ بالتاريخ الخام هنا لفرزه
-            formattedDate: formatRelativeTime(meta.date || ""), // التاريخ بعد التنسيق
-            pageUrl: `https://${githubUser}.github.io/${folder}/${file.name.replace(/\.md$/, '')}`
-          });
-        }
+        const mdFiles = files.filter(f => f.name.endsWith('.md'));
+        const news = [];
 
-        news.sort((a, b) => new Date(b.date) - new Date(a.date));
+        for (const file of mdFiles) {
+          const mdText = await fetch(file.download_url).then(r => r.text());
+          const meta = parseFrontMatter(mdText);
 
-        const mainContainer = document.getElementById('news-container');
-        mainContainer.innerHTML = "";
+          news.push({
+            title: meta.title || file.name.replace('.md', '').replace(/-/g, ' '),
+            image: meta.image || "https://via.placeholder.com/600x400?text=خبر",
+            date: meta.date || "",
+            pageUrl: `https://${githubUser}.github.io/${folder}/${file.name.replace(/\.md$/, '')}`
+          });
+        }
 
-        if (news.length > 0) {
-          const mainNewsBox = document.createElement('div');
-          mainNewsBox.className = 'main-news-box';
-          mainNewsBox.innerHTML = `
-            <a href="${news[0].pageUrl}" target="_blank" rel="noopener noreferrer" aria-label="الخبر الرئيسي: ${news[0].title}">
-              <img class="main-news-img" src="${news[0].image}" alt="صورة الخبر الرئيسي: ${news[0].title}">
-              <div class="main-news-title">${news[0].title}</div>
-            </a>
-          `;
-          mainContainer.appendChild(mainNewsBox);
-        }
+        news.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-        if (news.length > 1) {
-          const newsList = document.createElement('section');
-          newsList.className = 'news-list';
+        const mainContainer = document.getElementById('news-container');
+        mainContainer.innerHTML = "";
 
-          news.slice(1).forEach(n => {
-            const newsItem = document.createElement('div');
-            newsItem.className = 'news-item';
-            newsItem.innerHTML = `
-              <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-thumb-link" aria-label="خبر: ${n.title}">
-                <img class="news-thumb" src="${n.image}" alt="صورة الخبر: ${n.title}">
-              </a>
-              <div class="news-info">
-                <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-title">${n.title}</a>
-                <span class="news-time">${n.formattedDate}</span>
-              </div>
-            `;
-            newsList.appendChild(newsItem);
-          });
+        if (news.length > 0) {
+          const mainNewsBox = document.createElement('div');
+          mainNewsBox.className = 'main-news-box';
+          mainNewsBox.innerHTML = `
+            <a href="${news[0].pageUrl}" target="_blank" rel="noopener noreferrer" aria-label="الخبر الرئيسي: ${news[0].title}">
+              <img class="main-news-img" src="${news[0].image}" alt="صورة الخبر الرئيسي: ${news[0].title}">
+              <div class="main-news-title">${news[0].title}</div>
+            </a>
+          `;
+          mainContainer.appendChild(mainNewsBox);
+        }
 
-          mainContainer.appendChild(newsList);
-        }
-      } catch (error) {
-        console.error("حدث خطأ أثناء جلب الأخبار:", error);
-      }
-    }
+        if (news.length > 1) {
+          const newsList = document.createElement('section');
+          newsList.className = 'news-list';
 
-    loadNews();
-  </script>
+          news.slice(1).forEach(n => {
+            const newsItem = document.createElement('div');
+            newsItem.className = 'news-item';
+            newsItem.innerHTML = `
+              <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-thumb-link" aria-label="خبر: ${n.title}">
+                <img class="news-thumb" src="${n.image}" alt="صورة الخبر: ${n.title}">
+              </a>
+              <div class="news-info">
+                <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-title">${n.title}</a>
+                <span class="news-time">${timeAgo(n.date)}</span>
+              </div>
+            `;
+            newsList.appendChild(newsItem);
+          });
+
+          mainContainer.appendChild(newsList);
+        }
+      } catch (error) {
+        console.error("حدث خطأ أثناء جلب الأخبار:", error);
+      }
+    }
+
+    loadNews();
+  </script>
 </body>
 </html>
