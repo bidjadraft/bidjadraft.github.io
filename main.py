@@ -66,21 +66,21 @@ def write_last_post(link):
     with open(LASTPOST_FILE, "w", encoding="utf-8") as f:
         f.write(link)
 
-def gemini_check_image(image_url, title, description):
-    # اسأل Gemini: هل الصورة تحتوي على امرأة؟
-    prompt = f"""هل الصورة في الرابط التالي تحتوي على امرأة؟ أجب فقط بنعم أو لا بدون شرح.
+def check_and_replace_image(image_url, title, description):
+    # 1. اسأل Gemini: هل الصورة تحتوي على امرأة أو فتاة أو طفلة؟
+    prompt_check = f"""هل الصورة التالية تحتوي على امرأة أو فتاة أو طفلة؟ أجب فقط بنعم أو لا بدون شرح.
 رابط الصورة: {image_url}
 عنوان الخبر: {title}
 وصف الخبر: {description}
 """
-    answer = gemini_ask(prompt)
+    answer = gemini_ask(prompt_check)
     if answer and "نعم" in answer.strip():
-        # إذا كانت الصورة فيها امرأة، اطلب صورة بديلة لنفس الموضوع
-        prompt2 = f"""أعطني رابط صورة بديلة من منصة مجانية (مثل Unsplash أو Pixabay) لموضوع الخبر التالي:
+        # 2. إذا كانت نعم، اطلب من Gemini صورة بديلة لنفس الموضوع من منصة مجانية
+        prompt_replace = f"""أعطني رابط صورة بديلة من منصة مجانية (مثل Unsplash أو Pixabay) لموضوع الخبر التالي:
 العنوان: {title}
 الوصف: {description}
-يجب أن تكون الصورة مناسبة للخبر ولا تحتوي على نساء. أعد فقط الرابط المباشر للصورة بدون أي شرح."""
-        new_image = gemini_ask(prompt2)
+يجب أن تكون الصورة مناسبة للخبر ولا تحتوي على نساء أو فتيات أو طفلات. أعد فقط الرابط المباشر للصورة بدون أي شرح."""
+        new_image = gemini_ask(prompt_replace)
         if new_image and new_image.startswith("http"):
             print(f"تم استبدال الصورة بصورة بديلة: {new_image}")
             return new_image.strip()
@@ -88,6 +88,7 @@ def gemini_check_image(image_url, title, description):
             print("لم يتم العثور على صورة بديلة مناسبة، سيتم استخدام صورة افتراضية.")
             return "https://via.placeholder.com/600x400.png?text=No+Image"
     else:
+        print("الصورة لا تحتوي على نساء، سيتم استخدامها كما هي.")
         return image_url
 
 def append_to_feed_xml(title, link, image):
@@ -167,7 +168,7 @@ def main():
             image = "https://via.placeholder.com/600x400.png?text=No+Image"
 
         # تحقق من الصورة واستبدلها إذا كانت تحتوي على امرأة
-        image = gemini_check_image(image, original_title, description)
+        image = check_and_replace_image(image, original_title, description)
 
         # تلخيص العنوان
         arabic_title = None
