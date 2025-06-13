@@ -3,35 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{{ page.title | default: site.title }}</title>
+  <title>{{ page.title }}</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
-
-  <meta name="description" content="{{ page.excerpt | default: site.description }}" />
-  <meta name="keywords" content="{{ page.tags | join: ', ' | default: site.keywords }}" />
-  <meta name="author" content="{{ site.author | default: 'بجاد الأثري' }}" />
-
-  <meta property="og:title" content="{{ page.title | default: site.title }}" />
-  <meta property="og:description" content="{{ page.excerpt | default: site.description }}" />
-  <meta property="og:image" content="{{ page.image | absolute_url }}" />
-  <meta property="og:url" content="{{ page.url | absolute_url }}" />
-  <meta property="og:type" content="article" /> {# Use 'article' for blog posts, 'website' for homepage/general pages #}
-  <meta property="og:locale" content="ar_AR" /> {# Explicitly set locale for Arabic #}
-  {% if site.sitename %}<meta property="og:site_name" content="{{ site.sitename }}" />{% endif %}
-  {% if site.facebook_app_id %}<meta property="fb:app_id" content="{{ site.facebook_app_id }}" />{% endif %}
-  {% if site.facebook_profile_id %}<meta property="fb:profile_id" content="{{ site.facebook_profile_id }}" />{% endif %}
-
-  <meta name="twitter:card" content="summary_large_image" /> {# 'summary_large_image' for a large image preview #}
-  <meta name="twitter:title" content="{{ page.title | default: site.title }}" />
-  <meta name="twitter:description" content="{{ page.excerpt | default: site.description }}" />
-  <meta name="twitter:image" content="{{ page.image | absolute_url }}" />
-  {% if site.twitter_username %}<meta name="twitter:site" content="@{{ site.twitter_username }}" />{% endif %}
-  {% if site.twitter_creator_username %}<meta name="twitter:creator" content="@{{ site.twitter_creator_username }}" />{% endif %}
-
-  <link rel="canonical" href="{{ page.url | absolute_url }}" />
-
   <style>
-    /* Your existing CSS styles */
     html, body {
       margin: 0;
       padding: 0;
@@ -142,7 +117,7 @@
       min-height: 100vh;
     }
 
-    /* Consistent padding for elements */
+    /* المسافة الداخلية المتناسقة لكل العناصر */
     .article-container,
     .article-content,
     .article-title,
