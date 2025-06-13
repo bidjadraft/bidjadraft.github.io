@@ -5,19 +5,17 @@ import requests
 from datetime import datetime
 import re
 import xml.etree.ElementTree as ET
-import glob
 
 # إعدادات عامة
 RSS_URL = "https://feed.alternativeto.net/news/all"
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 NEWS_DIR = "news"
 LASTPOST_FILE = os.path.join(NEWS_DIR, "lastpost.txt")
-RSS_FILE = os.path.join(NEWS_DIR, "feed.xml")
+FEED_FILE = os.path.join(NEWS_DIR, "feed.xml")
 SITE_URL = "https://bidjadraft.github.io"
 
 os.makedirs(NEWS_DIR, exist_ok=True)
 
-# دالة تلخيص Gemini
 def gemini_ask(prompt, max_retries=8, wait_seconds=10):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
     payload = {"contents": [{"parts": [{"text": prompt}]}]}
@@ -37,7 +35,6 @@ def gemini_ask(prompt, max_retries=8, wait_seconds=10):
             return None
     return None
 
-# تنظيف اسم الملف
 def sanitize_filename(text):
     text = re.sub(r'[^\w\s\u0600-\u06FF]', '', text)
     text = re.sub(r'_', '', text)
@@ -45,18 +42,8 @@ def sanitize_filename(text):
     text = text.strip('-')
     return text[:60]
 
-# إنشاء md
-def make_markdown(entry, arabic_title, arabic_body):
-    title = arabic_title.strip()
-    date = entry.get('published', '')[:10] or datetime.now().strftime('%Y-%m-%d')
+def make_markdown(title, image, date, body):
     category = "التقنية"
-    image = None
-    if 'media_content' in entry and len(entry.media_content) > 0:
-        image = entry.media_content[0]['url']
-    elif 'enclosures' in entry and len(entry.enclosures) > 0:
-        image = entry.enclosures[0]['url']
-    if not image:
-        image = "https://via.placeholder.com/600x400.png?text=No+Image"
     md = f"""---
 layout: default
 title: "{title}"
@@ -65,11 +52,10 @@ category: {category}
 date: {date}
 ---
 
-{arabic_body.strip()}
+{body.strip()}
 """
     return md
 
-# قراءة آخر منشور
 def read_last_post():
     if not os.path.exists(LASTPOST_FILE):
         return None
@@ -80,48 +66,40 @@ def write_last_post(link):
     with open(LASTPOST_FILE, "w", encoding="utf-8") as f:
         f.write(link)
 
-# استخراج بيانات md
-def extract_md_meta(md_path):
-    with open(md_path, encoding="utf-8") as f:
-        content = f.read()
-    meta = {}
-    match = re.search(r'^---(.*?)---', content, re.DOTALL | re.MULTILINE)
-    if match:
-        for line in match.group(1).split('\n'):
-            if ':' in line:
-                key, value = line.split(':', 1)
-                meta[key.strip()] = value.strip().strip('"')
-    return meta
+def append_to_feed_xml(title, link, image):
+    # إذا لم يوجد feed.xml أو كان فارغًا، أنشئه بالهيكل الأساسي
+    if not os.path.exists(FEED_FILE) or os.stat(FEED_FILE).st_size == 0:
+        xml_content = '''<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>أخبار مدونتي</title>
+    <link>https://bidjadraft.github.io/news/</link>
+    <description>تحديثات الأخبار التقنية</description>
+  </channel>
+</rss>
+'''
+        with open(FEED_FILE, "w", encoding="utf-8") as f:
+            f.write(xml_content)
 
-# توليد خلاصة RSS من جميع ملفات md
-def generate_rss():
-    rss = ET.Element('rss', version='2.0')
-    channel = ET.SubElement(rss, 'channel')
-    ET.SubElement(channel, 'title').text = "أخبار مدونتي"
-    ET.SubElement(channel, 'link').text = f"{SITE_URL}/news/"
-    ET.SubElement(channel, 'description').text = "تحديثات الأخبار التقنية"
+    # قراءة feed.xml الحالي
+    tree = ET.parse(FEED_FILE)
+    root = tree.getroot()
+    channel = root.find('channel')
 
-    md_files = sorted(glob.glob(os.path.join(NEWS_DIR, "*.md")), reverse=True)
-    for md_file in md_files:
-        meta = extract_md_meta(md_file)
-        title = meta.get("title", "بدون عنوان")
-        image = meta.get("image", "")
-        base_name = os.path.splitext(os.path.basename(md_file))[0]
-        link = f"{SITE_URL}/news/{base_name}.html"
+    # إنشاء عنصر جديد
+    item = ET.Element('item')
+    ET.SubElement(item, 'title').text = title
+    ET.SubElement(item, 'link').text = link
+    if image:
+        ext = os.path.splitext(image)[-1].lower()
+        mime = "image/png" if ext == ".png" else "image/jpeg" if ext in [".jpg", ".jpeg"] else "image/webp"
+        ET.SubElement(item, 'enclosure', url=image, type=mime)
 
-        item = ET.SubElement(channel, 'item')
-        ET.SubElement(item, 'title').text = title
-        ET.SubElement(item, 'link').text = link
-        if image:
-            ext = os.path.splitext(image)[-1].lower()
-            mime = "image/png" if ext == ".png" else "image/jpeg" if ext in [".jpg", ".jpeg"] else "image/webp"
-            ET.SubElement(item, 'enclosure', url=image, type=mime)
+    # إدراج العنصر في أول القناة (أحدث خبر أولًا)
+    channel.insert(0, item)
+    tree.write(FEED_FILE, encoding='utf-8', xml_declaration=True)
+    print(f"تمت إضافة خبر جديد إلى {FEED_FILE}")
 
-    tree = ET.ElementTree(rss)
-    tree.write(RSS_FILE, encoding='utf-8', xml_declaration=True)
-    print(f"تم تحديث {RSS_FILE}")
-
-# البرنامج الرئيسي
 def main():
     feed = feedparser.parse(RSS_URL)
     entries = feed.entries
@@ -154,6 +132,15 @@ def main():
         original_title = entry.get('title', '')
         description = entry.get('summary', '')
         link = entry.get('link', '')
+        date = entry.get('published', '')[:10] or datetime.now().strftime('%Y-%m-%d')
+        # استخراج الصورة
+        image = None
+        if 'media_content' in entry and len(entry.media_content) > 0:
+            image = entry.media_content[0]['url']
+        elif 'enclosures' in entry and len(entry.enclosures) > 0:
+            image = entry.enclosures[0]['url']
+        if not image:
+            image = "https://via.placeholder.com/600x400.png?text=No+Image"
 
         # تلخيص العنوان
         arabic_title = None
@@ -185,23 +172,22 @@ def main():
             print("فشل تلخيص الخبر بعد 10 محاولات. إيقاف البرنامج.")
             return
 
+        # إنشاء ملف md
         filename = sanitize_filename(arabic_title or original_title) + ".md"
         filepath = os.path.join(NEWS_DIR, filename)
+        if not os.path.exists(filepath):
+            md = make_markdown(arabic_title, image, date, arabic_body)
+            with open(filepath, "w", encoding="utf-8") as f:
+                f.write(md)
+            print(f"تم إنشاء: {filepath}")
 
-        if os.path.exists(filepath):
-            print(f"تم تخطي {filename} (موجود مسبقاً)")
-            continue
-
-        md = make_markdown(entry, arabic_title, arabic_body)
-        with open(filepath, "w", encoding="utf-8") as f:
-            f.write(md)
-        print(f"تم إنشاء: {filepath}")
+        # إنشاء الرابط
+        html_link = f"{SITE_URL}/news/{os.path.splitext(filename)[0]}.html"
+        # إضافة الخبر مباشرة إلى feed.xml
+        append_to_feed_xml(arabic_title, html_link, image)
 
         # تحديث آخر منشور
         write_last_post(link)
-
-    # بعد إضافة كل md جديد، حدث خلاصة RSS
-    generate_rss()
 
 if __name__ == "__main__":
     main()
