@@ -5,7 +5,9 @@ import requests
 from datetime import datetime
 import re
 import xml.etree.ElementTree as ET
+import glob
 
+# إعدادات عامة
 RSS_URL = "https://feed.alternativeto.net/news/all"
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 NEWS_DIR = "news"
@@ -15,6 +17,7 @@ SITE_URL = "https://bidjadraft.github.io"
 
 os.makedirs(NEWS_DIR, exist_ok=True)
 
+# دالة تلخيص Gemini
 def gemini_ask(prompt, max_retries=8, wait_seconds=10):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
     payload = {"contents": [{"parts": [{"text": prompt}]}]}
@@ -34,6 +37,7 @@ def gemini_ask(prompt, max_retries=8, wait_seconds=10):
             return None
     return None
 
+# تنظيف اسم الملف
 def sanitize_filename(text):
     text = re.sub(r'[^\w\s\u0600-\u06FF]', '', text)
     text = re.sub(r'_', '', text)
@@ -41,6 +45,7 @@ def sanitize_filename(text):
     text = text.strip('-')
     return text[:60]
 
+# إنشاء md
 def make_markdown(entry, arabic_title, arabic_body):
     title = arabic_title.strip()
     date = entry.get('published', '')[:10] or datetime.now().strftime('%Y-%m-%d')
@@ -64,6 +69,7 @@ date: {date}
 """
     return md
 
+# قراءة آخر منشور
 def read_last_post():
     if not os.path.exists(LASTPOST_FILE):
         return None
@@ -74,49 +80,48 @@ def write_last_post(link):
     with open(LASTPOST_FILE, "w", encoding="utf-8") as f:
         f.write(link)
 
-def load_existing_rss_links():
-    if not os.path.exists(RSS_FILE):
-        return set()
-    try:
-        tree = ET.parse(RSS_FILE)
-        root = tree.getroot()
-        items = root.findall('./channel/item')
-        links = set()
-        for item in items:
-            link = item.find('link').text
-            links.add(link)
-        return links
-    except Exception as e:
-        print(f"خطأ في قراءة ملف RSS: {e}")
-        return set()
+# استخراج بيانات md
+def extract_md_meta(md_path):
+    with open(md_path, encoding="utf-8") as f:
+        content = f.read()
+    meta = {}
+    match = re.search(r'^---(.*?)---', content, re.DOTALL | re.MULTILINE)
+    if match:
+        for line in match.group(1).split('\n'):
+            if ':' in line:
+                key, value = line.split(':', 1)
+                meta[key.strip()] = value.strip().strip('"')
+    return meta
 
-def update_rss(arabic_title, pub_date, link, description):
-    existing_links = load_existing_rss_links()
-    if link in existing_links:
-        print("الرابط موجود مسبقًا في RSS، تخطي الإضافة.")
-        return
+# توليد خلاصة RSS من جميع ملفات md
+def generate_rss():
+    rss = ET.Element('rss', version='2.0')
+    channel = ET.SubElement(rss, 'channel')
+    ET.SubElement(channel, 'title').text = "أخبار مدونتي"
+    ET.SubElement(channel, 'link').text = f"{SITE_URL}/news/"
+    ET.SubElement(channel, 'description').text = "تحديثات الأخبار التقنية"
 
-    if os.path.exists(RSS_FILE):
-        tree = ET.parse(RSS_FILE)
-        root = tree.getroot()
-    else:
-        root = ET.Element('rss', version='2.0')
-        channel = ET.SubElement(root, 'channel')
-        ET.SubElement(channel, 'title').text = "أخبار مدونتي"
-        ET.SubElement(channel, 'link').text = SITE_URL
-        ET.SubElement(channel, 'description').text = "أحدث الأخبار التقنية"
-        tree = ET.ElementTree(root)
+    md_files = sorted(glob.glob(os.path.join(NEWS_DIR, "*.md")), reverse=True)
+    for md_file in md_files:
+        meta = extract_md_meta(md_file)
+        title = meta.get("title", "بدون عنوان")
+        image = meta.get("image", "")
+        base_name = os.path.splitext(os.path.basename(md_file))[0]
+        link = f"{SITE_URL}/news/{base_name}.html"
 
-    channel = root.find('channel')
-    item = ET.SubElement(channel, 'item')
-    ET.SubElement(item, 'title').text = arabic_title
-    ET.SubElement(item, 'link').text = link
-    ET.SubElement(item, 'pubDate').text = pub_date
-    ET.SubElement(item, 'description').text = description
+        item = ET.SubElement(channel, 'item')
+        ET.SubElement(item, 'title').text = title
+        ET.SubElement(item, 'link').text = link
+        if image:
+            ext = os.path.splitext(image)[-1].lower()
+            mime = "image/png" if ext == ".png" else "image/jpeg" if ext in [".jpg", ".jpeg"] else "image/webp"
+            ET.SubElement(item, 'enclosure', url=image, type=mime)
 
+    tree = ET.ElementTree(rss)
     tree.write(RSS_FILE, encoding='utf-8', xml_declaration=True)
-    print(f"تم تحديث ملف RSS: {RSS_FILE}")
+    print(f"تم تحديث {RSS_FILE}")
 
+# البرنامج الرئيسي
 def main():
     feed = feedparser.parse(RSS_URL)
     entries = feed.entries
@@ -150,6 +155,7 @@ def main():
         description = entry.get('summary', '')
         link = entry.get('link', '')
 
+        # تلخيص العنوان
         arabic_title = None
         for attempt in range(10):
             prompt_title = f"""العنوان التالي هو لخبر تقني:
@@ -165,6 +171,7 @@ def main():
             print("فشل تلخيص العنوان بعد 10 محاولات. إيقاف البرنامج.")
             return
 
+        # تلخيص الخبر
         arabic_body = None
         for attempt in range(10):
             prompt_body = f"""النص التالي هو خبر تقني:
@@ -190,12 +197,11 @@ def main():
             f.write(md)
         print(f"تم إنشاء: {filepath}")
 
-        html_link = f"{SITE_URL}/news/{os.path.splitext(filename)[0]}.html"
-        pub_date = entry.get('published', datetime.now().strftime('%a, %d %b %Y %H:%M:%S +0000'))
-
-        update_rss(arabic_title, pub_date, html_link, arabic_body)
-
+        # تحديث آخر منشور
         write_last_post(link)
+
+    # بعد إضافة كل md جديد، حدث خلاصة RSS
+    generate_rss()
 
 if __name__ == "__main__":
     main()
