@@ -238,7 +238,7 @@
     const repoName = "bidjadraft.github.io";
     const folder = "news";
 
-    // هذه هي الدالة الوحيدة التي تم تعديلها لتظهر الوقت بصيغة "قبل X ساعة/يوم..."
+    // هذه هي الدالة التي تم تعديلها لعرض الوقت بصيغة "قبل X ساعة/يوم..."
     function timeAgo(dateString) {
       const now = new Date();
       const date = new Date(dateString);
@@ -279,7 +279,7 @@
     function updateTimes() {
       const timeElements = document.querySelectorAll('.news-time');
       timeElements.forEach(el => {
-        const dateStr = el.getAttribute('data-date'); // نستخدم data-date لجلب التاريخ
+        const dateStr = el.getAttribute('data-date'); // نستخدم data-date لجلب التاريخ الأصلي
         if (dateStr) {
           el.textContent = timeAgo(dateStr);
         }
@@ -361,7 +361,7 @@
 
           mainContainer.appendChild(newsList);
         }
-        // يجب استدعاء دالة تحديث الوقت بعد تحميل الأخبار وبناء عناصر DOM
+        // يتم استدعاء دالة تحديث الوقت هنا بعد بناء جميع عناصر الأخبار
         updateTimes();
       } catch (error) {
         console.error("حدث خطأ أثناء جلب الأخبار:", error);
