@@ -133,7 +133,6 @@
 
     .article-container {
       max-width: 600px;
-      width: 100%;
       margin: 24px auto 0 auto;
       background: transparent;
       border-radius: 0;
@@ -196,7 +195,8 @@
       margin-right: 2px;
       user-select: none;
     }
-    .article-date {
+    /* تم تغيير هذا ليتوافق مع .news-time */
+    .article-date.news-time {
       color: #a1a1aa;
       font-size: 0.98em;
       font-weight: 400;
@@ -377,7 +377,8 @@
         <div class="article-title">{{ page.title }}</div>
         <div class="article-meta-row">
           <span class="article-meta">{{ page.category }}</span>
-          <span class="article-date">{{ page.date | date: "%Y-%m-%d" }}</span>
+          <!-- تم تعديل هذا العنصر لإضافة data-date والفئة news-time -->
+          <span class="article-date news-time" data-date="{{ page.date | date: "%Y-%m-%d" }}"></span>
         </div>
         <div class="article-body">
           {{ content }}
@@ -419,6 +420,46 @@
         });
       }
       return meta;
+    }
+
+    // دالة تحويل التاريخ إلى نص نسبي بالعربية
+    function timeAgo(dateString) {
+      if (!dateString) return "تاريخ غير متوفر";
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return "تاريخ غير صالح";
+
+      const now = new Date();
+      const seconds = Math.floor((now - date) / 1000);
+      if (seconds < 0) return "في المستقبل";
+
+      const intervals = [
+        { label: "شهر", seconds: 2592000 },
+        { label: "يوم", seconds: 86400 },
+        { label: "ساعة", seconds: 3600 },
+        { label: "دقيقة", seconds: 60 },
+        { label: "ثانية", seconds: 1 }
+      ];
+
+      for (const interval of intervals) {
+        const count = Math.floor(seconds / interval.seconds);
+        if (count >= 1) {
+          if (interval.label === "ثانية" && count < 10) return "الآن";
+          if (count === 1) return `منذ ${count} ${interval.label}`;
+          if (count === 2) return `منذ ${count} ${interval.label}ين`;
+          if (count >= 3 && count <= 10) return `منذ ${count} ${interval.label}ات`;
+          return `منذ ${count} ${interval.label}`;
+        }
+      }
+      return "الآن";
+    }
+
+    // دالة لتحديث جميع عناصر الوقت النسبي في الصفحة (بفئة news-time)
+    function updateTimes() {
+      const timeElements = document.querySelectorAll('.news-time');
+      timeElements.forEach(el => {
+        const dateStr = el.getAttribute('data-date');
+        el.textContent = timeAgo(dateStr);
+      });
     }
 
     async function loadRelatedArticles() {
@@ -465,7 +506,8 @@
             </a>
             <div class="news-info">
               <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-title">${n.title}</a>
-              <span class="news-time">${n.date}</span>
+              <!-- تم تعديل هذا العنصر لإضافة data-date -->
+              <span class="news-time" data-date="${n.date}"></span>
             </div>
           `;
           container.appendChild(newsItem);
@@ -475,12 +517,22 @@
           container.innerHTML = "<div style='color:#aaa;text-align:center;padding:20px'>لا توجد مقالات أخرى</div>";
         }
 
+        // تحديث الوقت النسبي فورًا بعد تحميل المقالات المرتبطة
+        updateTimes();
+
       } catch (error) {
         document.getElementById('related-news-list').innerText = "حدث خطأ أثناء تحميل المقالات.";
       }
     }
 
+    // استدعاء updateTimes عند تحميل الصفحة لأول مرة (لتاريخ المقال الرئيسي)
+    document.addEventListener('DOMContentLoaded', updateTimes);
+
+    // تحميل المقالات المرتبطة
     loadRelatedArticles();
+
+    // تحديث الوقت النسبي كل 60 ثانية (لجميع التواريخ)
+    setInterval(updateTimes, 60000);
   </script>
 </body>
 </html>
