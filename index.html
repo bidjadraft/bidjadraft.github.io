@@ -240,24 +240,17 @@
     .loading .main-news-img,
     .loading .news-thumb {
       position: relative;
-      background-color: #2c2c36;
+      background-color: #2c2c36; /* لون الخلفية الثابت */
       border-radius: 8px;
       pointer-events: none;
       user-select: none;
-      filter: brightness(0);
+      filter: brightness(0); /* هذا قد لا يكون ضروريًا بعد إزالة الشيمر */
       overflow: hidden;
     }
     .loading .main-news-img::after,
     .loading .news-thumb::after {
-      content: "";
-      position: absolute;
-      top: 0; left: -150px;
-      height: 100%;
-      width: 150px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-      animation: shimmer 1.5s infinite;
-      border-radius: inherit;
-      z-index: 10;
+      /* إزالة تأثير الشيمر */
+      content: none; /* هذا يزيل العنصر الزائف بالكامل */
     }
 
     /* Skeleton lines for news titles - 3 wider and spaced lines */
@@ -276,29 +269,34 @@
       display: block;
       height: 10px; /* تعريض الخط */
       border-radius: 5px;
-      background: linear-gradient(90deg, #2c2c36 25%, rgba(255,255,255,0.15) 50%, #2c2c36 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
+      background: #2c2c36; /* لون الخلفية الثابت لخطوط السكيليتون */
+      /* إزالة تأثير الشيمر */
+      background-size: auto;
+      animation: none;
       position: relative;
       overflow: hidden;
     }
     .loading .news-title span:nth-child(1) {
       width: 90%;
+      /* إزالة delay */
       animation-delay: 0s;
     }
     .loading .news-title span:nth-child(2) {
       width: 80%;
-      animation-delay: 0.3s;
+      /* إزالة delay */
+      animation-delay: 0s;
     }
     .loading .news-title span:nth-child(3) {
       width: 60%;
-      animation-delay: 0.6s;
+      /* إزالة delay */
+      animation-delay: 0s;
     }
 
-    @keyframes shimmer {
+    /* إزالة keyframes shimmer بما أنه لم يعد مستخدمًا */
+    /* @keyframes shimmer {
       0% { background-position: -150px 0; }
       100% { background-position: 150px 0; }
-    }
+    } */
   </style>
 </head>
 <body>
@@ -321,14 +319,13 @@
   </header>
 
   <main id="news-container" tabindex="-1" aria-live="polite" aria-label="أخبار التقنية بجاد الأثري" class="loading">
-    <!-- سيتم توليد الأخبار هنا -->
-  </main>
+    </main>
 
   <footer>
-    &copy; جميع الحقوق محفوظة بجاد الأثري
+    © جميع الحقوق محفوظة بجاد الأثري
   </footer>
 
-  <script>
+  <script defer>
     const githubUser = "bidjadraft";
     const repoName = "bidjadraft.github.io";
     const folder = "news";
