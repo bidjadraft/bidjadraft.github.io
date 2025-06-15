@@ -449,7 +449,7 @@
     </div>
 
     <ul>
-      <li><a href="https://bidjadraft.github.io">الرئيسية</a></li>
+      <li><a href="https://bidjadraft.github.io/">الرئيسية</a></li>
       <li><a href="https://bidjadraft.github.io/category/apps">التطبيقات</a></li>
       <li><a href="https://bidjadraft.github.io/category/socialmedia/">منصات التواصل</a></li>
       <li><a href="https://bidjadraft.github.io/category/ai/">الذكاء الاصطناعي</a></li>
@@ -502,7 +502,8 @@
     const githubUser = "bidjadraft";
     const repoName = "bidjadraft.github.io";
     const folder = "news";
-    const baseUrl = `https://${githubUser}.github.io`;
+    // تأكد من أن baseUrl لا ينتهي بشرطة مائلة
+    const baseUrl = `https://${githubUser}.github.io`; 
 
     let allNewsData = [];
 
@@ -526,9 +527,11 @@
               slug = 'socialmedia';
               break;
           default:
-              return `${baseUrl}/category/${slug}/`;
+              // قم بإزالة أي شرطات مائلة متتالية في النهاية
+              return `${baseUrl}/category/${slug}`.replace(/\/+$/, '');
       }
-      return `${baseUrl}/category/${slug}/`;
+      // قم بإزالة أي شرطات مائلة متتالية في النهاية
+      return `${baseUrl}/category/${slug}`.replace(/\/+$/, '');
     }
 
     function parseArticleMarkdown(mdText, fileName) {
@@ -549,7 +552,8 @@
         const image = meta.image || "https://via.placeholder.com/600x400?text=خبر";
         const date = meta.date || "";
         const category = meta.category || "عام";
-        const pageUrl = `${baseUrl}/${folder}/${fileName.replace(/\.md$/, '')}`;
+        // قم بإزالة أي شرطات مائلة متتالية في النهاية من عنوان الصفحة
+        const pageUrl = `${baseUrl}/${folder}/${fileName.replace(/\.md$/, '')}`.replace(/\/+$/, '');
 
         return {
             title,
@@ -608,7 +612,7 @@
       const mainContainer = document.getElementById('news-container');
       mainContainer.innerHTML = "";
 
-      // Only add a heading if headingText is provided (i.e., for search results)
+      // فقط أضف عنوانًا إذا تم توفيره (مثل نتائج البحث)
       if (headingText) {
         const heading = document.createElement('h2');
         heading.textContent = headingText;
@@ -692,17 +696,17 @@
       let headingText = "";
 
       if (searchQuery) {
-          // If there's a search query, display search results with a heading
+          // إذا كان هناك استعلام بحث، اعرض نتائج البحث مع عنوان
           articlesToDisplay = searchArticles(searchQuery);
           headingText = `نتائج البحث عن: "${searchQuery}"`;
           document.title = `نتائج البحث عن "${searchQuery}" | بجاد الأثري`;
       } else {
-          // By default, display articles from the "تطبيقات" category only, WITHOUT a heading
+          // افتراضياً، اعرض مقالات من فئة "تطبيقات" فقط، بدون عنوان
           articlesToDisplay = allNewsData.filter(article => article.category === 'تطبيقات');
-          document.title = "التطبيقات | بجاد التقني"; // Set appropriate title for the default view
+          document.title = "التطبيقات | بجاد التقني"; // تعيين العنوان المناسب للعرض الافتراضي
       }
 
-      displayArticles(articlesToDisplay, headingText); // Pass headingText, which will be empty for default view
+      displayArticles(articlesToDisplay, headingText); // تمرير headingText، والذي سيكون فارغًا للعرض الافتراضي
 
       setTimeout(() => {
           mainContainer.classList.remove('loading');
