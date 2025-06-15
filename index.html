@@ -74,17 +74,22 @@
     }
     .username {
       font-size: 1.1em;
-      color: #e5e7eb;
+      color: #e5e7eb; /* Default color for "بجاد" */
       font-weight: 700;
-      display: flex;
+      display: flex; /* Use flexbox to align items and create space */
       align-items: center;
-      gap: 6px;
+      gap: 6px; /* This will add space between the two spans */
       user-select: none;
     }
     .username a {
-      color: #e5e7eb;
+      color: inherit; /* Inherit color from parent (.username) */
       font-weight: 700;
       text-decoration: none;
+      display: flex; /* Apply flex to the anchor as well for consistent spacing */
+      gap: 6px; /* This also helps with consistent spacing inside the link */
+    }
+    .username .blue {
+      color: #60a5fa; /* Set the blue color specifically for "التقني" */
     }
     .menu-button {
       background: none;
@@ -119,7 +124,7 @@
       height: 100%;
       background: #23232a;
       transition: left 0.3s ease;
-      padding: 20px;
+      padding: 20px 20px 35px 20px; /* تم تعديل هذه القيمة */
       z-index: 200;
       display: flex;
       flex-direction: column;
@@ -178,15 +183,19 @@
       margin: 15px 0;
     }
     .sidebar ul li a {
-      color: #60a5fa;
+      color: #60a5fa; /* Default blue for sidebar links */
       text-decoration: none;
       transition: color 0.3s;
     }
+    /* New rule to make "الرئيسية" white */
+    .sidebar ul li:first-child a {
+      color: #ffffff;
+    }
     .sidebar ul li a:hover {
-      color: #fff;
+      color: #fff; /* White on hover for all links */
     }
 
-    /* --- تصميم منصات التواصل --- */
+    /* --- تصميم منصات التواصل المحسّن --- */
     .sidebar-social {
         display: flex;
         justify-content: space-around;
@@ -196,17 +205,42 @@
     }
 
     .sidebar-social a {
-        color: #a1a1aa;
-        font-size: 1.3em;
+        color: #a1a1aa; /* Default icon color */
+        font-size: 1.5em; /* Slightly larger for better visibility */
         text-decoration: none;
-        transition: color 0.3s ease, transform 0.2s ease;
+        transition: color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+        width: 36px; /* Define a fixed width for consistent spacing */
+        height: 36px; /* Define a fixed height for consistent spacing */
+        display: flex; /* Use flexbox for centering the icon */
+        align-items: center; /* Center icon vertically */
+        justify-content: center; /* Center icon horizontally */
+        border-radius: 50%; /* Make them circular for a modern touch */
     }
 
     .sidebar-social a:hover {
-        color: #fff;
-        transform: translateY(-3px);
+        color: #60a5fa; /* Vibrant blue on hover */
+        transform: translateY(-3px) scale(1.1); /* Lift and slightly enlarge */
+        background-color: rgba(96, 165, 250, 0.1); /* Subtle background highlight on hover */
     }
-    /* --- نهاية تصميم منصات التواصل --- */
+
+    /* Specific colors for branding where applicable, enhancing modernity */
+    .sidebar-social a .fa-x-twitter:hover {
+        color: #000; /* Twitter's brand color, but adjust if background is dark */
+        background-color: #fff; /* Invert colors for a striking effect */
+    }
+
+    .sidebar-social a .fa-facebook-f:hover {
+        color: #1877f2; /* Facebook blue */
+    }
+
+    .sidebar-social a .fa-telegram-plane:hover {
+        color: #0088cc; /* Telegram blue */
+    }
+
+    .sidebar-social a .fa-rss-square:hover {
+        color: #f26522; /* RSS orange */
+    }
+    /* --- نهاية تصميم منصات التواصل المحسّن --- */
 
     main {
       max-width: 600px;
@@ -330,6 +364,7 @@
       min-height: 90px;
       position: relative;
       z-index: 1;
+      transition: filter 0.3s ease;
     }
     .news-thumb {
       width: 180px;
@@ -431,7 +466,9 @@
   <div class="sidebar" id="sidebar">
     <div class="sidebar-search-box">
         <i class="fas fa-search search-icon"></i>
-        <input type="search" placeholder="ابحث في القائمة..." aria-label="Search sidebar items">
+        <form id="search-form" action="/" method="GET">
+            <input type="search" name="query" placeholder="ابحث في العناوين والمقالات..." aria-label="Search articles">
+        </form>
     </div>
 
     <ul>
@@ -446,10 +483,10 @@
     </ul>
 
     <div class="sidebar-social">
-        <a href="#" aria-label="منصة X"><i class="fab fa-x-twitter"></i></a>
-        <a href="#" aria-label="فيسبوك"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" aria-label="تيليجرام"><i class="fab fa-telegram-plane"></i></a>
-        <a href="#" aria-label="RSS"><i class="fas fa-rss-square"></i></a>
+        <a href="https://x.com/bidjadraft" aria-label="منصة X"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://www.facebook.com/bidjadtech/" aria-label="فيسبوك"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://t.me/bidjadtech" aria-label="تيليجرام"><i class="fab fa-telegram-plane"></i></a>
+        <a href="https://bidjadraft.github.io/feed.xml" aria-label="RSS"><i class="fas fa-rss-square"></i></a>
     </div>
   </div>
 
@@ -476,9 +513,9 @@
       const overlay = document.getElementById('sidebar-overlay');
       const searchInput = document.querySelector('.sidebar-search-box input');
 
-      // Check if the sidebar is currently open
+      // تحقق مما إذا كان الشريط الجانبي مفتوحًا حاليًا
       if (sidebar.classList.contains('show')) {
-        // If the click is on the overlay itself OR it's outside the sidebar, the menu button, AND the search input
+        // إذا كان النقر على التراكب نفسه أو خارج الشريط الجانبي وزر القائمة ومربع البحث
         if (event.target === overlay || (!sidebar.contains(event.target) && !menuButton.contains(event.target) && !searchInput.contains(event.target))) {
           sidebar.classList.remove('show');
           overlay.classList.remove('show');
@@ -491,6 +528,8 @@
     const repoName = "bidjadraft.github.io";
     const folder = "news";
     const baseUrl = `https://${githubUser}.github.io`;
+
+    let allNewsData = []; // متغير عالمي لتخزين جميع بيانات الأخبار
 
     // دالة لإنشاء رابط الفئة بناءً على اسمها
     function getCategoryLink(categoryName) {
@@ -518,19 +557,40 @@
       return `${baseUrl}/category/${slug}`;
     }
 
-    function parseFrontMatter(mdText) {
-      const fmMatch = mdText.match(/^---\s*([\s\S]*?)\s*---/);
-      let meta = {};
-      if (fmMatch) {
-        const lines = fmMatch[1].split('\n');
-        lines.forEach(line => {
-          const match = line.match(/^([\w\u0600-\u06FF\-]+):\s*["']?(.+?)["']?$/);
-          if (match) meta[match[1]] = match[2];
-        });
-      }
-      return meta;
+    // دالة لتحليل بيانات Markdown (المعلومات الأمامية والمحتوى)
+    function parseArticleMarkdown(mdText, fileName) {
+        const fmMatch = mdText.match(/^---\s*([\s\S]*?)\s*---/);
+        let meta = {};
+        let rawContent = mdText; // المحتوى الخام كاملاً في البداية
+
+        if (fmMatch) {
+            const lines = fmMatch[1].split('\n');
+            lines.forEach(line => {
+                const match = line.match(/^([\w\u0600-\u06FF\-]+):\s*["']?(.+?)["']?$/);
+                if (match) meta[match[1]] = match[2];
+            });
+            // المحتوى بعد الواجهة الأمامية (Front Matter)
+            rawContent = mdText.substring(fmMatch[0].length).trim();
+        }
+
+        // قيم افتراضية إذا لم تكن موجودة في الواجهة الأمامية
+        const title = meta.title || fileName.replace('.md', '').replace(/-/g, ' ');
+        const image = meta.image || "https://via.placeholder.com/600x400?text=خبر";
+        const date = meta.date || "";
+        const category = meta.category || "عام";
+        const pageUrl = `${baseUrl}/${folder}/${fileName.replace(/\.md$/, '')}`;
+
+        return {
+            title,
+            image,
+            date,
+            category,
+            pageUrl,
+            rawContent // تخزين المحتوى الخام للبحث
+        };
     }
 
+    // دالة لحساب الوقت المنقضي
     function timeAgo(dateString) {
       const now = new Date();
       const past = new Date(dateString);
@@ -550,10 +610,8 @@
       return `منذ ${diffYears} ${diffYears === 1 ? "سنة" : "سنوات"}`;
     }
 
-    async function loadNews() {
-      const mainContainer = document.getElementById('news-container');
-      mainContainer.classList.add('loading');
-
+    // دالة لجلب جميع محتوى المقالات وإعداد البيانات
+    async function fetchAllArticlesAndPrepareData() {
       try {
         const res = await fetch(`https://api.github.com/repos/${githubUser}/${repoName}/contents/${folder}`);
         const files = await res.json();
@@ -564,82 +622,123 @@
         }
 
         const mdFiles = files.filter(f => f.name.endsWith('.md'));
-        const news = [];
-
-        for (const file of mdFiles) {
+        const fetchPromises = mdFiles.map(async file => {
           const mdText = await fetch(file.download_url).then(r => r.text());
-          const meta = parseFrontMatter(mdText);
+          return parseArticleMarkdown(mdText, file.name);
+        });
 
-          news.push({
-            title: meta.title || file.name.replace('.md', '').replace(/-/g, ' '),
-            image: meta.image || "https://via.placeholder.com/600x400?text=خبر",
-            date: meta.date || "",
-            category: meta.category || "عام",
-            pageUrl: `${baseUrl}/${folder}/${file.name.replace(/\.md$/, '')}`
-          });
-        }
-
-        news.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        mainContainer.innerHTML = "";
-
-        if (news.length > 0) {
-          const mainNewsBox = document.createElement('div');
-          mainNewsBox.className = 'main-news-box';
-          mainNewsBox.innerHTML = `
-            <div class="main-news-meta">
-              <a href="${getCategoryLink(news[0].category)}" class="news-category">${news[0].category}</a>
-              <span class="news-time">${timeAgo(news[0].date)}</span>
-            </div>
-            <a href="${news[0].pageUrl}" class="main-article-link" aria-label="الخبر الرئيسي: ${news[0].title}">
-              <img class="main-news-img" src="${news[0].image}" alt="صورة الخبر الرئيسي: ${news[0].title}">
-              <div class="overlay"></div>
-              <div class="main-news-info">
-                <h2 class="main-news-title">${news[0].title}</h2>
-              </div>
-            </a>
-          `;
-          mainContainer.appendChild(mainNewsBox);
-        }
-
-        if (news.length > 1) {
-          const newsList = document.createElement('section');
-          newsList.className = 'news-list';
-
-          news.slice(1).forEach(n => {
-            const newsItem = document.createElement('div');
-            newsItem.className = 'news-item';
-            newsItem.innerHTML = `
-              <a href="${n.pageUrl}" class="news-thumb-link" aria-label="خبر: ${n.title}">
-                <img class="news-thumb" src="${n.image}" alt="صورة الخبر: ${n.title}">
-              </a>
-              <div class="news-info">
-                <a href="${n.pageUrl}" class="news-title">
-                  <span>${n.title}</span>
-                </a>
-                <div class="news-meta">
-                    <a href="${getCategoryLink(n.category)}" class="news-category">${n.category}</a>
-                    <span class="news-time">${timeAgo(n.date)}</span>
-                </div>
-              </div>
-            `;
-            newsList.appendChild(newsItem);
-          });
-
-          mainContainer.appendChild(newsList);
-        }
-
-        setTimeout(() => {
-          mainContainer.classList.remove('loading');
-        }, 1200);
-
+        allNewsData = await Promise.all(fetchPromises);
+        allNewsData.sort((a, b) => new Date(b.date) - new Date(a.date)); // فرز البيانات حسب التاريخ
+        
       } catch (error) {
-        console.error("حدث خطأ أثناء جلب الأخبار:", error);
-        mainContainer.classList.remove('loading');
+        console.error("حدث خطأ أثناء جلب وإعداد بيانات الأخبار:", error);
       }
     }
 
-    loadNews();
+    // دالة لعرض المقالات في الواجهة الرئيسية
+    function displayArticles(newsItems, headingText = "") {
+      const mainContainer = document.getElementById('news-container');
+      mainContainer.innerHTML = ""; // مسح المحتوى الحالي
+
+      if (headingText) {
+        const heading = document.createElement('h2');
+        heading.textContent = headingText;
+        heading.style.color = '#e5e7eb';
+        heading.style.textAlign = 'center';
+        heading.style.marginBottom = '25px';
+        mainContainer.appendChild(heading);
+      }
+
+      if (newsItems.length === 0) {
+        const noResults = document.createElement('p');
+        noResults.textContent = "لا توجد نتائج مطابقة.";
+        noResults.style.textAlign = 'center';
+        noResults.style.marginTop = '50px';
+        mainContainer.appendChild(noResults);
+        return;
+      }
+
+      // عرض الخبر الرئيسي (أحدث خبر أو أول نتيجة بحث)
+      const mainNewsBox = document.createElement('div');
+      mainNewsBox.className = 'main-news-box';
+      mainNewsBox.innerHTML = `
+          <div class="main-news-meta">
+            <a href="${getCategoryLink(newsItems[0].category)}" class="news-category">${newsItems[0].category}</a>
+            <span class="news-time">${timeAgo(newsItems[0].date)}</span>
+          </div>
+          <a href="${newsItems[0].pageUrl}" class="main-article-link" aria-label="الخبر الرئيسي: ${newsItems[0].title}">
+            <img class="main-news-img" src="${newsItems[0].image}" alt="صورة الخبر الرئيسي: ${newsItems[0].title}">
+            <div class="overlay"></div>
+            <div class="main-news-info">
+              <h2 class="main-news-title">${newsItems[0].title}</h2>
+            </div>
+          </a>
+      `;
+      mainContainer.appendChild(mainNewsBox);
+
+      // عرض باقي الأخبار كقائمة
+      if (newsItems.length > 1) {
+        const newsList = document.createElement('section');
+        newsList.className = 'news-list';
+
+        newsItems.slice(1).forEach(n => {
+          const newsItem = document.createElement('div');
+          newsItem.className = 'news-item';
+          newsItem.innerHTML = `
+            <a href="${n.pageUrl}" class="news-thumb-link" aria-label="خبر: ${n.title}">
+              <img class="news-thumb" src="${n.image}" alt="صورة الخبر: ${n.title}">
+            </a>
+            <div class="news-info">
+              <a href="${n.pageUrl}" class="news-title">
+                <span>${n.title}</span>
+              </a>
+              <div class="news-meta">
+                  <a href="${getCategoryLink(n.category)}" class="news-category">${n.category}</a>
+                  <span class="news-time">${timeAgo(n.date)}</span>
+              </div>
+            </div>
+          `;
+          newsList.appendChild(newsItem);
+        });
+        mainContainer.appendChild(newsList);
+      }
+    }
+
+    // دالة البحث الفعلية
+    function searchArticles(query) {
+        const lowerCaseQuery = query.toLowerCase();
+        return allNewsData.filter(article =>
+            article.title.toLowerCase().includes(lowerCaseQuery) ||
+            article.rawContent.toLowerCase().includes(lowerCaseQuery)
+        );
+    }
+
+    // المنطق الرئيسي عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', async () => {
+      const mainContainer = document.getElementById('news-container');
+      mainContainer.classList.add('loading'); // إظهار مؤشر التحميل
+
+      await fetchAllArticlesAndPrepareData(); // جلب كل البيانات أولاً
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const searchQuery = urlParams.get('query');
+
+      if (searchQuery) {
+          // إذا كان هناك استعلام بحث في الرابط
+          document.title = `نتائج البحث عن "${searchQuery}" | بجاد الأثري`; // تحديث عنوان الصفحة
+          const results = searchArticles(searchQuery);
+          displayArticles(results, `نتائج البحث عن: "${searchQuery}"`); // عرض النتائج
+      } else {
+          // الصفحة الرئيسية (لا يوجد استعلام بحث)
+          document.title = "أخبار التقنية | بجاد الأثري"; // العنوان الافتراضي
+          displayArticles(allNewsData); // عرض جميع الأخبار (أحدثها أولاً بسبب الفرز)
+      }
+
+      // إخفاء مؤشر التحميل
+      setTimeout(() => {
+          mainContainer.classList.remove('loading');
+      }, 1200);
+    });
   </script>
 </body>
 </html>
