@@ -73,17 +73,18 @@
     }
     .username {
       font-size: 1.1em;
-      color: #e5e7eb;
       font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 6px;
       user-select: none;
     }
     .username a {
-      color: #e5e7eb;
+      color: #e5e7eb; /* هذا هو اللون الأساسي لكلمة "بجاد" */
       font-weight: 700;
       text-decoration: none;
+      display: flex; /* تطبيق flex على الرابط نفسه */
+      gap: 6px; /* هذه المسافة هي التي تفصل بين "بجاد" و "التقني" */
+    }
+    .username .blue {
+      color: #60a5fa; /* هذا هو اللون الأزرق لكلمة "التقني" */
     }
     .menu-button {
       background: none;
@@ -185,7 +186,7 @@
 
     /* هذا هو التعديل الجديد: جعل رابط "التطبيقات" باللون الأبيض */
     #apps-link {
-      color: #fff !important; 
+      color: #fff !important;
     }
 
     .sidebar-social {
@@ -507,8 +508,7 @@
     const githubUser = "bidjadraft";
     const repoName = "bidjadraft.github.io";
     const folder = "news";
-    // تأكد من أن baseUrl لا ينتهي بشرطة مائلة
-    const baseUrl = `https://${githubUser}.github.io`; 
+    const baseUrl = `https://${githubUser}.github.io`;
 
     let allNewsData = [];
 
@@ -532,11 +532,9 @@
               slug = 'socialmedia';
               break;
           default:
-              // قم بإزالة أي شرطات مائلة متتالية في النهاية
-              return `${baseUrl}/category/${slug}`.replace(/\/+$/, '');
+              return `${baseUrl}/category/${slug}`;
       }
-      // قم بإزالة أي شرطات مائلة متتالية في النهاية
-      return `${baseUrl}/category/${slug}`.replace(/\/+$/, '');
+      return `${baseUrl}/category/${slug}`;
     }
 
     function parseArticleMarkdown(mdText, fileName) {
@@ -557,8 +555,7 @@
         const image = meta.image || "https://via.placeholder.com/600x400?text=خبر";
         const date = meta.date || "";
         const category = meta.category || "عام";
-        // قم بإزالة أي شرطات مائلة متتالية في النهاية من عنوان الصفحة
-        const pageUrl = `${baseUrl}/${folder}/${fileName.replace(/\.md$/, '')}`.replace(/\/+$/, '');
+        const pageUrl = `${baseUrl}/${folder}/${fileName.replace(/\.md$/, '')}`;
 
         return {
             title,
@@ -617,7 +614,6 @@
       const mainContainer = document.getElementById('news-container');
       mainContainer.innerHTML = "";
 
-      // فقط أضف عنوانًا إذا تم توفيره (مثل نتائج البحث)
       if (headingText) {
         const heading = document.createElement('h2');
         heading.textContent = headingText;
@@ -701,17 +697,16 @@
       let headingText = "";
 
       if (searchQuery) {
-          // إذا كان هناك استعلام بحث، اعرض نتائج البحث مع عنوان
           articlesToDisplay = searchArticles(searchQuery);
           headingText = `نتائج البحث عن: "${searchQuery}"`;
           document.title = `نتائج البحث عن "${searchQuery}" | بجاد الأثري`;
       } else {
-          // افتراضياً، اعرض مقالات من فئة "تطبيقات" فقط، بدون عنوان
+          // فلترة المقالات لعرض تلك التي تنتمي إلى فئة "تطبيقات"
           articlesToDisplay = allNewsData.filter(article => article.category === 'تطبيقات');
-          document.title = "التطبيقات | بجاد التقني"; // تعيين العنوان المناسب للعرض الافتراضي
+          document.title = "التطبيقات | بجاد التقني";
       }
 
-      displayArticles(articlesToDisplay, headingText); // تمرير headingText، والذي سيكون فارغًا للعرض الافتراضي
+      displayArticles(articlesToDisplay, headingText);
 
       setTimeout(() => {
           mainContainer.classList.remove('loading');
