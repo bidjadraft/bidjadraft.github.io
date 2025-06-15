@@ -4,16 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="حيث تتلاقى الأفكار الرقمية مع نبض العصر، نرصد لك تفاصيل التقنية التي تشكل واقع الغد." />
-  <link rel="icon" href="https://i.imgur.com/GaPGMgJ_d.png" type="image/png" /> <!-- إضافة الأيقونة هنا -->
-  
-  <!-- بيانات Open Graph -->
+  <link rel="icon" href="https://i.imgur.com/GaPGMgJ_d.png" type="image/png" />
+
   <meta property="og:title" content="أخبار التقنية | بجاد الأثري" />
   <meta property="og:description" content="حيث تتلاقى الأفكار الرقمية مع نبض العصر، نرصد لك تفاصيل التقنية التي تشكل واقع الغد." />
   <meta property="og:image" content="https://i.imgur.com/GaPGMgJ_d.png" />
-  <meta property="og:url" content="https://bidjadraft.github.io" /> <!-- رابط موقعك -->
+  <meta property="og:url" content="https://bidjadraft.github.io" />
   <meta property="og:type" content="website" />
-  
-  <!-- بيانات Twitter Cards -->
+
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="أخبار التقنية | بجاد الأثري" />
   <meta name="twitter:description" content="حيث تتلاقى الأفكار الرقمية مع نبض العصر، نرصد لك تفاصيل التقنية التي تشكل واقع الغد." />
@@ -32,6 +30,13 @@
       display: flex;
       flex-direction: column;
     }
+    body.no-scroll {
+      overflow: hidden;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
     header {
       background: #18181b;
       padding: 8px 18px;
@@ -47,7 +52,7 @@
     .profile {
       display: flex;
       align-items: center;
-      gap: 12px; /* زيادة الفجوة بين الصورة والاسم */
+      gap: 12px;
     }
     .profile a {
       display: flex;
@@ -68,12 +73,12 @@
       box-shadow: 0 4px 16px #2563ebaa;
     }
     .username {
-      font-size: 1.1em; /* حجم الخط */
+      font-size: 1.1em;
       color: #e5e7eb;
       font-weight: 700;
       display: flex;
       align-items: center;
-      gap: 6px; /* مسافة بين الاسم وكلمة "التقني" */
+      gap: 6px;
       user-select: none;
     }
     .username a {
@@ -81,21 +86,128 @@
       font-weight: 700;
       text-decoration: none;
     }
-    .blue {
-      color: #60a5fa;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-left: 8px; /* إضافة مسافة بين "بجاد" و "التقني" */
+    .menu-button {
+      background: none;
+      border: none;
+      color: #e5e7eb;
+      font-size: 1.5em;
+      cursor: pointer;
     }
-    .socials {
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 150;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .sidebar-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: -100%;
+      top: 0;
+      width: 200px;
+      height: 100%;
+      background: #23232a;
+      transition: left 0.3s ease;
+      padding: 20px;
+      z-index: 200;
       display: flex;
-      gap: 16px;
+      flex-direction: column;
     }
-    .socials a {
-      color: #a1a1aa;
-      font-size: 1.6em;
-      transition: color 0.3s, transform 0.3s;
+    .sidebar.show {
+      left: 0;
     }
+
+    /* --- تحسين تصميم مربع البحث --- */
+    .sidebar-search-box {
+        margin-bottom: 25px;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .sidebar-search-box input {
+        width: 100%;
+        padding: 10px 15px 10px 40px;
+        border: 1px solid #3a3a41;
+        border-radius: 8px;
+        background-color: #33333a;
+        color: #e5e7eb;
+        font-size: 0.95em;
+        outline: none;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .sidebar-search-box input::placeholder {
+        color: #a1a1aa;
+    }
+
+    .sidebar-search-box input:focus {
+        border-color: #60a5fa;
+        box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(96, 165, 250, 0.3);
+    }
+
+    .sidebar-search-box .search-icon {
+        position: absolute;
+        left: 15px;
+        color: #a1a1aa;
+        font-size: 1.1em;
+    }
+    /* --- نهاية تحسين تصميم مربع البحث --- */
+
+    .sidebar ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+    .sidebar ul li {
+      margin: 15px 0;
+    }
+    .sidebar ul li a {
+      color: #60a5fa;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .sidebar ul li a:hover {
+      color: #fff;
+    }
+
+    /* --- تصميم منصات التواصل --- */
+    .sidebar-social {
+        display: flex;
+        justify-content: space-around;
+        padding: 15px 0;
+        border-top: 1px solid #3a3a41;
+        margin-top: 15px;
+    }
+
+    .sidebar-social a {
+        color: #a1a1aa;
+        font-size: 1.3em;
+        text-decoration: none;
+        transition: color 0.3s ease, transform 0.2s ease;
+    }
+
+    .sidebar-social a:hover {
+        color: #fff;
+        transform: translateY(-3px);
+    }
+    /* --- نهاية تصميم منصات التواصل --- */
+
     main {
       max-width: 600px;
       margin: 24px auto 0 auto;
@@ -106,7 +218,49 @@
       position: relative;
       width: 100%;
       margin-bottom: 18px;
+      border-radius: 8px;
+      overflow: hidden;
     }
+
+    /* الـ div الذي يضم الفئة والوقت في الخبر الرئيسي - تم وضعه في الأعلى */
+    .main-news-meta {
+        position: absolute; /* مهم لتحديد موقعه فوق الصورة */
+        top: 10px; /* المسافة من الأعلى */
+        right: 10px; /* المسافة من اليمين */
+        z-index: 4; /* تأكد أنها تظهر فوق الصورة والـ overlay */
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        user-select: none;
+        transition: opacity 0.3s ease;
+    }
+
+    /* رابط الفئة ضمن الخبر الرئيسي */
+    .main-news-meta .news-category {
+        color: #60a5fa; /* لون الرابط الأصلي للفئة */
+        font-weight: bold;
+        font-size: 0.7em;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .main-news-meta .news-category:hover {
+        color: #fff; /* تغيير اللون عند التحويم */
+    }
+
+    /* الوقت ضمن الخبر الرئيسي */
+    .main-news-meta .news-time {
+        font-size: 0.7em;
+        color: #e5e7eb; /* لون نص الوقت */
+    }
+
+    /* العنصر الذي يغلف الصورة والعنوان */
+    .main-article-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        position: relative;
+    }
+
     .main-news-img {
       width: 100%;
       height: 220px;
@@ -122,28 +276,44 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.3); /* تعتيم بنسبة 30% */
+      /* إضافة التعتيم المتدرج من الأعلى والأسفل */
+      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 50%),
+                  linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 50%);
+      opacity: 0.8; /* يمكنك تعديل هذه القيمة لضبط مدى التعتيم */
       border-radius: 8px;
       z-index: 2;
     }
+
+    /* منطقة المعلومات التي تحتوي على العنوان */
+    .main-news-info {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        padding: 10px 14px 10px 14px;
+        z-index: 3; /* فوق الصورة والـ overlay، لكن تحت main-news-meta */
+        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+        border-radius: 0 0 8px 8px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* العنوان نفسه - الآن هو جزء من الرابط العلوي */
     .main-news-title {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      left: 0;
       color: #fff;
       font-size: 1.1em;
       font-weight: bold;
-      padding: 16px 14px 10px 14px;
-      z-index: 3;
       text-shadow: 0 2px 8px #000a;
-      background: none;
-      border-radius: 0 0 8px 8px;
-      margin: 0;
-      box-sizing: border-box;
+      margin: 0 0 5px 0;
+      padding: 0;
       user-select: none;
       transition: opacity 0.3s ease;
+      text-decoration: none;
+      color: #fff;
     }
+
+    /* ستايلات الأخبار الفرعية (لم تتغير عن السابق) */
     .news-list {
       display: flex;
       flex-direction: column;
@@ -155,10 +325,11 @@
       align-items: center;
       gap: 16px;
       padding: 16px 0;
-      border-bottom: 1px solid #fff; /* خط الفاصل بين الأخبار */
+      border-bottom: 1px solid #fff;
       background: none;
       min-height: 90px;
       position: relative;
+      z-index: 1;
     }
     .news-thumb {
       width: 180px;
@@ -195,14 +366,32 @@
     .news-title:hover {
       color: #60a5fa;
     }
-    .news-time {
-      color: #a1a1aa;
-      font-size: 0.85em;
-      margin-top: 2px;
-      position: relative;
-      user-select: none;
-      transition: opacity 0.3s ease;
+    .news-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #a1a1aa;
+        margin-top: 2px;
+        user-select: none;
+        transition: opacity 0.3s ease;
     }
+    .news-meta .news-category {
+        background-color: transparent;
+        padding: 0;
+        border-radius: 0;
+        color: #60a5fa;
+        font-weight: bold;
+        font-size: 0.7em;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .news-meta .news-category:hover {
+        color: #fff;
+    }
+    .news-time {
+        font-size: 0.7em;
+    }
+
     footer {
       text-align: center;
       color: #71717a;
@@ -232,12 +421,37 @@
         </a>
       </div>
     </div>
-    <nav class="socials">
-      <a href="https://github.com/bidjadraft" title="GitHub" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
-      <a href="https://youtube.com/@bidjadraft" title="يوتيوب" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
-      <a href="https://t.me/s/bidjadraft" title="تلغرام" rel="noopener noreferrer"><i class="fab fa-telegram"></i></a>
-    </nav>
+    <button class="menu-button" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
   </header>
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-search-box">
+        <i class="fas fa-search search-icon"></i>
+        <input type="search" placeholder="ابحث في القائمة..." aria-label="Search sidebar items">
+    </div>
+
+    <ul>
+      <li><a href="https://bidjadraft.github.io/">الرئيسية</a></li>
+      <li><a href="https://bidjadraft.github.io/category/apps">التطبيقات</a></li>
+      <li><a href="https://bidjadraft.github.io/category/socialmedia">منصات التواصل</a></li>
+      <li><a href="https://bidjadraft.github.io/category/ai">الذكاء الاصطناعي</a></li>
+      <li><a href="https://bidjadraft.github.io/category/devices">الأجهزة</a></li>
+      <li><a href="https://bidjadraft.github.io/category/system">الأنظمة</a></li>
+      <li><a href="#about">من نحن</a></li>
+      <li><a href="#contact">اتصل بنا</a></li>
+    </ul>
+
+    <div class="sidebar-social">
+        <a href="#" aria-label="منصة X"><i class="fab fa-x-twitter"></i></a>
+        <a href="#" aria-label="فيسبوك"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="تيليجرام"><i class="fab fa-telegram-plane"></i></a>
+        <a href="#" aria-label="RSS"><i class="fas fa-rss-square"></i></a>
+    </div>
+  </div>
 
   <main id="news-container" tabindex="-1" aria-live="polite" aria-label="أخبار التقنية بجاد الأثري" class="loading">
   </main>
@@ -246,10 +460,63 @@
     © جميع الحقوق محفوظة بجاد الأثري
   </footer>
 
-  <script defer>
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+
+      sidebar.classList.toggle('show');
+      overlay.classList.toggle('show');
+      document.body.classList.toggle('no-scroll', sidebar.classList.contains('show'));
+    }
+
+    document.addEventListener('click', function(event) {
+      const sidebar = document.getElementById('sidebar');
+      const menuButton = document.querySelector('.menu-button');
+      const overlay = document.getElementById('sidebar-overlay');
+      const searchInput = document.querySelector('.sidebar-search-box input');
+
+      // Check if the sidebar is currently open
+      if (sidebar.classList.contains('show')) {
+        // If the click is on the overlay itself OR it's outside the sidebar, the menu button, AND the search input
+        if (event.target === overlay || (!sidebar.contains(event.target) && !menuButton.contains(event.target) && !searchInput.contains(event.target))) {
+          sidebar.classList.remove('show');
+          overlay.classList.remove('show');
+          document.body.classList.remove('no-scroll');
+        }
+      }
+    });
+
     const githubUser = "bidjadraft";
     const repoName = "bidjadraft.github.io";
     const folder = "news";
+    const baseUrl = `https://${githubUser}.github.io`;
+
+    // دالة لإنشاء رابط الفئة بناءً على اسمها
+    function getCategoryLink(categoryName) {
+      let slug = categoryName.toLowerCase().replace(/\s+/g, '');
+      switch (slug) {
+          case 'تطبيقات':
+              slug = 'apps';
+              break;
+          case 'ذكاءالاصطناعي':
+          case 'ذكاءاصطناعي':
+              slug = 'ai';
+              break;
+          case 'اجهزة':
+              slug = 'devices';
+              break;
+          case 'انظمة':
+              slug = 'system';
+              break;
+          case 'منصاتتواصل':
+              slug = 'socialmedia';
+              break;
+          default:
+              return `${baseUrl}/category/${slug}`;
+      }
+      return `${baseUrl}/category/${slug}`;
+    }
 
     function parseFrontMatter(mdText) {
       const fmMatch = mdText.match(/^---\s*([\s\S]*?)\s*---/);
@@ -258,7 +525,7 @@
         const lines = fmMatch[1].split('\n');
         lines.forEach(line => {
           const match = line.match(/^([\w\u0600-\u06FF\-]+):\s*["']?(.+?)["']?$/);
-          if (match) meta[match[1].trim()] = match[2].trim();
+          if (match) meta[match[1]] = match[2];
         });
       }
       return meta;
@@ -307,7 +574,8 @@
             title: meta.title || file.name.replace('.md', '').replace(/-/g, ' '),
             image: meta.image || "https://via.placeholder.com/600x400?text=خبر",
             date: meta.date || "",
-            pageUrl: `https://${githubUser}.github.io/${folder}/${file.name.replace(/\.md$/, '')}`
+            category: meta.category || "عام",
+            pageUrl: `${baseUrl}/${folder}/${file.name.replace(/\.md$/, '')}`
           });
         }
 
@@ -319,10 +587,16 @@
           const mainNewsBox = document.createElement('div');
           mainNewsBox.className = 'main-news-box';
           mainNewsBox.innerHTML = `
-            <a href="${news[0].pageUrl}" aria-label="الخبر الرئيسي: ${news[0].title}" style="position: relative; display: block;">
+            <div class="main-news-meta">
+              <a href="${getCategoryLink(news[0].category)}" class="news-category">${news[0].category}</a>
+              <span class="news-time">${timeAgo(news[0].date)}</span>
+            </div>
+            <a href="${news[0].pageUrl}" class="main-article-link" aria-label="الخبر الرئيسي: ${news[0].title}">
               <img class="main-news-img" src="${news[0].image}" alt="صورة الخبر الرئيسي: ${news[0].title}">
-              <div class="overlay"></div> <!-- طبقة مظللة -->
-              <div class="main-news-title">${news[0].title}</div>
+              <div class="overlay"></div>
+              <div class="main-news-info">
+                <h2 class="main-news-title">${news[0].title}</h2>
+              </div>
             </a>
           `;
           mainContainer.appendChild(mainNewsBox);
@@ -343,7 +617,10 @@
                 <a href="${n.pageUrl}" class="news-title">
                   <span>${n.title}</span>
                 </a>
-                <span class="news-time">${timeAgo(n.date)}</span>
+                <div class="news-meta">
+                    <a href="${getCategoryLink(n.category)}" class="news-category">${n.category}</a>
+                    <span class="news-time">${timeAgo(n.date)}</span>
+                </div>
               </div>
             `;
             newsList.appendChild(newsItem);
