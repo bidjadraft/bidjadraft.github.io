@@ -3,7 +3,7 @@ layout: default
 title: "Snapseed تعود بواجهة جديدة وفلاتر بعد غياب طويل
 "
 image: "https://d4.alternativeto.net/3dVhEtjm3wotHP0O26cY69BAXxJbYE4In7RthNmePag/rs:fill:1520:760:0/g:ce:0:0/YWJzOi8vZGlzdC9jb250ZW50LzE3NDk5MzkwOTUzNjIucG5n.png"
-category: التقنية
+category: أجهزة
 date: 2025-06-14T22:03:56
 ---
 
