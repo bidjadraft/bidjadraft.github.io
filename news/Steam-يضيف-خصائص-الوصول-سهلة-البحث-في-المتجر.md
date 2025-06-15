@@ -3,7 +3,7 @@ layout: default
 title: "Steam يضيف خصائص الوصول سهلة البحث في المتجر.
 "
 image: "https://d4.alternativeto.net/CckIJBtVAop6xJtE6Lw1qPJkYvQktbGYjR413EAqBYY/rs:fill:1520:760:0/g:ce:0:0/YWJzOi8vZGlzdC9jb250ZW50LzE3NDk4MTUwMjc3NjIucG5n.png"
-category: التقنية
+category: تطبيقات
 date: 2025-06-13T19:05:12
 ---
 
