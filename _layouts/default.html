@@ -355,8 +355,16 @@ color: #a1a1aa;
 user-select: none;
 }
 #related-articles .news-meta-time .news-category {
-color: #60a5fa;
-font-weight: bold;
+    color: #60a5fa;
+    font-weight: bold;
+    text-decoration: none; /* Remove the default underline */
+    transition: color 0.3s ease; /* Smooth transition for color change */
+}
+#related-articles .news-meta-time .news-category:hover,
+#related-articles .news-meta-time .news-category:focus,
+#related-articles .news-meta-time .news-category:active {
+    color: #fff; /* Change color to white on hover, focus, or active click */
+    text-decoration: none; /* Explicitly remove underline on hover/focus/active */
 }
 
 /* Loading text styling */
@@ -569,78 +577,98 @@ el.textContent = timeAgo(dateStr);
 });
 }
 
+function getCategoryUrl(categoryName) {
+    const baseUrl = "https://bidjadraft.github.io/category/";
+    switch (categoryName) {
+        case "التطبيقات":
+            return baseUrl + "apps";
+        case "الذكاء الاصطناعي":
+            return baseUrl + "ai";
+        case "الأجهزة":
+            return baseUrl + "devices";
+        case "الأنظمة":
+            return baseUrl + "system";
+        case "منصات التواصل":
+            return baseUrl + "socialmedia";
+        default:
+            return "https://bidjadraft.github.io/"; // Default or general category page
+    }
+}
+
 async function loadRelatedArticles() {
-try {
-const res = await fetch(`https://api.github.com/repos/${githubUser}/${repoName}/contents/${folder}`);
-const files = await res.json();
+    try {
+        const res = await fetch(`https://api.github.com/repos/${githubUser}/${repoName}/contents/${folder}`);
+        const files = await res.json();
 
-if (!Array.isArray(files)) {
-const loadingContainer = document.getElementById('loading-container');
-loadingContainer.innerHTML = "<div style='color:#f00;text-align:center;padding:20px'>خطأ في جلب المقالات.</div>";
-return;
-}
+        if (!Array.isArray(files)) {
+            const loadingContainer = document.getElementById('loading-container');
+            loadingContainer.innerHTML = "<div style='color:#f00;text-align:center;padding:20px'>خطأ في جلب المقالات.</div>";
+            return;
+        }
 
-const mdFiles = files.filter(f => f.name.endsWith('.md'));
-const news = [];
+        const mdFiles = files.filter(f => f.name.endsWith('.md'));
+        const news = [];
 
-for (const file of mdFiles) {
-const mdText = await fetch(file.download_url).then(r => r.text());
-const meta = parseFrontMatter(mdText);
+        for (const file of mdFiles) {
+            const mdText = await fetch(file.download_url).then(r => r.text());
+            const meta = parseFrontMatter(mdText);
 
-let pageUrl = `https://${githubUser}.github.io/${folder}/${file.name.replace(/\.md$/, '')}`;
-pageUrl = normalizeUrl(pageUrl);
+            let pageUrl = `https://${githubUser}.github.io/${folder}/${file.name.replace(/\.md$/, '')}`;
+            pageUrl = normalizeUrl(pageUrl);
 
-// مقارنة غير حساسة لحالة الأحرف
-if (pageUrl.toLowerCase() === currentPageUrl.toLowerCase()) continue;
+            // مقارنة غير حساسة لحالة الأحرف
+            if (pageUrl.toLowerCase() === currentPageUrl.toLowerCase()) continue;
 
-news.push({
-title: meta.title || file.name.replace('.md', '').replace(/-/g, ' '),
-image: meta.image || "https://via.placeholder.com/600x400?text=خبر",
-date: meta.date || "",
-category: meta.category || "عام",
-pageUrl: pageUrl
-});
-}
+            news.push({
+                title: meta.title || file.name.replace('.md', '').replace(/-/g, ' '),
+                image: meta.image || "https://via.placeholder.com/600x400?text=خبر",
+                date: meta.date || "",
+                category: meta.category || "عام",
+                pageUrl: pageUrl
+            });
+        }
 
-news.sort((a, b) => new Date(b.date) - new Date(a.date));
+        news.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-const container = document.getElementById('related-news-list');
-const loadingContainer = document.getElementById('loading-container');
+        const container = document.getElementById('related-news-list');
+        const loadingContainer = document.getElementById('loading-container');
 
-container.innerHTML = "";
+        container.innerHTML = "";
 
-news.slice(0, 10).forEach(n => {
-const newsItem = document.createElement('div');
-newsItem.className = 'news-item';
+        news.slice(0, 10).forEach(n => {
+            const newsItem = document.createElement('div');
+            newsItem.className = 'news-item';
 
-newsItem.innerHTML = `
-<a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-thumb-link" aria-label="خبر: ${n.title}">
-<img class="news-thumb" src="${n.image}" alt="صورة الخبر: ${n.title}">
-</a>
-<div class="news-info">
-<a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-title">${n.title}</a>
-<div class="news-meta-time">
-<span class="news-category">${n.category}</span>
-<span class="news-time" data-date="${n.date}"></span>
-</div>
-</div>
-`;
-container.appendChild(newsItem);
-});
+            const categoryLink = getCategoryUrl(n.category);
 
-if(news.length === 0) {
-container.innerHTML = "<div style='color:#aaa;text-align:center;padding:20px'>لا توجد مقالات أخرى</div>";
-}
+            newsItem.innerHTML = `
+                <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-thumb-link" aria-label="خبر: ${n.title}">
+                    <img class="news-thumb" src="${n.image}" alt="صورة الخبر: ${n.title}">
+                </a>
+                <div class="news-info">
+                    <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-title">${n.title}</a>
+                    <div class="news-meta-time">
+                        <a href="${categoryLink}" class="news-category">${n.category}</a>
+                        <span class="news-time" data-date="${n.date}"></span>
+                    </div>
+                </div>
+            `;
+            container.appendChild(newsItem);
+        });
 
-loadingContainer.style.display = "none";
-container.style.display = "flex";
+        if (news.length === 0) {
+            container.innerHTML = "<div style='color:#aaa;text-align:center;padding:20px'>لا توجد مقالات أخرى</div>";
+        }
 
-updateTimes();
+        loadingContainer.style.display = "none";
+        container.style.display = "flex";
 
-} catch (error) {
-const loadingContainer = document.getElementById('loading-container');
-loadingContainer.innerHTML = "<div style='color:#f00;text-align:center;padding:20px'>حدث خطأ أثناء تحميل المقالات.</div>";
-}
+        updateTimes();
+
+    } catch (error) {
+        const loadingContainer = document.getElementById('loading-container');
+        loadingContainer.innerHTML = "<div style='color:#f00;text-align:center;padding:20px'>حدث خطأ أثناء تحميل المقالات.</div>";
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
