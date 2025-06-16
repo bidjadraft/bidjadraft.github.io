@@ -224,13 +224,13 @@
       overflow: hidden;
       border-radius: 0;
       max-width: 600px;
-      margin: 24px auto 0 auto;
+      margin: 24px 0 0 auto; /* Changed to push image to the right */
     }
 
     /* استبدال الجزء المطلوب مع الحفاظ على نفس الأبعاد */
     .article-content {
       max-width: 600px;
-      margin: 0 auto;
+      margin: 0 0 0 auto; /* Changed to push content to the right */
       padding-left: 24px;
       padding-right: 24px;
       box-sizing: border-box;
@@ -250,7 +250,7 @@
       justify-content: flex-start; /* Changed from flex-end to flex-start for RTL */
       gap: 10px;
       max-width: 600px;
-      margin: 0 0 12px 0;
+      margin: 0 0 12px auto; /* Keep it aligned with the content block */
       padding-left: 24px;
       padding-right: 24px;
       box-sizing: border-box;
@@ -289,13 +289,14 @@
       letter-spacing: 0.05em;
       border-bottom: 2px solid #60a5fa;
       border-radius: 0;
-      margin: 0 auto;
+      margin: 0 0 0 auto; /* Changed to push bar to the right */
+      max-width: 600px; /* Added max-width to match content */
     }
 
     #related-articles {
       width: 100%;
       max-width: 600px;
-      margin: 0 auto;
+      margin: 0 0 0 auto; /* Changed to push related articles to the right */
       padding-left: 24px;
       padding-right: 24px;
       box-sizing: border-box;
@@ -381,6 +382,11 @@
       #related-articles .news-thumb {
         width: 120px;
         height: 80px;
+      }
+      /* Adjust margins for smaller screens if needed to keep them from hugging the right edge too much */
+      img.article-image, .article-content, #related-articles, .full-width-news-bar {
+        margin-right: auto; /* Revert to auto on both sides for centering on small screens */
+        margin-left: auto;
       }
     }
   </style>
