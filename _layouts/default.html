@@ -246,14 +246,16 @@
       user-select: text;
     }
     .article-meta-row {
-      display: flex;
-      justify-content: flex-start; /* Changed from flex-end to flex-start for RTL */
-      gap: 10px;
+      /* التعديلات هنا: */
+      /* Removed: display: flex; */
+      /* Removed: justify-content: flex-start; */
+      /* Removed: gap: 10px; */
       max-width: 600px;
-      margin: 0 0 12px auto; /* Keep it aligned with the content block */
+      margin: 0 0 12px auto;
       padding-left: 24px;
       padding-right: 24px;
       box-sizing: border-box;
+      text-align: right; /* لضمان محاذاة المحتوى الداخلي إلى اليمين */
       direction: rtl;
       user-select: none;
     }
@@ -262,6 +264,7 @@
       font-weight: 600;
       font-size: 1em;
       margin: 0;
+      margin-left: 10px; /* لإضافة مسافة بين الفئة والوقت */
     }
     .article-date.news-time {
       color: #a1a1aa;
