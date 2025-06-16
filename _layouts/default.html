@@ -216,9 +216,8 @@
     }
 
     /* تنسيق العناصر الرئيسية التي يجب أن تظهر في عمود واحد */
-    img.article-image,
     .article-content,
-    .article-meta-row, /* أضفنا هذا لتطبيق نفس القواعد */
+    .article-meta-row,
     .full-width-news-bar,
     #related-articles {
       max-width: 600px;
@@ -228,16 +227,20 @@
       box-sizing: border-box; /* للتأكد من أن البادينج لا يضيف للـ width */
     }
 
-    /* تنسيقات خاصة بكل عنصر */
+    /* تنسيقات خاصة بالصورة */
     img.article-image {
+      width: 100%; /* تأخذ 100% من عرض حاويتها (التي هي 600px - 48px بادينج) */
       height: auto;
       display: block;
       object-fit: cover;
       overflow: hidden;
       border-radius: 0;
-      margin-top: 24px; /* حافظ على الهامش العلوي */
+      max-width: 550px; /* تم تصغير أقصى عرض للصورة هنا */
+      margin-top: 24px; /* الهامش العلوي فقط */
+      /* تمت إزالة margin و padding و box-sizing من هنا لأنها مطبقة في القاعدة الموحدة أعلاه */
     }
 
+    /* تنسيقات خاصة ببقية العناصر */
     .article-content {
       text-align: right; /* لمحاذاة النص داخل المقال والعنوان */
     }
