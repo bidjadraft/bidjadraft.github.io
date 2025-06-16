@@ -1,657 +1,653 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>أخبار التقنية | بجاد الأثري</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
-  <style>
-    body {
-      margin: 0;
-      font-family: "Cairo", "Segoe UI", "Arial", sans-serif;
-      background: #18181b;
-      color: #e5e7eb;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
-    }
-    body.no-scroll {
-      overflow: hidden;
-      user-select: none;
-    }
-    header {
-      background: #18181b;
-      padding: 8px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #23232a;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 8px #0008;
-    }
-    .profile {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .profile a {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-    }
-    .profile-img {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #23232a;
-      box-shadow: 0 2px 8px #0003;
-      transition: transform 0.3s ease;
-    }
-    .profile-img:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 16px #2563ebaa;
-    }
-    .username {
-      font-size: 1.1em;
-      color: #e5e7eb;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      user-select: none;
-    }
-    .username a {
-      color: inherit;
-      font-weight: 700;
-      text-decoration: none;
-      display: flex;
-      gap: 6px;
-    }
-    .username .blue {
-      color: #60a5fa;
-      font-size: 0.9em;
-      max-width: 90px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: inline-block;
-      vertical-align: bottom;
-      padding: 0 8px;
-      box-sizing: border-box;
-      background-color: transparent;
-    }
-    .menu-button {
-      background: none;
-      border: none;
-      color: #e5e7eb;
-      font-size: 1.5em;
-      cursor: pointer;
-    }
-    .sidebar-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 150;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
-    .sidebar-overlay.show {
-      opacity: 1;
-      visibility: visible;
-    }
-    .sidebar {
-      position: fixed;
-      left: -100%;
-      top: 0;
-      width: 200px;
-      height: 100%;
-      background: #23232a;
-      transition: left 0.3s ease;
-      padding: 20px 20px 35px 20px;
-      z-index: 200;
-      display: flex;
-      flex-direction: column;
-    }
-    .sidebar.show {
-      left: 0;
-    }
-    .sidebar-search-box {
-      margin-bottom: 25px;
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-    .sidebar-search-box input {
-      width: 100%;
-      padding: 10px 15px 10px 40px;
-      border: 1px solid #3a3a41;
-      border-radius: 8px;
-      background-color: #33333a;
-      color: #e5e7eb;
-      font-size: 0.95em;
-      outline: none;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-      box-sizing: border-box;
-    }
-    .sidebar-search-box input::placeholder {
-      color: #a1a1aa;
-    }
-    .sidebar-search-box input:focus {
-      border-color: #60a5fa;
-      box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(96, 165, 250, 0.3);
-    }
-    .sidebar-search-box .search-icon {
-      position: absolute;
-      left: 15px;
-      color: #a1a1aa;
-      font-size: 1.1em;
-    }
-    .sidebar ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-      flex-grow: 1;
-      overflow-y: auto;
-    }
-    .sidebar ul li {
-      margin: 15px 0;
-    }
-    .sidebar ul li a {
-      color: #60a5fa;
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-    .sidebar ul li:first-child a {
-      color: #ffffff;
-    }
-    .sidebar ul li a:hover {
-      color: #fff;
-    }
-    .sidebar-social {
-      display: flex;
-      justify-content: space-around;
-      padding: 15px 0;
-      border-top: 1px solid #3a3a41;
-      margin-top: 15px;
-    }
-    .sidebar-social a {
-      color: #a1a1aa;
-      font-size: 1.5em;
-      text-decoration: none;
-      transition: color 0.3s ease, transform 0.2s ease;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-    }
-    .sidebar-social a:hover {
-      color: #60a5fa;
-      transform: translateY(-3px) scale(1.1);
-      background-color: rgba(96, 165, 250, 0.1);
-    }
-    .sidebar-social a .fa-x-twitter:hover {
-      color: #000;
-      background-color: #fff;
-    }
-    .sidebar-social a .fa-facebook-f:hover {
-      color: #1877f2;
-    }
-    .sidebar-social a .fa-telegram-plane:hover {
-      color: #0088cc;
-    }
-    .sidebar-social a .fa-rss-square:hover {
-      color: #f26522;
-    }
-
-    /* Article and content styling without containers */
-    img.article-image {
-      width: 100%;
-      height: auto;
-      display: block;
-      object-fit: cover;
-      overflow: hidden;
-      border-radius: 0;
-      max-width: 600px;
-      margin: 24px 0 0 auto; /* Changed to push image to the right */
-    }
-
-    /* Replaced section with the same dimensions */
-    .article-content {
-      max-width: 600px;
-      margin: 0 0 0 auto; /* Changed to push content to the right */
-      padding-left: 24px;
-      padding-right: 24px;
-      box-sizing: border-box;
-      text-align: right;
-    }
-    .article-title {
-      color: #e5e7eb;
-      font-weight: 800;
-      font-size: 1.35em;
-      margin: 16px 0 8px 0;
-      max-width: 600px;
-      line-height: 1.2;
-      user-select: text;
-    }
-    .article-meta-row {
-  padding-left: 24px;
-  padding-right: 24px;
-  margin: 0 0 12px auto;
-  box-sizing: border-box;
-  text-align: right;
-  direction: rtl;
-  user-select: none;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>أخبار التقنية | بجاد الأثري</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+body {
+margin: 0;
+font-family: "Cairo", "Segoe UI", "Arial", sans-serif;
+background: #18181b;
+color: #e5e7eb;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+overflow-x: hidden;
+}
+body.no-scroll {
+overflow: hidden;
+user-select: none;
+}
+header {
+background: #18181b;
+padding: 8px 18px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+border-bottom: 1px solid #23232a;
+position: sticky;
+top: 0;
+z-index: 100;
+box-shadow: 0 2px 8px #0008;
+}
+.profile {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+.profile a {
+display: flex;
+align-items: center;
+text-decoration: none;
+}
+.profile-img {
+width: 44px;
+height: 44px;
+border-radius: 50%;
+object-fit: cover;
+border: 2px solid #23232a;
+box-shadow: 0 2px 8px #0003;
+transition: transform 0.3s ease;
+}
+.profile-img:hover {
+transform: scale(1.1);
+box-shadow: 0 4px 16px #2563ebaa;
+}
+.username {
+font-size: 1.1em;
+color: #e5e7eb;
+font-weight: 700;
+display: flex;
+align-items: center;
+gap: 6px; /* تم تعديل المسافة هنا لتكون 6px مثل .username a */
+user-select: none;
+}
+.username a {
+color: inherit;
+font-weight: 700;
+text-decoration: none;
+display: flex;
+gap: 6px;
+}
+.username .blue {
+color: #60a5fa;
+font-size: 1em; /* تم تعديل حجم الخط ليكون مثل بجاد */
+/* تمت إزالة max-width و white-space و overflow و text-overflow و padding و box-sizing ليتناسب مع التنسيق */
+display: inline-block;
+vertical-align: bottom;
+background-color: transparent;
+}
+.menu-button {
+background: none;
+border: none;
+color: #e5e7eb;
+font-size: 1.5em;
+cursor: pointer;
+}
+.sidebar-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.5);
+z-index: 150;
+opacity: 0;
+visibility: hidden;
+transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.sidebar-overlay.show {
+opacity: 1;
+visibility: visible;
+}
+.sidebar {
+position: fixed;
+left: -100%;
+top: 0;
+width: 200px;
+height: 100%;
+background: #23232a;
+transition: left 0.3s ease;
+padding: 20px 20px 35px 20px;
+z-index: 200;
+display: flex;
+flex-direction: column;
+}
+.sidebar.show {
+left: 0;
+}
+.sidebar-search-box {
+margin-bottom: 25px;
+position: relative;
+display: flex;
+align-items: center;
+}
+.sidebar-search-box input {
+width: 100%;
+padding: 10px 15px 10px 40px;
+border: 1px solid #3a3a41;
+border-radius: 8px;
+background-color: #33333a;
+color: #e5e7eb;
+font-size: 0.95em;
+outline: none;
+box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+transition: border-color 0.3s ease, box-shadow 0.3s ease;
+box-sizing: border-box;
+}
+.sidebar-search-box input::placeholder {
+color: #a1a1aa;
+}
+.sidebar-search-box input:focus {
+border-color: #60a5fa;
+box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(96, 165, 250, 0.3);
+}
+.sidebar-search-box .search-icon {
+position: absolute;
+left: 15px;
+color: #a1a1aa;
+font-size: 1.1em;
+}
+.sidebar ul {
+list-style-type: none;
+padding: 0;
+margin: 0;
+flex-grow: 1;
+overflow-y: auto;
+}
+.sidebar ul li {
+margin: 15px 0;
+}
+.sidebar ul li a {
+color: #60a5fa;
+text-decoration: none;
+transition: color 0.3s;
+}
+.sidebar ul li:first-child a {
+color: #60a5fa;
+}
+.sidebar ul li a:hover {
+color: #fff;
+}
+.sidebar-social {
+display: flex;
+justify-content: space-around;
+padding: 15px 0;
+border-top: 1px solid #3a3a41;
+margin-top: 15px;
+}
+.sidebar-social a {
+color: #a1a1aa;
+font-size: 1.5em;
+text-decoration: none;
+transition: color 0.3s ease, transform 0.2s ease;
+width: 36px;
+height: 36px;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 50%;
+}
+.sidebar-social a:hover {
+color: #60a5fa;
+transform: translateY(-3px) scale(1.1);
+background-color: rgba(96, 165, 250, 0.1);
+}
+.sidebar-social a .fa-x-twitter:hover {
+color: #000;
+background-color: #fff;
+}
+.sidebar-social a .fa-facebook-f:hover {
+color: #1877f2;
+}
+.sidebar-social a .fa-telegram-plane:hover {
+color: #0088cc;
+}
+.sidebar-social a .fa-rss-square:hover {
+color: #f26522;
 }
 
-    .article-meta {
-      color: #60a5fa;
-      font-weight: 600;
-      font-size: 1em;
-      margin: 0;
-      margin-left: 10px; /* Add space between category and time */
-    }
-    .article-date.news-time {
-      color: #a1a1aa;
-      font-weight: 400;
-      font-size: 1em;
-      margin: 0;
-    }
+/* Article and content styling without containers */
+img.article-image {
+width: 100%;
+height: auto;
+display: block;
+object-fit: cover;
+overflow: hidden;
+border-radius: 0;
+max-width: 600px;
+margin: 24px 0 0 auto;
+}
 
-    div.article-content > .article-body {
-      display: none; /* Hide content here because it exists elsewhere */
-    }
+/* Replaced section with the same dimensions */
+.article-content {
+max-width: 600px;
+margin: 0 0 0 auto;
+padding-left: 24px;
+padding-right: 24px;
+box-sizing: border-box;
+text-align: right;
+}
+.article-title {
+color: #e5e7eb;
+font-weight: 800;
+font-size: 1.35em;
+margin: 16px 0 8px 0;
+max-width: 600px;
+line-height: 1.2;
+user-select: text;
+}
+.article-meta-row {
+padding-left: 24px;
+padding-right: 24px;
+margin: 0 0 12px auto;
+box-sizing: border-box;
+text-align: right;
+direction: rtl;
+user-select: none;
+}
 
-    .full-width-news-bar {
-      width: 70%;
-      background-color: transparent;
-      color: #60a5fa;
-      font-weight: 700;
-      font-size: 1.3em;
-      text-align: center;
-      padding-top: 8px;
-      padding-bottom: 8px;
-      box-shadow: none;
-      user-select: none;
-      font-family: "Cairo", sans-serif;
-      letter-spacing: 0.05em;
-      border-bottom: 2px solid #60a5fa;
-      border-radius: 0;
-      margin: 0 0 0 auto; /* Changed to push bar to the right */
-      max-width: 600px; /* Added max-width to match content */
-    }
+.article-meta {
+color: #60a5fa;
+font-weight: 600;
+font-size: 1em;
+margin: 0;
+margin-left: 10px;
+}
+.article-date.news-time {
+color: #a1a1aa;
+font-weight: 400;
+font-size: 1em;
+margin: 0;
+}
 
-    #related-articles {
-      width: 100%;
-      max-width: 600px;
-      margin: 0 0 0 auto; /* Changed to push related articles to the right */
-      padding-left: 24px;
-      padding-right: 24px;
-      box-sizing: border-box;
-    }
-    #related-articles .news-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      margin-top: 8px;
-    }
-    #related-articles .news-item {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 16px 0;
-      border-bottom: 1px solid #fff;
-      background: none;
-      border-radius: 0;
-      min-height: 90px;
-      word-break: break-word;
-    }
-    #related-articles .news-item:last-child {
-      border-bottom: none;
-    }
-    #related-articles .news-thumb {
-      width: 180px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 8px;
-      flex-shrink: 0;
-      background: #23232a;
-      display: block;
-    }
-    #related-articles .news-info {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      height: 100%;
-      overflow-wrap: break-word;
-    }
-    #related-articles .news-title {
-      color: #e5e7eb;
-      font-size: 1em;
-      font-weight: 500;
-      text-decoration: none;
-      transition: color 0.2s;
-      margin: 0 0 4px 0;
-      padding: 0;
-      display: block;
-      white-space: normal;
-      word-break: break-word;
-      overflow-wrap: break-word;
-    }
-    #related-articles .news-title:hover {
-      color: #60a5fa;
-    }
-    #related-articles .news-meta-time {
-      display: flex;
-      gap: 12px;
-      font-size: 0.85em;
-      color: #a1a1aa;
-      user-select: none;
-    }
-    #related-articles .news-meta-time .news-category {
-      color: #60a5fa;
-      font-weight: bold;
-    }
+div.article-content > .article-body {
+display: none;
+}
 
-    /* Loading text styling */
-    .loading-text {
-      text-align: center;
-      color: #aaa;
-      padding: 20px 0;
-      user-select: none;
-      font-size: 1em;
-    }
+.full-width-news-bar {
+width: 70%;
+background-color: transparent;
+color: #60a5fa;
+font-weight: 700;
+font-size: 1.3em;
+text-align: center;
+padding-top: 8px;
+padding-bottom: 8px;
+box-shadow: none;
+user-select: none;
+font-family: "Cairo", sans-serif;
+letter-spacing: 0.05em;
+border-bottom: 2px solid #60a5fa;
+border-radius: 0;
+margin: 0 0 0 auto;
+max-width: 600px;
+}
 
-    @media (max-width: 600px) {
-      div.article-meta-row, div.article-content, #related-articles {
-        padding-left: 12px !important;
-        padding-right: 12px !important;
-      }
-      #related-articles .news-thumb {
-        width: 120px;
-        height: 80px;
-      }
-      /* Adjust margins for smaller screens if needed to keep them from hugging the right edge too much */
-      img.article-image, .article-content, #related-articles, .full-width-news-bar {
-        margin-right: auto; /* Revert to auto on both sides for centering on small screens */
-        margin-left: auto;
-      }
-    }
+#related-articles {
+width: 100%;
+max-width: 600px;
+margin: 0 0 0 auto;
+padding-left: 24px;
+padding-right: 24px;
+box-sizing: border-box;
+}
+#related-articles .news-list {
+display: flex;
+flex-direction: column;
+gap: 0;
+margin-top: 8px;
+}
+#related-articles .news-item {
+display: flex;
+align-items: center;
+gap: 16px;
+padding: 16px 0;
+border-bottom: 1px solid #fff;
+background: none;
+border-radius: 0;
+min-height: 90px;
+word-break: break-word;
+}
+#related-articles .news-item:last-child {
+border-bottom: none;
+}
+#related-articles .news-thumb {
+width: 180px;
+height: 120px;
+object-fit: cover;
+border-radius: 8px;
+flex-shrink: 0;
+background: #23232a;
+display: block;
+}
+#related-articles .news-info {
+display: flex;
+flex-direction: column;
+justify-content: center;
+height: 100%;
+overflow-wrap: break-word;
+}
+#related-articles .news-title {
+color: #e5e7eb;
+font-size: 1em;
+font-weight: 500;
+text-decoration: none;
+transition: color 0.2s;
+margin: 0 0 4px 0;
+padding: 0;
+display: block;
+white-space: normal;
+word-break: break-word;
+overflow-wrap: break-word;
+}
+#related-articles .news-title:hover {
+color: #60a5fa;
+}
+#related-articles .news-meta-time {
+display: flex;
+gap: 12px;
+font-size: 0.85em;
+color: #a1a1aa;
+user-select: none;
+}
+#related-articles .news-meta-time .news-category {
+color: #60a5fa;
+font-weight: bold;
+}
 
-    footer {
-      text-align: center;
-      color: #71717a;
-      font-size: 0.80em;
-      padding: 12px 12px 10px 12px;
-      margin-top: 40px;
-      border-top: 1px solid #2c2c36;
-      letter-spacing: 0.06em;
-      user-select: none;
-      background: #18181b;
-      transition: color 0.3s ease;
-    }
-    footer:hover {
-      color: #60a5fa;
-    }
-  </style>
+/* Loading text styling */
+.loading-text {
+text-align: center;
+color: #aaa;
+padding: 20px 0;
+user-select: none;
+font-size: 1em;
+}
+
+@media (max-width: 600px) {
+div.article-meta-row, div.article-content, #related-articles {
+padding-left: 12px !important;
+padding-right: 12px !important;
+}
+#related-articles .news-thumb {
+width: 120px;
+height: 80px;
+}
+/* Adjust margins for smaller screens if needed to keep them from hugging the right edge too much */
+img.article-image, .article-content, #related-articles, .full-width-news-bar {
+margin-right: auto;
+margin-left: auto;
+}
+}
+
+footer {
+text-align: center;
+color: #71717a;
+font-size: 0.80em;
+padding: 12px 12px 10px 12px;
+margin-top: 40px;
+border-top: 1px solid #2c2c36;
+letter-spacing: 0.06em;
+user-select: none;
+background: #18181b;
+transition: color 0.3s ease;
+}
+footer:hover {
+color: #60a5fa;
+}
+</style>
 </head>
 <body>
-  <header>
-    <div class="profile">
-      <a href="https://bidjadraft.github.io/links" title="زيارة صفحة بجاد الأثري">
-        <img class="profile-img" src="https://i.imgur.com/GaPGMgJ.png" alt="Profile" />
-      </a>
-      <div class="username">
-        <a href="https://bidjadraft.github.io/" title="زيارة صفحة بجاد التقني">
-          <span>بجاد</span> <span class="blue">التقني</span>
-        </a>
-      </div>
-    </div>
-    <button class="menu-button" onclick="toggleSidebar()">
-      <i class="fas fa-bars"></i>
-    </button>
-  </header>
+<header>
+<div class="profile">
+<a href="https://bidjadraft.github.io/links" title="زيارة صفحة بجاد الأثري">
+<img class="profile-img" src="https://i.imgur.com/GaPGMgJ.png" alt="Profile" />
+</a>
+<div class="username">
+<a href="https://bidjadraft.github.io/" title="زيارة صفحة بجاد التقني">
+<span>بجاد</span> <span class="blue">التقني</span>
+</a>
+</div>
+</div>
+<button class="menu-button" onclick="toggleSidebar()">
+<i class="fas fa-bars"></i>
+</button>
+</header>
 
-  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-  <div class="sidebar" id="sidebar">
-    <div class="sidebar-search-box">
-      <i class="fas fa-search search-icon"></i>
-      <form id="search-form" action="/" method="GET">
-        <input type="search" name="query" placeholder="ابحث في العناوين والمقالات..." aria-label="Search articles" />
-      </form>
-    </div>
+<div class="sidebar" id="sidebar">
+<div class="sidebar-search-box">
+<i class="fas fa-search search-icon"></i>
+<form id="search-form" action="/" method="GET">
+<input type="search" name="query" placeholder="ابحث في العناوين والمقالات..." aria-label="Search articles" />
+</form>
+</div>
 
-    <ul>
-      <li><a href="https://bidjadraft.github.io/">الرئيسية</a></li>
-      <li><a href="https://bidjadraft.github.io/category/apps">التطبيقات</a></li>
-      <li><a href="https://bidjadraft.github.io/category/socialmedia">منصات التواصل</a></li>
-      <li><a href="https://bidjadraft.github.io/category/ai">الذكاء الاصطناعي</a></li>
-      <li><a href="https://bidjadraft.github.io/category/devices">الأجهزة</a></li>
-      <li><a href="https://bidjadraft.github.io/category/system">الأنظمة</a></li>
-      <li><a href="#about">من نحن</a></li>
-      <li><a href="#contact">اتصل بنا</a></li>
-    </ul>
+<ul>
+<li><a href="https://bidjadraft.github.io/">الرئيسية</a></li>
+<li><a href="https://bidjadraft.github.io/category/apps">التطبيقات</a></li>
+<li><a href="https://bidjadraft.github.io/category/socialmedia">منصات التواصل</a></li>
+<li><a href="https://bidjadraft.github.io/category/ai">الذكاء الاصطناعي</a></li>
+<li><a href="https://bidjadraft.github.io/category/devices">الأجهزة</a></li>
+<li><a href="https://bidjadraft.github.io/category/system">الأنظمة</a></li>
+<li><a href="#about">من نحن</a></li>
+<li><a href="#contact">اتصل بنا</a></li>
+</ul>
 
-    <div class="sidebar-social">
-      <a href="https://x.com/bidjadraft" aria-label="منصة X"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://www.facebook.com/bidjadtech/" aria-label="فيسبوك"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://t.me/bidjadtech" aria-label="تيليجرام"><i class="fab fa-telegram-plane"></i></a>
-      <a href="https://bidjadraft.github.io/feed.xml" aria-label="RSS"><i class="fas fa-rss-square"></i></a>
-    </div>
-  </div>
+<div class="sidebar-social">
+<a href="https://x.com/bidjadraft" aria-label="منصة X"><i class="fab fa-x-twitter"></i></a>
+<a href="https://www.facebook.com/bidjadtech/" aria-label="فيسبوك"><i class="fab fa-facebook-f"></i></a>
+<a href="https://t.me/bidjadtech" aria-label="تيليجرام"><i class="fab fa-telegram-plane"></i></a>
+<a href="https://bidjadraft.github.io/feed.xml" aria-label="RSS"><i class="fas fa-rss-square"></i></a>
+</div>
+</div>
 
-  <img class="article-image" src="{{ page.image }}" alt="صورة المقال" />
+<img class="article-image" src="{{ page.image }}" alt="صورة المقال" />
 
-  <div class="article-content">
-    <div class="article-title">{{ page.title }}</div>
-    <div class="article-meta-row">
-      <span class="article-meta">{{ page.category }}</span>
-      <span class="article-date news-time" data-date="{{ page.date }}"></span>
-    </div>
-  </div>
+<div class="article-content">
+<div class="article-title">{{ page.title }}</div>
+<div class="article-meta-row">
+<span class="article-meta">{{ page.category }}</span>
+<span class="article-date news-time" data-date="{{ page.date }}"></span>
+</div>
+</div>
 
-  <div class="article-content">
-    {{ content }}
-  </div>
+<div class="article-content">
+{{ content }}
+</div>
 
-  <div class="full-width-news-bar" aria-label="شريط اقرأ أيضًا">
-    اقرأ أيضًا
-  </div>
+<div class="full-width-news-bar" aria-label="شريط اقرأ أيضًا">
+اقرأ أيضًا
+</div>
 
-  <section id="related-articles" aria-label="اقرأ أيضًا">
-    <div id="loading-container">
-      <div class="loading-text">جارٍ تحميل المقالات...</div>
-    </div>
-    <div class="news-list" id="related-news-list" style="display:none;"></div>
-  </section>
+<section id="related-articles" aria-label="اقرأ أيضًا">
+<div id="loading-container">
+<div class="loading-text">جارٍ تحميل المقالات...</div>
+</div>
+<div class="news-list" id="related-news-list" style="display:none;"></div>
+</section>
 
-  <footer style="text-align: center; color: #71717a; font-size: 0.80em; padding: 12px 12px 10px 12px; margin-top: 40px; border-top: 1px solid #2c2c36; letter-spacing: 0.06em; user-select: none; background: #18181b; transition: color 0.3s ease;">
-    © جميع الحقوق محفوظة بجاد الأثري
-  </footer>
+<footer>
+© جميع الحقوق محفوظة بجاد الأثري
+</footer>
 
-  <script>
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('sidebar-overlay');
+<script>
+function toggleSidebar() {
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('sidebar-overlay');
 
-      sidebar.classList.toggle('show');
-      overlay.classList.toggle('show');
-      document.body.classList.toggle('no-scroll', sidebar.classList.contains('show'));
-    }
+sidebar.classList.toggle('show');
+overlay.classList.toggle('show');
+document.body.classList.toggle('no-scroll', sidebar.classList.contains('show'));
+}
 
-    document.addEventListener('click', function(event) {
-      const sidebar = document.getElementById('sidebar');
-      const menuButton = document.querySelector('.menu-button');
-      const overlay = document.getElementById('sidebar-overlay');
-      const searchInput = document.querySelector('.sidebar-search-box input');
+document.addEventListener('click', function(event) {
+const sidebar = document.getElementById('sidebar');
+const menuButton = document.querySelector('.menu-button');
+const overlay = document.getElementById('sidebar-overlay');
+const searchInput = document.querySelector('.sidebar-search-box input');
 
-      if (sidebar.classList.contains('show')) {
-        if (event.target === overlay || (!sidebar.contains(event.target) && !menuButton.contains(event.target) && !searchInput.contains(event.target))) {
-          sidebar.classList.remove('show');
-          overlay.classList.remove('show');
-          document.body.classList.remove('no-scroll');
-        }
-      }
-    });
+if (sidebar.classList.contains('show')) {
+if (event.target === overlay || (!sidebar.contains(event.target) && !menuButton.contains(event.target) && !searchInput.contains(event.target))) {
+sidebar.classList.remove('show');
+overlay.classList.remove('show');
+document.body.classList.remove('no-scroll');
+}
+}
+});
 
-    const githubUser = "bidjadraft";
-    const repoName = "bidjadraft.github.io";
-    const folder = "news";
+const githubUser = "bidjadraft";
+const repoName = "bidjadraft.github.io";
+const folder = "news";
 
-    function normalizeUrl(url) {
-      url = decodeURIComponent(url.toLowerCase());
-      url = url.replace(/\/(index\.(html?|php))$/, "");
-      url = url.replace(/\/$/, "");
-      return url;
-    }
+function normalizeUrl(url) {
+url = decodeURIComponent(url);
+url = url.replace(/\/(index\.(html?|php))$/, "");
+url = url.replace(/\/$/, "");
+return url;
+}
 
-    const currentPageUrl = normalizeUrl(window.location.href);
+const currentPageUrl = normalizeUrl(window.location.href);
 
-    function parseFrontMatter(mdText) {
-      const fmMatch = mdText.match(/^---\s*([\s\S]*?)\s*---/);
-      let meta = {};
-      if (fmMatch) {
-        const lines = fmMatch[1].split('\n');
-        lines.forEach(line => {
-          const match = line.match(/^([\w\u0600-\u06FF\-]+):\s*["']?(.+?)["']?$/);
-          if (match) meta[match[1].trim()] = match[2].trim();
-        });
-      }
-      return meta;
-    }
+function parseFrontMatter(mdText) {
+const fmMatch = mdText.match(/^---\s*([\s\S]*?)\s*---/);
+let meta = {};
+if (fmMatch) {
+const lines = fmMatch[1].split('\n');
+lines.forEach(line => {
+const match = line.match(/^([\w\u0600-\u06FF\-]+):\s*["']?(.+?)["']?$/);
+if (match) meta[match[1].trim()] = match[2].trim();
+});
+}
+return meta;
+}
 
-    function timeAgo(dateString) {
-      if (!dateString) return "تاريخ غير متوفر";
-      const date = new Date(dateString);
-      if (isNaN(date.getTime())) return "تاريخ غير صالح";
+function timeAgo(dateString) {
+if (!dateString) return "تاريخ غير متوفر";
+const date = new Date(dateString);
+if (isNaN(date.getTime())) return "تاريخ غير صالح";
 
-      const now = new Date();
-      const seconds = Math.floor((now - date) / 1000);
-      if (seconds < 0) return "في المستقبل";
+const now = new Date();
+const seconds = Math.floor((now - date) / 1000);
+if (seconds < 0) return "في المستقبل";
 
-      function pluralize(count, singular, dual, plural) {
-        if (count === 1) return singular;
-        if (count === 2) return dual;
-        if (count >= 3 && count <= 10) return plural;
-        return plural;
-      }
+function pluralize(count, singular, dual, plural) {
+if (count === 1) return singular;
+if (count === 2) return dual;
+if (count >= 3 && count <= 10) return plural;
+return plural;
+}
 
-      const intervals = [
-        { label: ["شهر", "شهران", "أشهر"], seconds: 2592000 },
-        { label: ["يوم", "يومان", "أيام"], seconds: 86400 },
-        { label: ["ساعة", "ساعتان", "ساعات"], seconds: 3600 },
-        { label: ["دقيقة", "دقيقتان", "دقائق"], seconds: 60 },
-        { label: ["ثانية", "ثانيتان", "ثوانٍ"], seconds: 1 }
-      ];
+const intervals = [
+{ label: ["شهر", "شهران", "أشهر"], seconds: 2592000 },
+{ label: ["يوم", "يومان", "أيام"], seconds: 86400 },
+{ label: ["ساعة", "ساعتان", "ساعات"], seconds: 3600 },
+{ label: ["دقيقة", "دقيقتان", "دقائق"], seconds: 60 },
+{ label: ["ثانية", "ثانيتان", "ثوانٍ"], seconds: 1 }
+];
 
-      for (const interval of intervals) {
-        const count = Math.floor(seconds / interval.seconds);
-        if (count >= 1) {
-          if (interval.label[0] === "ثانية" && count < 10) return "الآن";
-          const word = pluralize(count, interval.label[0], interval.label[1], interval.label[2]);
-          return `منذ ${count} ${word}`;
-        }
-      }
-      return "الآن";
-    }
+for (const interval of intervals) {
+const count = Math.floor(seconds / interval.seconds);
+if (count >= 1) {
+if (interval.label[0] === "ثانية" && count < 10) return "الآن";
+const word = pluralize(count, interval.label[0], interval.label[1], interval.label[2]);
+return `منذ ${count} ${word}`;
+}
+}
+return "الآن";
+}
 
-    function updateTimes() {
-      document.querySelectorAll('.news-time').forEach(el => {
-        const dateStr = el.getAttribute('data-date');
-        el.textContent = timeAgo(dateStr);
-      });
-    }
+function updateTimes() {
+document.querySelectorAll('.news-time').forEach(el => {
+const dateStr = el.getAttribute('data-date');
+el.textContent = timeAgo(dateStr);
+});
+}
 
-    async function loadRelatedArticles() {
-      try {
-        const res = await fetch(`https://api.github.com/repos/${githubUser}/${repoName}/contents/${folder}`);
-        const files = await res.json();
+async function loadRelatedArticles() {
+try {
+const res = await fetch(`https://api.github.com/repos/${githubUser}/${repoName}/contents/${folder}`);
+const files = await res.json();
 
-        if (!Array.isArray(files)) {
-          const loadingContainer = document.getElementById('loading-container');
-          loadingContainer.innerHTML = "<div style='color:#f00;text-align:center;padding:20px'>خطأ في جلب المقالات.</div>";
-          return;
-        }
+if (!Array.isArray(files)) {
+const loadingContainer = document.getElementById('loading-container');
+loadingContainer.innerHTML = "<div style='color:#f00;text-align:center;padding:20px'>خطأ في جلب المقالات.</div>";
+return;
+}
 
-        const mdFiles = files.filter(f => f.name.endsWith('.md'));
-        const news = [];
+const mdFiles = files.filter(f => f.name.endsWith('.md'));
+const news = [];
 
-        for (const file of mdFiles) {
-          const mdText = await fetch(file.download_url).then(r => r.text());
-          const meta = parseFrontMatter(mdText);
+for (const file of mdFiles) {
+const mdText = await fetch(file.download_url).then(r => r.text());
+const meta = parseFrontMatter(mdText);
 
-          let pageUrl = `https://${githubUser}.github.io/${folder}/${file.name.replace(/\.md$/, '')}`;
-          pageUrl = normalizeUrl(pageUrl);
+let pageUrl = `https://${githubUser}.github.io/${folder}/${file.name.replace(/\.md$/, '')}`;
+pageUrl = normalizeUrl(pageUrl);
 
-          if (pageUrl === currentPageUrl) continue;
+// مقارنة غير حساسة لحالة الأحرف
+if (pageUrl.toLowerCase() === currentPageUrl.toLowerCase()) continue;
 
-          news.push({
-            title: meta.title || file.name.replace('.md', '').replace(/-/g, ' '),
-            image: meta.image || "https://via.placeholder.com/600x400?text=خبر",
-            date: meta.date || "",
-            category: meta.category || "عام",
-            pageUrl: pageUrl
-          });
-        }
+news.push({
+title: meta.title || file.name.replace('.md', '').replace(/-/g, ' '),
+image: meta.image || "https://via.placeholder.com/600x400?text=خبر",
+date: meta.date || "",
+category: meta.category || "عام",
+pageUrl: pageUrl
+});
+}
 
-        news.sort((a, b) => new Date(b.date) - new Date(a.date));
+news.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-        const container = document.getElementById('related-news-list');
-        const loadingContainer = document.getElementById('loading-container');
+const container = document.getElementById('related-news-list');
+const loadingContainer = document.getElementById('loading-container');
 
-        container.innerHTML = "";
+container.innerHTML = "";
 
-        news.slice(0, 10).forEach(n => {
-          const newsItem = document.createElement('div');
-          newsItem.className = 'news-item';
+news.slice(0, 10).forEach(n => {
+const newsItem = document.createElement('div');
+newsItem.className = 'news-item';
 
-          newsItem.innerHTML = `
-            <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-thumb-link" aria-label="خبر: ${n.title}">
-              <img class="news-thumb" src="${n.image}" alt="صورة الخبر: ${n.title}">
-            </a>
-            <div class="news-info">
-              <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-title">${n.title}</a>
-              <div class="news-meta-time">
-                <span class="news-category">${n.category}</span>
-                <span class="news-time" data-date="${n.date}"></span>
-              </div>
-            </div>
-          `;
-          container.appendChild(newsItem);
-        });
+newsItem.innerHTML = `
+<a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-thumb-link" aria-label="خبر: ${n.title}">
+<img class="news-thumb" src="${n.image}" alt="صورة الخبر: ${n.title}">
+</a>
+<div class="news-info">
+<a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-title">${n.title}</a>
+<div class="news-meta-time">
+<span class="news-category">${n.category}</span>
+<span class="news-time" data-date="${n.date}"></span>
+</div>
+</div>
+`;
+container.appendChild(newsItem);
+});
 
-        if(news.length === 0) {
-          container.innerHTML = "<div style='color:#aaa;text-align:center;padding:20px'>لا توجد مقالات أخرى</div>";
-        }
+if(news.length === 0) {
+container.innerHTML = "<div style='color:#aaa;text-align:center;padding:20px'>لا توجد مقالات أخرى</div>";
+}
 
-        loadingContainer.style.display = "none";
-        container.style.display = "flex";
+loadingContainer.style.display = "none";
+container.style.display = "flex";
 
-        updateTimes();
+updateTimes();
 
-      } catch (error) {
-        const loadingContainer = document.getElementById('loading-container');
-        loadingContainer.innerHTML = "<div style='color:#f00;text-align:center;padding:20px'>حدث خطأ أثناء تحميل المقالات.</div>";
-      }
-    }
+} catch (error) {
+const loadingContainer = document.getElementById('loading-container');
+loadingContainer.innerHTML = "<div style='color:#f00;text-align:center;padding:20px'>حدث خطأ أثناء تحميل المقالات.</div>";
+}
+}
 
-    document.addEventListener('DOMContentLoaded', () => {
-      updateTimes();
-      loadRelatedArticles();
-      setInterval(updateTimes, 60000);
-    });
-  </script>
+document.addEventListener('DOMContentLoaded', () => {
+updateTimes();
+loadRelatedArticles();
+setInterval(updateTimes, 60000);
+});
+</script>
 </body>
 </html>
