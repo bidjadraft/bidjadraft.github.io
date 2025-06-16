@@ -215,48 +215,48 @@
       color: #f26522;
     }
 
-    /* تنسيق المقال والعناصر بدون حاويات */
+    /* تنسيق العناصر الرئيسية التي يجب أن تظهر في عمود واحد */
+    img.article-image,
+    .article-content,
+    .article-meta-row, /* أضفنا هذا لتطبيق نفس القواعد */
+    .full-width-news-bar,
+    #related-articles {
+      max-width: 600px;
+      margin: 0 0 0 auto; /* هذا يدفع الكتلة بالكامل لليمين في RTL */
+      padding-left: 24px;
+      padding-right: 24px;
+      box-sizing: border-box; /* للتأكد من أن البادينج لا يضيف للـ width */
+    }
+
+    /* تنسيقات خاصة بكل عنصر */
     img.article-image {
-      width: 100%;
       height: auto;
       display: block;
       object-fit: cover;
       overflow: hidden;
       border-radius: 0;
-      max-width: 600px;
-      margin: 24px 0 0 auto; /* Changed to push image to the right */
+      margin-top: 24px; /* حافظ على الهامش العلوي */
     }
 
-    /* استبدال الجزء المطلوب مع الحفاظ على نفس الأبعاد */
     .article-content {
-      max-width: 600px;
-      margin: 0 0 0 auto; /* Changed to push content to the right */
-      padding-left: 24px;
-      padding-right: 24px;
-      box-sizing: border-box;
-      text-align: right;
+      text-align: right; /* لمحاذاة النص داخل المقال والعنوان */
     }
+
     .article-title {
       color: #e5e7eb;
       font-weight: 800;
       font-size: 1.35em;
-      margin: 16px 0 8px 0;
-      max-width: 600px;
+      margin: 16px 0 8px 0; /* حافظ على الهوامش العمودية */
       line-height: 1.2;
       user-select: text;
     }
+
     .article-meta-row {
-      /* التعديلات هنا: */
-      /* Removed: display: flex; */
-      /* Removed: justify-content: flex-start; */
-      /* Removed: gap: 10px; */
-      max-width: 600px;
-      margin: 0 0 12px auto;
-      padding-left: 24px;
-      padding-right: 24px;
-      box-sizing: border-box;
-      text-align: right; /* لضمان محاذاة المحتوى الداخلي إلى اليمين */
-      direction: rtl;
+      display: flex;
+      justify-content: flex-start; /* يدفع العناصر الداخلية لليمين في RTL */
+      gap: 10px; /* مسافة بين الفئة والوقت */
+      margin-bottom: 12px; /* هامش سفلي للحاوية */
+      direction: rtl; /* تأكيد الاتجاه */
       user-select: none;
     }
     .article-meta {
@@ -264,7 +264,6 @@
       font-weight: 600;
       font-size: 1em;
       margin: 0;
-      margin-left: 10px; /* لإضافة مسافة بين الفئة والوقت */
     }
     .article-date.news-time {
       color: #a1a1aa;
@@ -278,7 +277,7 @@
     }
 
     .full-width-news-bar {
-      width: 70%;
+      width: 70%; /* حافظ على عرض 70% للخط الفاصل */
       background-color: transparent;
       color: #60a5fa;
       font-weight: 700;
@@ -292,18 +291,9 @@
       letter-spacing: 0.05em;
       border-bottom: 2px solid #60a5fa;
       border-radius: 0;
-      margin: 0 0 0 auto; /* Changed to push bar to the right */
-      max-width: 600px; /* Added max-width to match content */
+      /* تم تطبيق max-width و margin و padding من القاعدة الموحدة أعلاه */
     }
 
-    #related-articles {
-      width: 100%;
-      max-width: 600px;
-      margin: 0 0 0 auto; /* Changed to push related articles to the right */
-      padding-left: 24px;
-      padding-right: 24px;
-      box-sizing: border-box;
-    }
     #related-articles .news-list {
       display: flex;
       flex-direction: column;
@@ -378,18 +368,16 @@
     }
 
     @media (max-width: 600px) {
-      div.article-meta-row, div.article-content, #related-articles {
+      /* في الشاشات الصغيرة، يمكننا العودة إلى التوسيط إذا أردت، أو الاحتفاظ بالمحاذاة اليمينية */
+      img.article-image,
+      .article-content,
+      #related-articles,
+      .full-width-news-bar,
+      .article-meta-row {
         padding-left: 12px !important;
         padding-right: 12px !important;
-      }
-      #related-articles .news-thumb {
-        width: 120px;
-        height: 80px;
-      }
-      /* Adjust margins for smaller screens if needed to keep them from hugging the right edge too much */
-      img.article-image, .article-content, #related-articles, .full-width-news-bar {
-        margin-right: auto; /* Revert to auto on both sides for centering on small screens */
-        margin-left: auto;
+        margin-right: auto; /* هذا يعيد التوسيط */
+        margin-left: auto; /* هذا يعيد التوسيط */
       }
     }
   </style>
