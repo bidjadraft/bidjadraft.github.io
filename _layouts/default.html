@@ -215,58 +215,52 @@
       color: #f26522;
     }
 
-    /* تنسيق العناصر الرئيسية التي يجب أن تظهر في عمود واحد */
-    .article-content,
-    .article-meta-row,
-    .full-width-news-bar,
-    #related-articles {
-      max-width: 600px;
-      margin: 0 0 0 auto; /* هذا يدفع الكتلة بالكامل لليمين في RTL */
-      padding-left: 24px;
-      padding-right: 24px;
-      box-sizing: border-box; /* للتأكد من أن البادينج لا يضيف للـ width */
-    }
-
-    /* تنسيقات خاصة بالصورة */
+    /* Article and content styling without containers */
     img.article-image {
-      width: 100%; /* تأخذ 100% من عرض حاويتها (التي هي 600px - 48px بادينج) */
+      width: 100%;
       height: auto;
       display: block;
       object-fit: cover;
       overflow: hidden;
       border-radius: 0;
-      max-width: 550px; /* تم تصغير أقصى عرض للصورة هنا */
-      margin-top: 24px; /* الهامش العلوي فقط */
-      /* تمت إزالة margin و padding و box-sizing من هنا لأنها مطبقة في القاعدة الموحدة أعلاه */
+      max-width: 600px;
+      margin: 24px 0 0 auto; /* Changed to push image to the right */
     }
 
-    /* تنسيقات خاصة ببقية العناصر */
+    /* Replaced section with the same dimensions */
     .article-content {
-      text-align: right; /* لمحاذاة النص داخل المقال والعنوان */
+      max-width: 600px;
+      margin: 0 0 0 auto; /* Changed to push content to the right */
+      padding-left: 24px;
+      padding-right: 24px;
+      box-sizing: border-box;
+      text-align: right;
     }
-
     .article-title {
       color: #e5e7eb;
       font-weight: 800;
       font-size: 1.35em;
-      margin: 16px 0 8px 0; /* حافظ على الهوامش العمودية */
+      margin: 16px 0 8px 0;
+      max-width: 600px;
       line-height: 1.2;
       user-select: text;
     }
-
     .article-meta-row {
-      display: flex;
-      justify-content: flex-start; /* يدفع العناصر الداخلية لليمين في RTL */
-      gap: 10px; /* مسافة بين الفئة والوقت */
-      margin-bottom: 12px; /* هامش سفلي للحاوية */
-      direction: rtl; /* تأكيد الاتجاه */
-      user-select: none;
-    }
+  padding-left: 24px;
+  padding-right: 24px;
+  margin: 0 0 12px auto;
+  box-sizing: border-box;
+  text-align: right;
+  direction: rtl;
+  user-select: none;
+}
+
     .article-meta {
       color: #60a5fa;
       font-weight: 600;
       font-size: 1em;
       margin: 0;
+      margin-left: 10px; /* Add space between category and time */
     }
     .article-date.news-time {
       color: #a1a1aa;
@@ -276,11 +270,11 @@
     }
 
     div.article-content > .article-body {
-      display: none; /* نخفي المحتوى هنا لأنه موجود في مكان آخر */
+      display: none; /* Hide content here because it exists elsewhere */
     }
 
     .full-width-news-bar {
-      width: 70%; /* حافظ على عرض 70% للخط الفاصل */
+      width: 70%;
       background-color: transparent;
       color: #60a5fa;
       font-weight: 700;
@@ -294,9 +288,18 @@
       letter-spacing: 0.05em;
       border-bottom: 2px solid #60a5fa;
       border-radius: 0;
-      /* تم تطبيق max-width و margin و padding من القاعدة الموحدة أعلاه */
+      margin: 0 0 0 auto; /* Changed to push bar to the right */
+      max-width: 600px; /* Added max-width to match content */
     }
 
+    #related-articles {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 0 0 auto; /* Changed to push related articles to the right */
+      padding-left: 24px;
+      padding-right: 24px;
+      box-sizing: border-box;
+    }
     #related-articles .news-list {
       display: flex;
       flex-direction: column;
@@ -361,7 +364,7 @@
       font-weight: bold;
     }
 
-    /* تنسيق نص التحميل */
+    /* Loading text styling */
     .loading-text {
       text-align: center;
       color: #aaa;
@@ -371,17 +374,35 @@
     }
 
     @media (max-width: 600px) {
-      /* في الشاشات الصغيرة، يمكننا العودة إلى التوسيط إذا أردت، أو الاحتفاظ بالمحاذاة اليمينية */
-      img.article-image,
-      .article-content,
-      #related-articles,
-      .full-width-news-bar,
-      .article-meta-row {
+      div.article-meta-row, div.article-content, #related-articles {
         padding-left: 12px !important;
         padding-right: 12px !important;
-        margin-right: auto; /* هذا يعيد التوسيط */
-        margin-left: auto; /* هذا يعيد التوسيط */
       }
+      #related-articles .news-thumb {
+        width: 120px;
+        height: 80px;
+      }
+      /* Adjust margins for smaller screens if needed to keep them from hugging the right edge too much */
+      img.article-image, .article-content, #related-articles, .full-width-news-bar {
+        margin-right: auto; /* Revert to auto on both sides for centering on small screens */
+        margin-left: auto;
+      }
+    }
+
+    footer {
+      text-align: center;
+      color: #71717a;
+      font-size: 0.80em;
+      padding: 12px 12px 10px 12px;
+      margin-top: 40px;
+      border-top: 1px solid #2c2c36;
+      letter-spacing: 0.06em;
+      user-select: none;
+      background: #18181b;
+      transition: color 0.3s ease;
+    }
+    footer:hover {
+      color: #60a5fa;
     }
   </style>
 </head>
