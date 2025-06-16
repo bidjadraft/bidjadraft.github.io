@@ -62,7 +62,7 @@
       font-weight: 700;
       display: flex;
       align-items: center;
-      gap: 3px; /* تقليل المسافة بين الكلمات */
+      gap: 3px;
       user-select: none;
     }
     .username a {
@@ -75,15 +75,15 @@
     .username .blue {
       color: #60a5fa;
       font-size: 0.9em;
-      max-width: 90px; /* الحد الأقصى للعرض */
+      max-width: 90px;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis; /* إظهار ... إذا تجاوز النص */
+      text-overflow: ellipsis;
       display: inline-block;
       vertical-align: bottom;
-      padding: 0 8px; /* حواف داخلية تمنع التمدد حتى الحافة */
+      padding: 0 8px;
       box-sizing: border-box;
-      background-color: transparent; /* يمكن تعديل لون الخلفية لو أردت */
+      background-color: transparent;
     }
     .menu-button {
       background: none;
@@ -226,41 +226,52 @@
       max-width: 600px;
       margin: 24px auto 0 auto;
     }
-    h1.article-title {
-      color: #e5e7eb;
-      font-weight: 800;
-      font-size: 1.35em;
-      margin: 16px auto 8px auto;
-      max-width: 600px;
-    }
-    div.article-meta {
-      color: #60a5fa;
-      font-weight: 600;
-      font-size: 1em;
-      margin: 0 auto 12px auto;
-      max-width: 600px;
-      user-select: none;
-      display: flex;
-      justify-content: flex-start;
-      gap: 10px;
-      padding-left: 24px;
-      padding-right: 24px;
-      box-sizing: border-box;
-    }
-    div.article-meta span.time {
-      color: #a1a1aa;
-      margin-left: 10px;
-    }
-    div.article-content {
-      color: #e5e7eb;
-      font-size: 1.08em;
-      line-height: 2;
-      word-break: break-word;
+
+    /* استبدال الجزء المطلوب مع الحفاظ على نفس الأبعاد */
+    .article-content {
       max-width: 600px;
       margin: 0 auto;
       padding-left: 24px;
       padding-right: 24px;
       box-sizing: border-box;
+      text-align: right;
+    }
+    .article-title {
+      color: #e5e7eb;
+      font-weight: 800;
+      font-size: 1.35em;
+      margin: 16px 0 8px 0;
+      max-width: 600px;
+      line-height: 1.2;
+      user-select: text;
+    }
+    .article-meta-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      max-width: 600px;
+      margin: 0 0 12px 0;
+      padding-left: 24px;
+      padding-right: 24px;
+      box-sizing: border-box;
+      direction: rtl;
+      user-select: none;
+    }
+    .article-meta {
+      color: #60a5fa;
+      font-weight: 600;
+      font-size: 1em;
+      margin: 0;
+    }
+    .article-date.news-time {
+      color: #a1a1aa;
+      font-weight: 400;
+      font-size: 1em;
+      margin: 0;
+    }
+
+    div.article-content > .article-body {
+      display: none; /* نخفي المحتوى هنا لأنه موجود في مكان آخر */
     }
 
     .full-width-news-bar {
@@ -363,7 +374,7 @@
     }
 
     @media (max-width: 600px) {
-      div.article-meta, div.article-content, #related-articles {
+      div.article-meta-row, div.article-content, #related-articles {
         padding-left: 12px !important;
         padding-right: 12px !important;
       }
@@ -422,11 +433,16 @@
 
   <!-- المقال بدون حاويات -->
   <img class="article-image" src="{{ page.image }}" alt="صورة المقال" />
-  <h1 class="article-title">{{ page.title }}</h1>
-  <div class="article-meta">
-    <span>{{ page.category }}</span>
-    <span class="time">{{ page.time }}</span>
+
+  <!-- الجزء المستبدل: عنوان + فئة + وقت المقال -->
+  <div class="article-content">
+    <div class="article-title">{{ page.title }}</div>
+    <div class="article-meta-row">
+      <span class="article-meta">{{ page.category }}</span>
+      <span class="article-date news-time" data-date="{{ page.date }}"></span>
+    </div>
   </div>
+
   <div class="article-content">
     {{ content }}
   </div>
@@ -601,7 +617,6 @@
           container.innerHTML = "<div style='color:#aaa;text-align:center;padding:20px'>لا توجد مقالات أخرى</div>";
         }
 
-        // إخفاء نص التحميل وإظهار الأخبار
         loadingContainer.style.display = "none";
         container.style.display = "flex";
 
