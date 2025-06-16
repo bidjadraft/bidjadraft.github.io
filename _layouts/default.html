@@ -247,7 +247,7 @@
     }
     .article-meta-row {
       display: flex;
-      justify-content: flex-end;
+      justify-content: flex-start; /* Changed from flex-end to flex-start for RTL */
       gap: 10px;
       max-width: 600px;
       margin: 0 0 12px 0;
@@ -431,10 +431,8 @@
     </div>
   </div>
 
-  <!-- المقال بدون حاويات -->
   <img class="article-image" src="{{ page.image }}" alt="صورة المقال" />
 
-  <!-- الجزء المستبدل: عنوان + فئة + وقت المقال -->
   <div class="article-content">
     <div class="article-title">{{ page.title }}</div>
     <div class="article-meta-row">
