@@ -245,12 +245,15 @@ img.article-image {
   direction: rtl;
   user-select: none;
 }
-.article-meta {
+.article-meta-link {
   color: #60a5fa;
   font-weight: 600;
   font-size: 1em;
-  margin: 0;
+  text-decoration: none;
   margin-left: 10px;
+}
+.article-meta-link:hover {
+  text-decoration: underline;
 }
 .article-date.news-time {
   color: #a1a1aa;
@@ -444,7 +447,8 @@ footer:hover {
 <div class="article-content">
   <div class="article-title">{{ page.title }}</div>
   <div class="article-meta-row">
-    <span class="article-meta">{{ page.category }}</span>
+    <!-- هنا عرض الفئة كرابط -->
+    <a href="#" class="article-meta-link" target="_blank" rel="noopener noreferrer"></a>
     <span class="article-date news-time" data-date="{{ page.date }}"></span>
   </div>
 </div>
@@ -642,10 +646,14 @@ async function loadRelatedArticles() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // تعديل عرض فئة المقال لإزالة "ال" من البداية
-  const categorySpan = document.querySelector('.article-meta');
-  if (categorySpan) {
-    categorySpan.textContent = removeAlPrefix(categorySpan.textContent.trim());
+  // تحديث رابط واسم الفئة في صفحة المقال
+  const categoryName = "{{ page.category }}".trim();
+  const categoryLink = document.querySelector('.article-meta-link');
+  if (categoryLink && categoryName) {
+    categoryLink.textContent = removeAlPrefix(categoryName);
+    categoryLink.href = getCategoryUrl(categoryName);
+    categoryLink.target = "_blank";
+    categoryLink.rel = "noopener noreferrer";
   }
 
   updateTimes();
