@@ -26,11 +26,6 @@ jobs:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       run: python main.py
 
-    - name: Run category.py (تصنيف المقالات حسب Gemini API)
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      run: python category.py
-
     - name: Run feed.py (توليد feed.xml)
       run: python feed.py
 
