@@ -7,7 +7,6 @@ import re
 import xml.etree.ElementTree as ET
 from dateutil import parser  # تحتاج تثبيت المكتبة: pip install python-dateutil
 
-# إعدادات عامة
 RSS_URL = "https://feed.alternativeto.net/news/all"
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 NEWS_DIR = "news"
@@ -36,6 +35,38 @@ def gemini_ask(prompt, max_retries=8, wait_seconds=10):
             return None
     return None
 
+def detect_category(text, max_retries=8, wait_seconds=10):
+    prompt = f"""النص التالي هو خبر تقني:
+{text}
+رجاءً حدد الفئة المناسبة من القائمة التالية فقط:
+- تطبيقات
+- أجهزة
+- أنظمة
+- تواصل اجتماعي
+- ذكاء اصطناعي
+
+أجب بكلمة واحدة فقط من القائمة أعلاه تصف موضوع الخبر بدقة."""
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
+    payload = {"contents": [{"parts": [{"text": prompt}]}]}
+    headers = {'Content-Type': 'application/json'}
+    for attempt in range(max_retries):
+        r = requests.post(url, json=payload, headers=headers)
+        if r.status_code == 200:
+            try:
+                category = r.json()['candidates'][0]['content']['parts'][0]['text'].strip()
+                valid_categories = ["تطبيقات", "أجهزة", "أنظمة", "تواصل اجتماعي", "ذكاء اصطناعي"]
+                if category in valid_categories:
+                    return category
+                else:
+                    return "التقنية"
+            except Exception:
+                return "التقنية"
+        if r.status_code == 503 or "overloaded" in r.text:
+            time.sleep(wait_seconds)
+        else:
+            return "التقنية"
+    return "التقنية"
+
 def sanitize_filename(text):
     text = re.sub(r'[^\w\s\u0600-\u06FF]', '', text)
     text = re.sub(r'_', '', text)
@@ -43,8 +74,7 @@ def sanitize_filename(text):
     text = text.strip('-')
     return text[:60]
 
-def make_markdown(title, image, date, body):
-    category = "التقنية"
+def make_markdown(title, image, date, body, category):
     md = f"""---
 layout: default
 title: "{title}"
@@ -97,37 +127,6 @@ def append_to_feed_xml(title, link, image):
     tree.write(FEED_FILE, encoding='utf-8', xml_declaration=True)
     print(f"تمت إضافة خبر جديد إلى {FEED_FILE}")
 
-def time_ago_ar(past_datetime, now=None):
-    if now is None:
-        now = datetime.now()
-    diff = now - past_datetime
-    seconds = int(diff.total_seconds())
-
-    intervals = [
-        ('شهر', 2592000),
-        ('يوم', 86400),
-        ('ساعة', 3600),
-        ('دقيقة', 60),
-        ('ثانية', 1)
-    ]
-
-    for label, count_seconds in intervals:
-        count = seconds // count_seconds
-        if count >= 1:
-            if label == 'ساعة':
-                if count == 1:
-                    return f"منذ {count} ساعة"
-                else:
-                    return f"منذ {count} ساعات"
-            if count == 1:
-                return f"منذ {count} {label}"
-            if count == 2:
-                return f"منذ {count} {label}ين"
-            if 3 <= count <= 10:
-                return f"منذ {count} {label}ات"
-            return f"منذ {count} {label}"
-    return "الآن"
-
 def main():
     feed = feedparser.parse(RSS_URL)
     entries = feed.entries
@@ -161,7 +160,6 @@ def main():
         description = entry.get('summary', '')
         link = entry.get('link', '')
 
-        # استخراج التاريخ والوقت بصيغة ISO 8601
         published_str = entry.get('published', '')
         if published_str:
             try:
@@ -174,7 +172,6 @@ def main():
             dt = datetime.now()
             date = dt.strftime('%Y-%m-%dT%H:%M:%S')
 
-        # استخراج الصورة
         image = None
         if 'media_content' in entry and len(entry.media_content) > 0:
             image = entry.media_content[0]['url']
@@ -183,7 +180,6 @@ def main():
         if not image:
             image = "https://via.placeholder.com/600x400.png?text=No+Image"
 
-        # تلخيص العنوان
         arabic_title = None
         for attempt in range(10):
             prompt_title = f"""العنوان التالي هو لخبر تقني:
@@ -199,7 +195,6 @@ def main():
             print("فشل تلخيص العنوان بعد 10 محاولات. إيقاف البرنامج.")
             return
 
-        # تلخيص الخبر
         arabic_body = None
         for attempt in range(10):
             prompt_body = f"""النص التالي هو خبر تقني:
@@ -213,21 +208,19 @@ def main():
             print("فشل تلخيص الخبر بعد 10 محاولات. إيقاف البرنامج.")
             return
 
-        # إنشاء ملف md
+        category = detect_category(arabic_body)
+
         filename = sanitize_filename(arabic_title or original_title) + ".md"
         filepath = os.path.join(NEWS_DIR, filename)
         if not os.path.exists(filepath):
-            md = make_markdown(arabic_title, image, date, arabic_body)
+            md = make_markdown(arabic_title, image, date, arabic_body, category)
             with open(filepath, "w", encoding="utf-8") as f:
                 f.write(md)
             print(f"تم إنشاء: {filepath}")
 
-        # إنشاء الرابط
         html_link = f"{SITE_URL}/news/{os.path.splitext(filename)[0]}.html"
-        # إضافة الخبر مباشرة إلى feed.xml
         append_to_feed_xml(arabic_title, html_link, image)
 
-        # تحديث آخر منشور
         write_last_post(link)
 
 if __name__ == "__main__":
