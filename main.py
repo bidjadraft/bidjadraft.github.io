@@ -60,7 +60,6 @@ def extract_tags(text, max_retries=8, wait_seconds=10):
     if tags_text:
         cleaned = re.sub(r'[^\w\u0600-\u06FF\s]', '', tags_text)
         tags = [tag.strip() for tag in cleaned.split() if tag.strip()]
-        # إزالة التكرار
         unique_tags = []
         for tag in tags:
             if tag not in unique_tags:
@@ -78,9 +77,12 @@ def sanitize_filename(text):
 def make_markdown(title, image, date, body, category, tags):
     tags_line = ""
     if tags:
-        # إضافة سطرين فارغين (\n\n) لترك مسافة بين المقال والكلمات المفتاحية
-        tags_str = " ".join([f'<span style="color:#1976d2;">{tag}</span>' for tag in tags])
-        tags_line = f'\n\n{tags_str}'
+        # تنسيق احترافي: حجم صغير، لون أزرق غامق، خلفية فاتحة، حواف دائرية، مسافة بين الكلمات، إطار خفيف
+        tags_str = " ".join([
+            f'<span style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb;">{tag}</span>'
+            for tag in tags
+        ])
+        tags_line = f'\n\n<div style="margin-top:2px; margin-bottom:2px;">{tags_str}</div>'
     md = f"""---
 layout: default
 title: "{title}"
