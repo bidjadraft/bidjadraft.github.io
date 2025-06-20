@@ -46,17 +46,24 @@ def detect_category(text, max_retries=8, wait_seconds=10):
 - ذكاء اصطناعي
 
 أجب بكلمة واحدة فقط من القائمة أعلاه تصف موضوع الخبر بدقة."""
-    return gemini_ask(prompt, max_retries, wait_seconds) or "التقنية"
+    category = gemini_ask(prompt, max_retries, wait_seconds)
+    valid_categories = ["تطبيقات", "أجهزة", "أنظمة", "تواصل اجتماعي", "ذكاء اصطناعي"]
+    if category and category.strip() in valid_categories:
+        return category.strip()
+    return "التقنية"
 
 def extract_tags(text, max_retries=8, wait_seconds=10):
     prompt = f"""النص التالي هو خبر تقني:
 {text}
-رجاءً استخرج أهم 5 كلمات مفتاحية (tags) تعبر عن محتوى الخبر، فقط الكلمات مفصولة بفواصل، بدون شرح أو جمل."""
+رجاءً استخرج أهم الكلمات المفتاحية التي تمثل أسماء منصات، مواقع، تطبيقات، برامج، أجهزة، نماذج ذكاء اصطناعي، أو أي كلمات موضوعية مهمة في الخبر.
+أجب فقط بكلمات مفصولة بمسافة واحدة فقط، بدون أي فواصل أو علامات ترقيم، ولا تضف أي كلمات عامة أو شرح."""
     tags_text = gemini_ask(prompt, max_retries, wait_seconds)
     if tags_text:
-        # تنظيف النص وتحويله لقائمة كلمات مفتاحية
-        tags = [tag.strip() for tag in re.split(r'[،,]', tags_text) if tag.strip()]
-        return tags[:5]  # نأخذ أول 5 كلمات فقط
+        # تنظيف النص: إزالة أي رموز غير الحروف والأرقام والمسافات
+        cleaned = re.sub(r'[^\w\u0600-\u06FF\s]', '', tags_text)
+        # تقسيم حسب المسافات فقط
+        tags = [tag.strip() for tag in cleaned.split() if tag.strip()]
+        return tags[:10]  # نأخذ حتى 10 كلمات مفتاحية
     return []
 
 def sanitize_filename(text):
@@ -69,8 +76,10 @@ def sanitize_filename(text):
 def make_markdown(title, image, date, body, category, tags):
     tags_line = ""
     if tags:
-        # إضافة الكلمات المفتاحية أسفل المقال بلون أزرق (يمكن تعديل اللون في CSS)
-        tags_line = "\n\n---\n\n" + " ".join([f"`{tag}`" for tag in tags])
+        # نعرض الكلمات المفتاحية مباشرة بعد النص، ملونة باللون الأزرق الغامق (#003366)
+        # بدون فواصل، فقط كلمات مفصولة بمسافة
+        tags_str = " ".join(tags)
+        tags_line = f'\n\n<span style="color:#003366; font-weight:bold;">{tags_str}</span>'
     md = f"""---
 layout: default
 title: "{title}"
