@@ -46,26 +46,18 @@ def detect_category(text, max_retries=8, wait_seconds=10):
 - ذكاء اصطناعي
 
 أجب بكلمة واحدة فقط من القائمة أعلاه تصف موضوع الخبر بدقة."""
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
-    payload = {"contents": [{"parts": [{"text": prompt}]}]}
-    headers = {'Content-Type': 'application/json'}
-    for attempt in range(max_retries):
-        r = requests.post(url, json=payload, headers=headers)
-        if r.status_code == 200:
-            try:
-                category = r.json()['candidates'][0]['content']['parts'][0]['text'].strip()
-                valid_categories = ["تطبيقات", "أجهزة", "أنظمة", "تواصل اجتماعي", "ذكاء اصطناعي"]
-                if category in valid_categories:
-                    return category
-                else:
-                    return "التقنية"
-            except Exception:
-                return "التقنية"
-        if r.status_code == 503 or "overloaded" in r.text:
-            time.sleep(wait_seconds)
-        else:
-            return "التقنية"
-    return "التقنية"
+    return gemini_ask(prompt, max_retries, wait_seconds) or "التقنية"
+
+def extract_tags(text, max_retries=8, wait_seconds=10):
+    prompt = f"""النص التالي هو خبر تقني:
+{text}
+رجاءً استخرج أهم 5 كلمات مفتاحية (tags) تعبر عن محتوى الخبر، فقط الكلمات مفصولة بفواصل، بدون شرح أو جمل."""
+    tags_text = gemini_ask(prompt, max_retries, wait_seconds)
+    if tags_text:
+        # تنظيف النص وتحويله لقائمة كلمات مفتاحية
+        tags = [tag.strip() for tag in re.split(r'[،,]', tags_text) if tag.strip()]
+        return tags[:5]  # نأخذ أول 5 كلمات فقط
+    return []
 
 def sanitize_filename(text):
     text = re.sub(r'[^\w\s\u0600-\u06FF]', '', text)
@@ -74,7 +66,11 @@ def sanitize_filename(text):
     text = text.strip('-')
     return text[:60]
 
-def make_markdown(title, image, date, body, category):
+def make_markdown(title, image, date, body, category, tags):
+    tags_line = ""
+    if tags:
+        # إضافة الكلمات المفتاحية أسفل المقال بلون أزرق (يمكن تعديل اللون في CSS)
+        tags_line = "\n\n---\n\n" + " ".join([f"`{tag}`" for tag in tags])
     md = f"""---
 layout: default
 title: "{title}"
@@ -83,7 +79,7 @@ category: {category}
 date: {date}
 ---
 
-{body.strip()}
+{body.strip()}{tags_line}
 """
     return md
 
@@ -209,11 +205,12 @@ def main():
             return
 
         category = detect_category(arabic_body)
+        tags = extract_tags(arabic_body)
 
         filename = sanitize_filename(arabic_title or original_title) + ".md"
         filepath = os.path.join(NEWS_DIR, filename)
         if not os.path.exists(filepath):
-            md = make_markdown(arabic_title, image, date, arabic_body, category)
+            md = make_markdown(arabic_title, image, date, arabic_body, category, tags)
             with open(filepath, "w", encoding="utf-8") as f:
                 f.write(md)
             print(f"تم إنشاء: {filepath}")
