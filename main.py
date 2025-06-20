@@ -77,12 +77,13 @@ def sanitize_filename(text):
 def make_markdown(title, image, date, body, category, tags):
     tags_line = ""
     if tags:
-        # كل كلمة مفتاحية عبارة عن رابط بحث، مع تنسيق احترافي
+        # كل كلمة مفتاحية عبارة عن رابط بحث مع تنسيق احترافي
         tags_str = " ".join([
             f'<a href="https://bidjadraft.github.io/?query={tag}" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">{tag}</a>'
             for tag in tags
         ])
-        tags_line = f'\n\n<div style="margin-top:2px; margin-bottom:2px;">{tags_str}</div>'
+        # سطران فارغان بعد الوسوم (قبل اقرأ أيضا)
+        tags_line = f'\n\n<div style="margin-top:2px; margin-bottom:2px;">{tags_str}</div><br><br>'
     md = f"""---
 layout: default
 title: "{title}"
