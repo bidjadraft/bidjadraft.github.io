@@ -55,15 +55,17 @@ def detect_category(text, max_retries=8, wait_seconds=10):
 def extract_tags(text, max_retries=8, wait_seconds=10):
     prompt = f"""النص التالي هو خبر تقني:
 {text}
-رجاءً استخرج أهم الكلمات المفتاحية التي تمثل أسماء منصات، مواقع، تطبيقات، برامج، أجهزة، نماذج ذكاء اصطناعي، أو أي كلمات موضوعية مهمة في الخبر.
-أجب فقط بكلمات مفصولة بمسافة واحدة فقط، بدون أي فواصل أو علامات ترقيم، ولا تضف أي كلمات عامة أو شرح."""
+استخرج فقط أسماء المنصات أو المواقع أو الشركات أو الخدمات أو البرامج أو الأجهزة أو الأنظمة أو الأدوات أو نماذج الذكاء الاصطناعي المذكورة في النص. أجب فقط بهذه الأسماء مفصولة بمسافة واحدة، بدون أي شرح أو كلمات عامة أو علامات ترقيم أو تكرار."""
     tags_text = gemini_ask(prompt, max_retries, wait_seconds)
     if tags_text:
-        # تنظيف النص: إزالة أي رموز غير الحروف والأرقام والمسافات
         cleaned = re.sub(r'[^\w\u0600-\u06FF\s]', '', tags_text)
-        # تقسيم حسب المسافات فقط
         tags = [tag.strip() for tag in cleaned.split() if tag.strip()]
-        return tags[:10]  # نأخذ حتى 10 كلمات مفتاحية
+        # إزالة التكرار
+        unique_tags = []
+        for tag in tags:
+            if tag not in unique_tags:
+                unique_tags.append(tag)
+        return unique_tags[:10]
     return []
 
 def sanitize_filename(text):
@@ -76,10 +78,9 @@ def sanitize_filename(text):
 def make_markdown(title, image, date, body, category, tags):
     tags_line = ""
     if tags:
-        # نعرض الكلمات المفتاحية مباشرة بعد النص، ملونة باللون الأزرق الغامق (#003366)
-        # بدون فواصل، فقط كلمات مفصولة بمسافة
-        tags_str = " ".join(tags)
-        tags_line = f'\n\n<span style="color:#003366; font-weight:bold;">{tags_str}</span>'
+        # الكلمات المفتاحية تظهر مباشرة بعد النص، باللون الأزرق فقط
+        tags_str = " ".join([f'<span style="color:#1976d2;">{tag}</span>' for tag in tags])
+        tags_line = f'{tags_str}'
     md = f"""---
 layout: default
 title: "{title}"
