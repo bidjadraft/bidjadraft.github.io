@@ -78,9 +78,9 @@ def sanitize_filename(text):
 def make_markdown(title, image, date, body, category, tags):
     tags_line = ""
     if tags:
-        # الكلمات المفتاحية تظهر مباشرة بعد النص، باللون الأزرق فقط
+        # إضافة سطرين فارغين (\n\n) لترك مسافة بين المقال والكلمات المفتاحية
         tags_str = " ".join([f'<span style="color:#1976d2;">{tag}</span>' for tag in tags])
-        tags_line = f'{tags_str}'
+        tags_line = f'\n\n{tags_str}'
     md = f"""---
 layout: default
 title: "{title}"
