@@ -1,1 +1,1 @@
-https://alternativeto.net/news/2025/6/infuse-8-1-9-brings-skip-credits-for-emby-and-share-management/
+https://alternativeto.net/news/2025/6/vite-7-0-drops-node-js-18-updates-browser-targets-and-adds-buildapp-hook/
