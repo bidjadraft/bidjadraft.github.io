@@ -1,0 +1,14 @@
+---
+layout: default
+title: "Cline 3.18 تحديثات Gemini و Claude وتحسينات أدوات الويب
+"
+image: "https://d4.alternativeto.net/rz4Jn-R4IC8oI-2e1XrSQ7i1yvu95-mMvx8lWSYGfv0/rs:fill:1520:760:0/g:ce:0:0/YWJzOi8vZGlzdC9jb250ZW50LzE3NTA5NTI1MDg1MTgucG5n.png"
+category: ذكاء اصطناعي
+date: 2025-06-26T15:41:48
+---
+
+أصدر برنامج Cline تحديثه الجديد 3.18، والذي يضيف Gemini CLI كمزود خدمة، مما يتيح للمستخدمين إجراء 1000 طلب مجاني يوميًا من نماذج 2.5 Pro و Flash عبر حسابات Google. هذه الإضافة تعزز بشكل كبير قدرات البرنامج وتجعله أكثر جاذبية للمستخدمين الباحثين عن حلول فعالة وبأسعار معقولة.
+
+يشمل التحديث أيضًا تحسينات كبيرة في دعم نموذج Claude 4، حيث تم تقليل معدلات فشل تعديل الاختلافات من 10% إلى 6%. هذا التحسين يضمن تجربة أكثر سلاسة وموثوقية للمستخدمين الذين يعتمدون على Cline في مهام التحرير والمقارنة. بالإضافة إلى ذلك، يقدم التحديث أداة WebFetch الجديدة التي تتيح استرجاع وتلخيص محتوى الويب مباشرةً داخل المحادثات، مما يوفر وقتًا وجهدًا للمستخدمين ويجعل Cline أداة متكاملة لإدارة المعلومات والبحث.
+
+<div style="margin-top:2px; margin-bottom:2px;"><a href="https://bidjadraft.github.io/?query=Cline" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Cline</a> <a href="https://bidjadraft.github.io/?query=Gemini" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Gemini</a> <a href="https://bidjadraft.github.io/?query=CLI" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">CLI</a> <a href="https://bidjadraft.github.io/?query=Google" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Google</a> <a href="https://bidjadraft.github.io/?query=Claude" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Claude</a> <a href="https://bidjadraft.github.io/?query=4" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">4</a> <a href="https://bidjadraft.github.io/?query=WebFetch" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">WebFetch</a></div><br><br>
