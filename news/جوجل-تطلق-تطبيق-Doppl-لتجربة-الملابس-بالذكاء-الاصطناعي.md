@@ -1,0 +1,16 @@
+---
+layout: default
+title: "جوجل تطلق تطبيق Doppl لتجربة الملابس بالذكاء الاصطناعي
+"
+image: "https://d4.alternativeto.net/Ek_VUKE2PbSF8hUzCe6AMNRVy-wOh000yh4B8kigx5w/rs:fill:1520:760:0/g:ce:0:0/YWJzOi8vZGlzdC9jb250ZW50LzE3NTEwNTMyNTY2MjgucG5n.png"
+category: تطبيقات
+date: 2025-06-27T19:32:25
+---
+
+أطلقت جوجل تطبيقًا تجريبيًا جديدًا من مختبرات جوجل يحمل اسم "Doppl"، يعتمد على الذكاء الاصطناعي لتمكين المستخدمين من تجربة الملابس افتراضيًا. يختلف هذا التطبيق عن أدوات التسوق الموجودة في منصة "Google Shopping"، حيث يركز "Doppl" على استكشاف الأنماط وتصورها كتطبيق مستقل للهاتف المحمول.
+
+لاستخدام التطبيق، يقوم المستخدمون بتحميل صورة كاملة لأجسامهم، ليقوم الذكاء الاصطناعي في "Doppl" بإنشاء صورة واقعية تعرض المستخدم مرتديًا الزي المختار. يمكن اختيار الملابس من لقطات الشاشة أو الصور التي تم تنزيلها أو الصور الشخصية، بما في ذلك تلك المأخوذة من مواقع مثل "Pinterest" و "Instagram" أو متاجر الملابس. بالإضافة إلى ذلك، يمكن لـ "Doppl" إنشاء مقاطع فيديو مدعومة بالذكاء الاصطناعي تصور المستخدم أثناء الحركة وهو يرتدي الملابس المختارة.
+
+يتيح التطبيق للمستخدمين تصفح العديد من الإطلالات وحفظ الملابس المفضلة ومشاركة الصور المرئية داخل التطبيق. في الوقت الحالي، يتوفر "Doppl" فقط للمستخدمين في الولايات المتحدة على كل من نظامي iOS و Android، وتنبه جوجل إلى أن التطبيق لا يزال في المراحل الأولى من التطوير وقد لا يوفر دائمًا ملاءمة أو تفاصيل دقيقة لكل قطعة ملابس. قد يسمح هذا التطبيق لجوجل بجمع بيانات حول تفضيلات وسلوك المستخدمين في التسوق كجزء من أبحاثها المستمرة.
+
+<div style="margin-top:2px; margin-bottom:2px;"><a href="https://bidjadraft.github.io/?query=Doppl" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Doppl</a> <a href="https://bidjadraft.github.io/?query=Google" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Google</a> <a href="https://bidjadraft.github.io/?query=Shopping" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Shopping</a> <a href="https://bidjadraft.github.io/?query=Pinterest" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Pinterest</a> <a href="https://bidjadraft.github.io/?query=Instagram" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Instagram</a> <a href="https://bidjadraft.github.io/?query=iOS" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">iOS</a> <a href="https://bidjadraft.github.io/?query=Android" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Android</a></div><br><br>
