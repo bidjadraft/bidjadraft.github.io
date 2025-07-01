@@ -2,7 +2,7 @@ name: Generate sitemap.xml
 
 on:
   push:
-    branches: [main]   # غيّرها إذا كان الفرع الرئيسي لديك اسمه master
+    branches: [main]   # غيّرها إذا كان اسم الفرع الرئيسي مختلف
 
 jobs:
   build:
@@ -16,11 +16,8 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install dependencies (if needed)
-        run: pip install --upgrade pip
-
       - name: Generate sitemap.xml
-        run: python generate_sitemap.py
+        run: python sitemap.py
 
       - name: Commit and push sitemap.xml
         run: |
