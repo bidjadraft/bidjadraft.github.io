@@ -61,4 +61,21 @@ def update_sitemap_xml():
 
     for md_file in md_files:
         base_name = os.path.splitext(os.path.basename(md_file))[0]
-        url = f"{SITE_URL}/news/{base
+        url = f"{SITE_URL}/news/{base_name}.html"
+
+        url_element = ET.SubElement(urlset, 'url')
+        ET.SubElement(url_element, 'loc').text = url
+
+    try:
+        ET.indent(urlset, space="  ")  # لتحسين تنسيق XML (بايثون 3.9+)
+    except AttributeError:
+        pass  # إذا كانت نسخة بايثون قديمة لا تدعم ET.indent
+
+    tree = ET.ElementTree(urlset)
+    tree.write(SITEMAP_FILE, encoding='utf-8', xml_declaration=True)
+    abs_path = os.path.abspath(SITEMAP_FILE)
+    print(f"تم تحديث {SITEMAP_FILE} في المسار: {abs_path}")
+
+if __name__ == "__main__":
+    update_feed_xml()
+    update_sitemap_xml()
