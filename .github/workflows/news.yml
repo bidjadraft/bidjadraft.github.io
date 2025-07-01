@@ -1,9 +1,9 @@
-name: Generate News Markdown
+name: Generate News Markdown and Sitemap
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 * * * *'  # كل ساعة
 
 jobs:
   build:
@@ -29,12 +29,15 @@ jobs:
     - name: Run feed.py (توليد feed.xml)
       run: python feed.py
 
+    - name: Run sitemap.py (توليد sitemap.xml)
+      run: python sitemap.py
+
     - name: Commit and push changes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git add news/*.md news/lastpost.txt feed.xml
-        git diff --cached --quiet || git commit -m "تحديث تلقائي للأخبار"
+        git add news/*.md news/lastpost.txt feed.xml sitemap.xml
+        git diff --cached --quiet || git commit -m "تحديث تلقائي للأخبار وخريطة الموقع"
         git push
