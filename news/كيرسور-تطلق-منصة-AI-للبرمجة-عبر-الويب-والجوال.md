@@ -1,0 +1,16 @@
+---
+layout: default
+title: "كيرسور تطلق منصة AI للبرمجة عبر الويب والجوال
+"
+image: "https://d4.alternativeto.net/P_tHf0e2fF-Nn3blYJnjJZmXWpa22Yjd4h4qK9MFSko/rs:fill:1520:760:0/g:ce:0:0/YWJzOi8vZGlzdC9jb250ZW50LzE3NTE0NzU0MDEwNjcucG5n.png"
+category: ذكاء اصطناعي
+date: 2025-07-02T16:34:26
+---
+
+أطلقت منصة "Cursor" نسخة ويب جديدة من منصتها للذكاء الاصطناعي المخصصة لكتابة الأكواد، مما يتيح للمستخدمين الإشراف على وكلاء البرمجة مباشرة عبر أي متصفح. تتيح واجهة الويب الجديدة للمستخدمين إسناد المهام إلى وكلاء الذكاء الاصطناعي باستخدام أوامر اللغة الطبيعية، والتي يمكن أن تشمل طلبات لكتابة ميزات جديدة أو معالجة الأخطاء.
+
+تعمل واجهة الويب على كل من أجهزة سطح المكتب والهواتف المحمولة، وتدعم إدارة الوكلاء بشكل متوازٍ، وتتبع النشاط، ودمج تغييرات التعليمات البرمجية المكتملة. تعمل "Cursor" أيضًا كتطبيق ويب تقدمي على الهاتف المحمول، ويمكن تثبيته عبر "Safari" على iOS أو "Google Chrome" على Android، دون الحاجة إلى تطبيق أصلي.
+
+وفقًا للمطور "Anysphere"، يحتفظ وكلاء الذكاء الاصطناعي على هذه المنصات الجديدة بالإمكانات الكاملة لنظرائهم في بيئة التطوير المتكاملة (IDE)، بما في ذلك كتابة التعليمات البرمجية والاستجابة للاستعلامات المعقدة وهيكلة أطر العمل. يأتي هذا الإصدار استكمالًا لإطلاق "Cursor" السابق لوكلاء الخلفية، الذين يعملون دون الحاجة إلى إشراف مستمر من المستخدم.
+
+<div style="margin-top:2px; margin-bottom:2px;"><a href="https://bidjadraft.github.io/?query=Cursor" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Cursor</a> <a href="https://bidjadraft.github.io/?query=Anysphere" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Anysphere</a> <a href="https://bidjadraft.github.io/?query=IDE" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">IDE</a> <a href="https://bidjadraft.github.io/?query=Safari" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Safari</a> <a href="https://bidjadraft.github.io/?query=Google" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Google</a> <a href="https://bidjadraft.github.io/?query=Chrome" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Chrome</a> <a href="https://bidjadraft.github.io/?query=iOS" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">iOS</a> <a href="https://bidjadraft.github.io/?query=Android" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Android</a></div><br><br>
