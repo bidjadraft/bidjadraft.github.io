@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   
-  <title>{{ page.title }} | بجاد التقني</title>
+  <title>{{ page.title }}</title>
   
   <!-- وصف المقال: من الحقل description أو مقتطف من المحتوى -->
   <meta name="description" content="{{ page.description | default: page.excerpt | strip_html | truncate: 160 }}" />
@@ -13,7 +13,7 @@
   <link rel="icon" href="https://i.imgur.com/GaPGMgJ_d.png" type="image/png" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="{{ page.title }} | بجاد التقني" />
+  <meta property="og:title" content="{{ page.title }}" />
   <meta property="og:description" content="{{ page.description | default: page.excerpt | strip_html | truncate: 160 }}" />
   <meta property="og:image" content="{{ page.image | default: 'https://i.imgur.com/GaPGMgJ_d.png' }}" />
   <meta property="og:url" content="{{ page.url | absolute_url }}" />
@@ -21,7 +21,7 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="{{ page.title }} | بجاد التقني" />
+  <meta name="twitter:title" content="{{ page.title }}" />
   <meta name="twitter:description" content="{{ page.description | default: page.excerpt | strip_html | truncate: 160 }}" />
   <meta name="twitter:image" content="{{ page.image | default: 'https://i.imgur.com/GaPGMgJ_d.png' }}" />
 
