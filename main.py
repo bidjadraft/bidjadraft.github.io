@@ -40,14 +40,13 @@ def detect_category(text, max_retries=8, wait_seconds=10):
 {text}
 رجاءً حدد الفئة المناسبة من القائمة التالية فقط:
 - تطبيقات
-- أجهزة
-- أنظمة
+- أنظمة تشغيل
 - تواصل اجتماعي
 - ذكاء اصطناعي
 
 أجب بكلمة واحدة فقط من القائمة أعلاه تصف موضوع الخبر بدقة."""
     category = gemini_ask(prompt, max_retries, wait_seconds)
-    valid_categories = ["تطبيقات", "أجهزة", "أنظمة", "تواصل اجتماعي", "ذكاء اصطناعي"]
+    valid_categories = ["تطبيقات", "أنظمة تشغيل", "تواصل اجتماعي", "ذكاء اصطناعي"]
     if category and category.strip() in valid_categories:
         return category.strip()
     return "التقنية"
