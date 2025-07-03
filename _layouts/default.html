@@ -8,7 +8,7 @@
   
   <meta name="description" content="{{ page.description | default: page.excerpt | strip_html | truncate: 160 }}" />
 
-  <link rel="icon" href="https://i.imgur.com/2VWewgH.png" type="image/png" />
+  <link rel="icon" href="https://i.imgur.com/GaPGMgJ_d.png" type="image/png" />
 
   <meta property="og:title" content="{{ page.title }}" />
   <meta property="og:description" content="{{ page.description | default: page.excerpt | strip_html | truncate: 160 }}" />
@@ -274,8 +274,8 @@
     }
     .article-date.news-time {
       color: #a1a1aa;
-      font-weight: bold; /* جعل التاريخ بخط عريض */
-      font-size: 1em;
+      font-weight: 400; /* إزالة الخط العريض للوقت */
+      font-size: 0.9em; /* تقليل حجم الخط قليلاً للوقت */
       margin: 0;
     }
     .full-width-news-bar {
@@ -606,7 +606,6 @@
       }
     }
 
-    // دالة لمراقبة الصور وتحميلها كسولاً مع تأثير التلاشي
     function lazyLoadImages() {
       const lazyImages = document.querySelectorAll('.news-thumb');
       const observer = new IntersectionObserver((entries, observer) => {
@@ -617,13 +616,13 @@
             if (src) {
               img.src = src;
               img.onload = () => {
-                img.classList.add('loaded'); // أضف فئة 'loaded' لتشغيل تأثير التلاشي
+                img.classList.add('loaded');
               };
-              observer.unobserve(img); // توقف عن مراقبة الصورة بمجرد تحميلها
+              observer.unobserve(img);
             }
           }
         });
-      }, { rootMargin: '0px 0px 100px 0px' }); // تحميل الصور عندما تكون على بعد 100 بكسل من الشاشة
+      }, { rootMargin: '0px 0px 100px 0px' });
 
       lazyImages.forEach(img => {
         observer.observe(img);
@@ -664,7 +663,8 @@
           newsItem.className = 'news-item';
           newsItem.innerHTML = `
             <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-thumb-link" aria-label="خبر: ${n.title}">
-              <img class="news-thumb" data-src="${n.image}" alt="صورة الخبر: ${n.title}"> </a>
+              <img class="news-thumb" data-src="${n.image}" alt="صورة الخبر: ${n.title}">
+            </a>
             <div class="news-info">
               <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-title">${n.title}</a>
               <div class="news-meta-time">
@@ -681,7 +681,7 @@
         loadingContainer.style.display = "none";
         container.style.display = "flex";
         updateTimes();
-        lazyLoadImages(); // استدعاء دالة التحميل الكسول بعد إضافة الصور إلى DOM
+        lazyLoadImages();
       } catch (error) {
         document.getElementById('loading-container').innerHTML = "<div style='color:#f00;text-align:center;padding:20px'>حدث خطأ أثناء تحميل المقالات.</div>";
       }
