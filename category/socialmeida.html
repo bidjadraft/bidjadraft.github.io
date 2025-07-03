@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="كل ما تحتاج معرفته عن وسائل التواصل الاجتماعي: آخر الأخبار، التحديثات، النصائح، والاستراتيجيات." />
+    <link rel="icon" href="https://i.imgur.com/2VWewgH.png" type="image/png" />
+
+    <meta property="og:title" content="تواصل اجتماعي | بجاد التقني" />
+    <meta property="og:description" content="كل ما تحتاج معرفته عن وسائل التواصل الاجتماعي: آخر الأخبار، التحديثات، النصائح، والاستراتيجيات." />
+    <meta property="og:image" content="https://i.imgur.com/GaPGMgJ_d.png" />
+    <meta property="og:url" content="https://bidjadraft.github.io" />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="تواصل اجتماعي | بجاد التقني" />
+    <meta name="twitter:description" content="كل ما تحتاج معرفته عن وسائل التواصل الاجتماعي: آخر الأخبار، التحديثات، النصائح، والاستراتيجيات." />
+    <meta name="twitter:image" content="https://i.imgur.com/GaPGMgJ_d.png" />
+
+    <title>تواصل اجتماعي | بجاد التقني</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Cairo", "Segoe UI", "Arial", sans-serif;
+            background: #18181b;
+            color: #e5e7eb;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        body.no-scroll {
+            overflow: hidden;
+            user-select: none;
+        }
+        header {
+            background: #18181b;
+            padding: 8px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #23232a;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px #0008;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .profile a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .profile-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #23232a;
+            box-shadow: 0 2px 8px #0003;
+            transition: transform 0.3s ease;
+        }
+        .profile-img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 16px #2563ebaa;
+        }
+        .username {
+            font-size: 1.1em;
+            color: #e5e7eb;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            user-select: none;
+        }
+        .username a {
+            color: inherit;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            gap: 6px;
+        }
+        .username .blue {
+            color: #60a5fa;
+        }
+        .menu-button {
+            background: none;
+            border: none;
+            color: #e5e7eb;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 150;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .sidebar-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .sidebar {
+            position: fixed;
+            left: -100%;
+            top: 0;
+            width: 200px;
+            height: 100%;
+            background: #23232a;
+            transition: left 0.3s ease;
+            padding: 20px 20px 35px 20px;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar.show {
+            left: 0;
+        }
+        .sidebar-search-box {
+            margin-bottom: 25px;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .sidebar-search-box input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid #3a3a41;
+            border-radius: 8px;
+            background-color: #33333a;
+            color: #e5e7eb;
+            font-size: 0.95em;
+            outline: none;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+        }
+        .sidebar-search-box input::placeholder {
+            color: #a1a1aa;
+        }
+        .sidebar-search-box input:focus {
+            border-color: #60a5fa;
+            box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(96, 165, 250, 0.3);
+        }
+        .sidebar-search-box .search-icon {
+            position: absolute;
+            left: 15px;
+            color: #a1a1aa;
+            font-size: 1.1em;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+        .sidebar ul li a {
+            color: #60a5fa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        /* New styles for menu item highlighting */
+        .sidebar ul li.home-link a {
+            color: #60a5fa; /* Blue for Home */
+        }
+        .sidebar ul li.socialmedia-link a {
+            color: #ffffff; /* White for Social Media */
+        }
+        /* End new styles */
+        .sidebar ul li a:hover {
+            color: #fff;
+        }
+        .sidebar-social {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            border-top: 1px solid #3a3a41;
+            margin-top: 15px;
+        }
+        .sidebar-social a {
+            color: #a1a1aa;
+            font-size: 1.5em;
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.2s ease;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        .sidebar-social a:hover {
+            color: #60a5fa;
+            transform: translateY(-3px) scale(1.1);
+            background-color: rgba(96, 165, 250, 0.1);
+        }
+        .sidebar-social a .fa-x-twitter:hover {
+            color: #000;
+            background-color: #fff;
+        }
+        .sidebar-social a .fa-facebook-f:hover {
+            color: #1877f2;
+        }
+        .sidebar-social a .fa-telegram-plane:hover {
+            color: #0088cc;
+        }
+        .sidebar-social a .fa-rss-square:hover {
+            color: #f26522;
+        }
+        main {
+            max-width: 600px;
+            margin: 24px auto 0 auto;
+            padding: 0 8px;
+            flex-grow: 1;
+        }
+        .main-news-box {
+            position: relative;
+            width: 100%;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .main-news-meta {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 4;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+            transition: opacity 0.3s ease;
+        }
+        .main-news-meta .news-category {
+            color: #60a5fa;
+            font-weight: bold;
+            font-size: 0.7em;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .main-news-meta .news-category:hover {
+            color: #fff;
+        }
+        .main-news-meta .news-time {
+            font-size: 0.7em;
+            color: #e5e7eb;
+        }
+        .main-article-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+        }
+        .main-news-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: block;
+            z-index: 1;
+            transition: filter 0.3s ease;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 50%), linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 50%);
+            opacity: 0.8;
+            border-radius: 8px;
+            z-index: 2;
+        }
+        .main-news-info {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            padding: 10px 14px 10px 14px;
+            z-index: 3;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+            border-radius: 0 0 8px 8px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+        .main-news-title {
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-shadow: 0 2px 8px #000a;
+            margin: 0 0 5px 0;
+            padding: 0;
+            user-select: none;
+            transition: opacity 0.3s ease;
+            text-decoration: none;
+            color: #fff;
+        }
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-top: 8px;
+        }
+        .news-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid #fff;
+            background: none;
+            min-height: 90px;
+            position: relative;
+            z-index: 1;
+            transition: filter 0.3s ease;
+        }
+        .news-thumb {
+            width: 180px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+            background: #23232a;
+            position: relative;
+            z-index: 1;
+            transition: filter 0.3s ease;
+        }
+        .news-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+        }
+        .news-title {
+            color: #e5e7eb;
+            font-size: 1em;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s;
+            margin: 0 0 4px 0;
+            padding: 0;
+            position: relative;
+            user-select: none;
+            min-height: 60px;
+        }
+        .news-title:hover {
+            color: #60a5fa;
+        }
+        .news-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #a1a1aa;
+            margin-top: 2px;
+            user-select: none;
+            transition: opacity 0.3s ease;
+        }
+        .news-meta .news-category {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            color: #60a5fa;
+            font-weight: bold;
+            font-size: 0.7em;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .news-meta .news-category:hover {
+            color: #fff;
+        }
+        .news-time {
+            font-size: 0.7em;
+        }
+        footer {
+            text-align: center;
+            color: #71717a;
+            font-size: 0.80em;
+            padding: 12px 12px 10px 12px;
+            margin-top: 40px;
+            border-top: 1px solid #2c2c36;
+            letter-spacing: 0.06em;
+            user-select: none;
+            background: #18181b;
+            transition: color 0.3s ease;
+        }
+        footer:hover {
+            color: #60a5fa;
+        }
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="profile">
+            <a href="https://bidjadraft.github.io/links" title="زيارة صفحة بجاد ">
+                <img class="profile-img" src="https://i.imgur.com/GaPGMgJ.png" alt="Profile" />
+            </a>
+            <div class="username">
+                <a href="https://bidjadraft.github.io/" title="زيارة صفحة بجاد التقني">
+                    <span>بجاد</span> <span class="blue">التقني</span>
+                </a>
+            </div>
+        </div>
+        <button class="menu-button" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-search-box">
+            <i class="fas fa-search search-icon"></i>
+            <form id="search-form" action="/" method="GET">
+                <input type="search" name="query" placeholder="ابحث في العناوين والمقالات..." aria-label="Search articles" />
+            </form>
+        </div>
+        <ul>
+            <li class="home-link"><a href="https://bidjadraft.github.io/">الرئيسية</a></li>
+            <li><a href="https://bidjadraft.github.io/category/apps">تطبيقات</a></li>
+            <li class="socialmedia-link"><a href="https://bidjadraft.github.io/category/socialmedia">تواصل اجتماعي</a></li>
+            <li><a href="https://bidjadraft.github.io/category/ai">ذكاء اصطناعي</a></li>
+            <li><a href="https://bidjadraft.github.io/category/system">أنظمة تشغيل</a></li> </ul>
+        <div class="sidebar-social">
+            <a href="https://x.com/bidjadraft" aria-label="منصة X"><i class="fab fa-x-twitter"></i></a>
+            <a href="https://www.facebook.com/bidjadtech/" aria-label="فيسبوك"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://t.me/bidjadtech" aria-label="تيليجرام"><i class="fab fa-telegram-plane"></i></a>
+            <a href="https://bidjadraft.github.io/feed.xml" aria-label="RSS"><i class="fas fa-rss-square"></i></a>
+        </div>
+    </div>
+    <main id="news-container" tabindex="-1" aria-live="polite" aria-label="أخبار التواصل الإجتماعي بجاد التقني" class="loading"></main>
+    <footer>© جميع الحقوق محفوظة بجاد الأثري</footer>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("sidebar-overlay");
+            sidebar.classList.toggle("show");
+            overlay.classList.toggle("show");
+            document.body.classList.toggle("no-scroll", sidebar.classList.contains("show"));
+        }
+        document.addEventListener("click", function (event) {
+            const sidebar = document.getElementById("sidebar");
+            const menuButton = document.querySelector(".menu-button");
+            const overlay = document.getElementById("sidebar-overlay");
+            const searchInput = document.querySelector(".sidebar-search-box input");
+            if (sidebar.classList.contains("show")) {
+                if (
+                    event.target === overlay ||
+                    (!sidebar.contains(event.target) &&
+                        !menuButton.contains(event.target) &&
+                        !searchInput.contains(event.target))
+                ) {
+                    sidebar.classList.remove("show");
+                    overlay.classList.remove("show");
+                    document.body.classList.remove("no-scroll");
+                }
+            }
+        });
+        const githubUser = "bidjadraft";
+        const repoName = "bidjadraft.github.io";
+        const folder = "news";
+        const baseUrl = `https://${githubUser}.github.io`;
+        let allNewsData = [];
+
+        function getCategoryLink(categoryName) {
+            let slug;
+
+            switch (categoryName) {
+                case "تطبيقات":
+                    slug = "apps";
+                    break;
+                case "ذكاء اصطناعي":
+                case "الذكاء الاصطناعي":
+                    slug = "ai";
+                    break;
+                case "أنظمة تشغيل": // Updated to match the new text in the sidebar
+                case "أنظمة": // Keep old one for backward compatibility if articles haven't changed yet
+                    slug = "system";
+                    break;
+                case "تواصل اجتماعي":
+                    slug = "socialmedia";
+                    break;
+                default:
+                    slug = categoryName.toLowerCase().replace(/\s+/g, "");
+                    return `${baseUrl}/category/${slug}`;
+            }
+            return `${baseUrl}/category/${slug}`;
+        }
+
+        function parseArticleMarkdown(mdText, fileName) {
+            const fmMatch = mdText.match(/^---\s*([\s\S]*?)\s*---/);
+            let meta = {};
+            let rawContent = mdText;
+            if (fmMatch) {
+                const lines = fmMatch[1].split("\n");
+                lines.forEach((line) => {
+                    const match = line.match(
+                        /^([\w\u0600-\u06FF\-]+):\s*["']?(.+?)["']?$/
+                    );
+                    if (match) meta[match[1]] = match[2];
+                });
+                rawContent = mdText.substring(fmMatch[0].length).trim();
+            }
+            const title = meta.title || fileName.replace(".md", "").replace(/-/g, " ");
+            const image = meta.image || "https://via.placeholder.com/600x400?text=خبر";
+            const date = meta.date || "";
+            const category = meta.category || "عام";
+            const pageUrl = `${baseUrl}/${folder}/${fileName.replace(/\.md$/, "")}`;
+            return {
+                title,
+                image,
+                date,
+                category,
+                pageUrl,
+                rawContent,
+            };
+        }
+
+        function timeAgo(dateString) {
+            const now = new Date();
+            const past = new Date(dateString);
+            const diffMs = now - past;
+            const diffSeconds = Math.floor(diffMs / 1000);
+            const diffMinutes = Math.floor(diffSeconds / 60);
+            const diffHours = Math.floor(diffMinutes / 60);
+            const diffDays = Math.floor(diffHours / 24);
+            const diffMonths = Math.floor(diffDays / 30);
+            if (diffSeconds < 60) return "الآن";
+            if (diffMinutes < 60)
+                return `منذ ${diffMinutes} ${
+                    diffMinutes === 1 ? "دقيقة" : "دقائق"
+                }`;
+            if (diffHours < 24)
+                return `منذ ${diffHours} ${diffHours === 1 ? "ساعة" : "ساعات"}`;
+            if (diffDays < 30)
+                return `منذ ${diffDays} ${diffDays === 1 ? "يوم" : "أيام"}`;
+            if (diffMonths < 12)
+                return `منذ ${diffMonths} ${diffMonths === 1 ? "شهر" : "أشهر"}`;
+            const diffYears = Math.floor(diffMonths / 12);
+            return `منذ ${diffYears} ${diffYears === 1 ? "سنة" : "سنوات"}`;
+        }
+
+        async function fetchAllArticlesAndPrepareData() {
+            try {
+                const res = await fetch(
+                    `https://api.github.com/repos/${githubUser}/${repoName}/contents/${folder}`
+                );
+                const files = await res.json();
+                if (!Array.isArray(files)) {
+                    console.error("لم يتم جلب الملفات بشكل صحيح");
+                    return;
+                }
+                const mdFiles = files.filter((f) => f.name.endsWith(".md"));
+                const fetchPromises = mdFiles.map(async (file) => {
+                    const mdText = await fetch(file.download_url).then((r) => r.text());
+                    return parseArticleMarkdown(mdText, file.name);
+                });
+                allNewsData = await Promise.all(fetchPromises);
+                allNewsData.sort((a, b) => new Date(b.date) - new Date(a.date));
+            } catch (error) {
+                console.error("حدث خطأ أثناء جلب وإعداد بيانات الأخبار:", error);
+            }
+        }
+
+        function displayArticles(newsItems, headingText = "") {
+            const mainContainer = document.getElementById("news-container");
+            mainContainer.innerHTML = "";
+            if (headingText) {
+                const heading = document.createElement("h2");
+                heading.textContent = headingText;
+                heading.style.color = "#e5e7eb";
+                heading.style.textAlign = "center";
+                heading.style.marginBottom = "25px";
+                mainContainer.appendChild(heading);
+            }
+            if (newsItems.length === 0) {
+                const noResults = document.createElement("p");
+                noResults.textContent = "لا توجد نتائج مطابقة.";
+                noResults.style.textAlign = "center";
+                noResults.style.marginTop = "50px";
+                mainContainer.appendChild(noResults);
+                return;
+            }
+            // عرض الخبر الرئيسي
+            const mainNewsBox = document.createElement("div");
+            mainNewsBox.className = "main-news-box fade-in-up";
+            mainNewsBox.innerHTML = `
+                <div class="main-news-meta">
+                    <a href="${getCategoryLink(newsItems[0].category)}" class="news-category">${newsItems[0].category}</a>
+                    <span class="news-time">${timeAgo(newsItems[0].date)}</span>
+                </div>
+                <a href="${newsItems[0].pageUrl}" class="main-article-link" aria-label="الخبر الرئيسي: ${newsItems[0].title}">
+                    <img class="main-news-img" src="${newsItems[0].image}" alt="صورة الخبر الرئيسي: ${newsItems[0].title}">
+                    <div class="overlay"></div>
+                    <div class="main-news-info">
+                        <h2 class="main-news-title">${newsItems[0].title}</h2>
+                    </div>
+                </a>
+            `;
+            mainContainer.appendChild(mainNewsBox);
+            // عرض باقي الأخبار
+            if (newsItems.length > 1) {
+                const newsList = document.createElement("section");
+                newsList.className = "news-list";
+                newsItems.slice(1).forEach((n) => {
+                    const newsItem = document.createElement("div");
+                    newsItem.className = "news-item fade-in-up";
+                    newsItem.innerHTML = `
+                        <a href="${n.pageUrl}" class="news-thumb-link" aria-label="خبر: ${n.title}">
+                            <img class="news-thumb" src="${n.image}" alt="صورة الخبر: ${n.title}">
+                        </a>
+                        <div class="news-info">
+                            <a href="${n.pageUrl}" class="news-title">
+                                <span>${n.title}</span>
+                            </a>
+                            <div class="news-meta">
+                                <a href="${getCategoryLink(n.category)}" class="news-category">${n.category}</a>
+                                <span class="news-time">${timeAgo(n.date)}</span>
+                            </div>
+                        </div>
+                    `;
+                    newsList.appendChild(newsItem);
+                });
+                mainContainer.appendChild(newsList);
+            }
+            setupScrollReveal();
+        }
+
+        function setupScrollReveal() {
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll(".fade-in-up:not(.visible)").forEach((el) => {
+                observer.observe(el);
+            });
+        }
+
+        function searchArticles(query) {
+            const lowerCaseQuery = query.toLowerCase();
+            return allNewsData.filter(
+                (article) =>
+                    article.title.toLowerCase().includes(lowerCaseQuery) ||
+                    article.rawContent.toLowerCase().includes(lowerCaseQuery)
+            );
+        }
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const mainContainer = document.getElementById("news-container");
+            mainContainer.classList.add("loading");
+            await fetchAllArticlesAndPrepareData();
+
+            // Filter for "تواصل اجتماعي" category, matching your Markdown exactly
+            const socialMediaNews = allNewsData.filter(article => article.category === "تواصل اجتماعي");
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchQuery = urlParams.get("query");
+            currentIndex = 0;
+
+            if (searchQuery) {
+                document.title = `نتائج البحث عن "${searchQuery}" | تواصل اجتماعي | بجاد التقني`;
+                const results = searchArticles(searchQuery);
+                // Ensure search results are also filtered by the correct category
+                const filteredResults = results.filter(article => article.category === "تواصل اجتماعي");
+                displayArticles(filteredResults, `نتائج البحث عن: "${searchQuery}" في تواصل اجتماعي`);
+            } else {
+                document.title = "تواصل اجتماعي | بجاد التقني";
+                displayArticles(socialMediaNews, "");
+            }
+
+            setTimeout(() => {
+                mainContainer.classList.remove("loading");
+            }, 1200);
+        });
+    </script>
+</body>
+</html>
