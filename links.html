@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Links</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      scroll-behavior: smooth;
+      background: #18181b;
+      font-family: 'Cairo', 'Segoe UI', 'Arial', sans-serif;
+      color: #e5e7eb;
+      overflow-x: hidden;
+    }
+    body {
+      perspective: 1px;
+      transform-style: preserve-3d;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+    }
+    .navbar {
+      background: transparent;
+      box-shadow: none;
+      padding: 16px 18px 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 110;
+    }
+    /* إزالة جميع أزرار GitHub */
+    .github-btn {
+      display: none !important;
+    }
+    .sidebar {
+      display: none;
+    }
+    .overlay {
+      display: none;
+    }
+    .container {
+      scroll-snap-align: start;
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: transparent !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      position: relative;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-sizing: border-box;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      padding-top: 48px;
+    }
+    .profile-img-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      margin-top: 0;
+    }
+    .profile-img {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #23232a;
+      box-shadow: 0 2px 8px #0003;
+      background: #23232a;
+    }
+    h1 {
+      font-size: 2.1em;
+      margin: 18px 0 12px 0;
+      color: #e5e7eb;
+      font-weight: 900;
+      line-height: 1.2;
+      font-family: 'Cairo', 'Segoe UI', 'Arial', sans-serif;
+      letter-spacing: 0.5px;
+    }
+    h1 .accent {
+      color: #60a5fa;
+    }
+    .desc {
+      color: #a1a1aa;
+      margin-bottom: 32px;
+      font-size: 1.15em;
+      line-height: 1.7;
+      font-family: 'Cairo', 'Segoe UI', 'Arial', sans-serif;
+      font-weight: 700;
+    }
+    .btn-telegram, .btn-youtube, .btn-podcast, .btn-blog, .btn-contact {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 1.13em;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 0;
+      width: 100%;
+      margin-bottom: 18px;
+      cursor: pointer;
+      font-family: 'Cairo', 'Segoe UI', 'Arial', sans-serif;
+      box-shadow: 0 2px 8px transparent;
+      transition: background 0.2s, color 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .btn-telegram {
+      background: #0088cc;
+      color: #fff;
+      box-shadow: 0 2px 8px #0088ccaa;
+    }
+    .btn-telegram:hover {
+      background: #006699;
+      color: #fff;
+    }
+    .btn-youtube {
+      background: #ff0000;
+      color: #fff;
+      box-shadow: 0 2px 8px #ff0000aa;
+    }
+    .btn-youtube:hover {
+      background: #cc0000;
+      color: #fff;
+    }
+    .btn-podcast {
+      background: #6f42c1;
+      color: #fff;
+      box-shadow: 0 2px 8px #6f42c1aa;
+    }
+    .btn-podcast:hover {
+      background: #592ea9;
+      color: #fff;
+    }
+    .btn-blog {
+      background: #fff;
+      color: #18181b;
+      box-shadow: 0 2px 8px #ffffffaa;
+    }
+    .btn-blog:hover {
+      background: #e6e6e6;
+      color: #18181b;
+    }
+    .btn-contact.email {
+      background: #ea4335;
+      color: #fff;
+      box-shadow: 0 2px 8px #ea4335aa;
+    }
+    .btn-contact.email:hover {
+      background: #b33227;
+    }
+    .btn-contact.telegram {
+      background: #0088cc;
+      color: #fff;
+      box-shadow: 0 2px 8px #0088ccaa;
+    }
+    .btn-contact.telegram:hover {
+      background: #006699;
+    }
+    .btn-contact.anonymous {
+      background: #444444;
+      color: #fff;
+      box-shadow: 0 2px 8px #444444aa;
+      cursor: pointer;
+    }
+    .socials {
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .socials a {
+      background: #23232a;
+      color: #a1a1aa;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6em;
+      transition: background 0.2s, color 0.2s;
+      text-decoration: none;
+    }
+    .socials a:hover {
+      background: #18181b;
+      color: #60a5fa;
+    }
+    @media (max-width: 600px) {
+      .container {
+        max-width: 90vw;
+        padding: 24px 8px 16px 8px;
+      }
+      .navbar {
+        padding: 10px 8px 0 8px;
+      }
+      .profile-img {
+        width: 100px;
+        height: 100px;
+      }
+      .profile-img-container {
+        margin-top: 0;
+        margin-bottom: 20px;
+      }
+      .sidebar {
+        width: 140px;
+        max-width: 80vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar"></div>
+  <div class="overlay" id="overlay"></div>
+  <nav class="sidebar" id="sidebar" aria-label="القائمة الجانبية" style="display:none;">
+    <a href="#">عنّي</a>
+    <a href="#">مشاريعي</a>
+    <a href="#">تواصل</a>
+  </nav>
+
+  <!-- الصفحة الأولى -->
+  <section class="container" id="page1">
+    <div class="profile-img-container">
+      <img class="profile-img" src="https://i.imgur.com/18pNRZL.jpeg" alt="Profile" />
+    </div>
+    <h1>بجاد <span class="accent">الأثري</span></h1>
+    <div class="desc">
+      خبير في المجال التقني و النفسي<br />
+      مصمم غرافيك و منتج بودكاست
+    </div>
+    <button class="btn-telegram" onclick="window.open('https://t.me/s/bidjadraft', '_blank')">
+      <i class="fab fa-telegram"></i> Telegram
+    </button>
+    <button class="btn-youtube" onclick="window.open('https://www.youtube.com/@bidjadraft')">
+      <i class="fab fa-youtube"></i> YouTube
+    </button>
+    <button class="btn-podcast" onclick="window.open('https://ar-podcast.com/meliontech/')">
+      <i class="fas fa-podcast"></i> Podcast
+    </button>
+    <button class="btn-blog" onclick="window.open('https://bidjadraft.github.io/', '_blank')">
+      <i class="fas fa-blog"></i> Blog
+    </button>
+  </section>
+
+  <!-- الصفحة الثانية - طرق التواصل -->
+  <section class="container" id="page2">
+    <h1>تواصل معي</h1>
+    <div class="desc" style="margin-bottom: 24px;">
+      يمكنك التواصل معي عبر الطرق التالية بسهولة وأمان:
+    </div>
+    <a href="mailto:bidjadraft@bidjad.anonaddy.com" class="btn-contact email" aria-label="البريد الإلكتروني">
+      <i class="fas fa-envelope"></i> البريد الإلكتروني
+    </a>
+    <a href="https://t.me/bidjadq" target="_blank" rel="noopener" class="btn-contact telegram" aria-label="تليجرام">
+      <i class="fab fa-telegram"></i> تليجرام
+    </a>
+    <button class="btn-contact anonymous" id="anonymousBtn" aria-label="رسالة مجهولة" type="button">
+      <i class="fas fa-user-secret"></i> رسالة مجهولة
+    </button>
+    <button class="github-btn" aria-label="GitHub" onclick="window.open('https://github.com/bidjadraft')">
+      <i class="fab fa-github"></i>
+    </button>
+  </section>
+
+  <!-- صفحة الرسالة المجهولة -->
+  <section class="container" id="secretMessagePage" style="display:none; min-height: 100vh;">
+    <i class="fas fa-user-secret secret-icon" style="font-size:100px;color:#60a5fa;margin:0 auto 20px auto; user-select:none;"></i>
+    <div class="desc">أرسل لي اقتراحك، مشكلتك، نصيحتك أو أي رسالة تود مشاركتها بسرية تامة</div>
+    <textarea class="message-box" placeholder="اكتب رسالتك هنا..." style="width:100%; min-height:120px; border-radius:10px; border:1px solid #23232a; background:#23232a; color:#e5e7eb; padding:10px; font-family: 'Cairo', 'Segoe UI', 'Arial', sans-serif; font-size:1.1em; resize:vertical; direction:rtl; text-align:right;"></textarea>
+    <button class="btn-send" id="sendButton" style="width:100%; max-width:280px; margin: 20px auto 0 auto; display:block; border-radius:999px; background:#FFD700; color:#18181b; font-weight:700; font-family:'Cairo', sans-serif; font-size:1.18em; cursor:pointer; box-shadow: 0 2px 8px #ffd70044; border:none; padding:14px 0;">
+      إرسال الرسالة
+    </button>
+    <button id="backBtn" style="margin: 20px auto; display: block; background: #444; color: #fff; border: none; border-radius: 999px; padding: 10px 0; width: 100%; max-width: 280px; font-family: 'Cairo', sans-serif; font-weight: 700; cursor: pointer;">
+      العودة
+    </button>
+  </section>
+
+  <script>
+    const anonymousBtn = document.getElementById('anonymousBtn');
+    const secretMessagePage = document.getElementById('secretMessagePage');
+    const page2 = document.getElementById('page2');
+    const backBtn = document.getElementById('backBtn');
+    const sendButton = document.getElementById('sendButton');
+    const messageBox = secretMessagePage.querySelector('textarea');
+
+    anonymousBtn.addEventListener('click', () => {
+      page2.style.display = 'none';
+      secretMessagePage.style.display = 'flex';
+      secretMessagePage.style.flexDirection = 'column';
+      secretMessagePage.style.justifyContent = 'center';
+      secretMessagePage.style.alignItems = 'center';
+      messageBox.value = '';
+      messageBox.focus();
+      window.scrollTo(0, 0);
+    });
+
+    backBtn.addEventListener('click', () => {
+      secretMessagePage.style.display = 'none';
+      page2.style.display = 'flex';
+      page2.style.flexDirection = 'column';
+      page2.style.justifyContent = 'center';
+      page2.style.alignItems = 'center';
+      window.scrollTo(0, 0);
+    });
+
+    function showLoading(btn) {
+      btn.dataset.original = btn.innerHTML;
+      btn.innerHTML = '<span class="dots">...</span> جاري الإرسال';
+      btn.disabled = true;
+    }
+    function hideLoading(btn) {
+      btn.innerHTML = btn.dataset.original || 'إرسال الرسالة';
+      btn.disabled = false;
+    }
+
+    sendButton.addEventListener('click', () => {
+      const message = messageBox.value.trim();
+      if (!message) {
+        alert('يرجى كتابة نص.');
+        return;
+      }
+      showLoading(sendButton);
+
+      const token = '7843988051:AAE3Ie2ICVnztPz9MOMhd6b8XbrQv92hD5g';
+      const chatId = '1693067897';
+      const url = `https://api.telegram.org/bot${token}/sendMessage`;
+
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId, text: message })
+      })
+      .then(res => res.json())
+      .then(data => {
+        hideLoading(sendButton);
+        if (data.ok) {
+          alert('تم استلام رسالتك');
+          messageBox.value = '';
+          backBtn.click();
+        } else {
+          alert('حدث خطأ أثناء الإرسال: ' + data.description);
+        }
+      })
+      .catch(err => {
+        hideLoading(sendButton);
+        alert('خطأ في الاتصال: ' + err);
+      });
+    });
+  </script>
+</body>
+</html>
