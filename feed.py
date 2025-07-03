@@ -2,6 +2,7 @@ import os
 import glob
 import re
 import xml.etree.ElementTree as ET
+from datetime import datetime
 
 NEWS_DIR = "news"
 FEED_FILE = "feed.xml"
@@ -63,8 +64,19 @@ def update_sitemap_xml():
         base_name = os.path.splitext(os.path.basename(md_file))[0]
         url = f"{SITE_URL}/news/{base_name}.html"
 
+        # الحصول على تاريخ آخر تعديل للملف
+        # os.path.getmtime يعيد طابع الوقت (timestamp)
+        # نحوله إلى كائن datetime ثم ننسقه بتنسيق W3C Datetime (YYYY-MM-DD)
+        last_mod_timestamp = os.path.getmtime(md_file)
+        last_mod_datetime = datetime.fromtimestamp(last_mod_timestamp)
+        last_mod_formatted = last_mod_datetime.strftime('%Y-%m-%d')
+
         url_element = ET.SubElement(urlset, 'url')
         ET.SubElement(url_element, 'loc').text = url
+        ET.SubElement(url_element, 'lastmod').text = last_mod_formatted
+        # يمكنك إضافة <changefreq> و <priority> هنا إذا أردت، لكنها أقل أهمية
+        # ET.SubElement(url_element, 'changefreq').text = 'weekly'
+        # ET.SubElement(url_element, 'priority').text = '0.8'
 
     try:
         ET.indent(urlset, space="  ")  # لتحسين تنسيق XML (بايثون 3.9+)
