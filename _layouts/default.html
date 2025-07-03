@@ -6,26 +6,21 @@
   
   <title>{{ page.title }}</title>
   
-  <!-- وصف المقال: من الحقل description أو مقتطف من المحتوى -->
   <meta name="description" content="{{ page.description | default: page.excerpt | strip_html | truncate: 160 }}" />
 
-  <!-- أيقونة الموقع -->
-  <link rel="icon" href="https://i.imgur.com/GaPGMgJ_d.png" type="image/png" />
+  <link rel="icon" href="https://i.imgur.com/2VWewgH.png" type="image/png" />
 
-  <!-- Open Graph -->
   <meta property="og:title" content="{{ page.title }}" />
   <meta property="og:description" content="{{ page.description | default: page.excerpt | strip_html | truncate: 160 }}" />
   <meta property="og:image" content="{{ page.image | default: 'https://i.imgur.com/GaPGMgJ_d.png' }}" />
   <meta property="og:url" content="{{ page.url | absolute_url }}" />
   <meta property="og:type" content="article" />
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="{{ page.title }}" />
   <meta name="twitter:description" content="{{ page.description | default: page.excerpt | strip_html | truncate: 160 }}" />
   <meta name="twitter:image" content="{{ page.image | default: 'https://i.imgur.com/GaPGMgJ_d.png' }}" />
 
-  <!-- خطوط وأيقونات -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
 
@@ -275,10 +270,11 @@
       cursor: pointer;
       outline: none;
       color: #60a5fa;
+      font-weight: bold; /* جعل الفئة بخط عريض */
     }
     .article-date.news-time {
       color: #a1a1aa;
-      font-weight: 400;
+      font-weight: bold; /* جعل التاريخ بخط عريض */
       font-size: 1em;
       margin: 0;
     }
@@ -328,6 +324,7 @@
     #related-articles .news-item:last-child {
       border-bottom: none;
     }
+    /* الأنماط الجديدة لصور التحميل الكسول وتأثير التلاشي */
     #related-articles .news-thumb {
       width: 180px;
       height: 120px;
@@ -336,7 +333,13 @@
       flex-shrink: 0;
       background: #23232a;
       display: block;
+      opacity: 0; /* ابدأ الصورة شفافة */
+      transition: opacity 0.5s ease-in-out; /* أضف تأثير التلاشي */
     }
+    #related-articles .news-thumb.loaded {
+      opacity: 1; /* اجعل الصورة مرئية عندما يتم تحميلها */
+    }
+
     #related-articles .news-info {
       display: flex;
       flex-direction: column;
@@ -449,10 +452,7 @@
       <li><a href="https://bidjadraft.github.io/category/apps">التطبيقات</a></li>
       <li><a href="https://bidjadraft.github.io/socialmedia">منصات التواصل</a></li>
       <li><a href="https://bidjadraft.github.io/category/ai">الذكاء الاصطناعي</a></li>
-      <li><a href="https://bidjadraft.github.io/category/devices">الأجهزة</a></li>
-      <li><a href="https://bidjadraft.github.io/category/system">الأنظمة</a></li>
-      <li><a href="#about">من نحن</a></li>
-      <li><a href="#contact">اتصل بنا</a></li>
+      <li><a href="https://bidjadraft.github.io/category/system">أنظمة تشغيل</a></li>
     </ul>
 
     <div class="sidebar-social">
@@ -596,9 +596,7 @@
           return "https://bidjadraft.github.io/category/apps";
         case "ذكاء اصطناعي":
           return "https://bidjadraft.github.io/category/ai";
-        case "أجهزة":
-          return "https://bidjadraft.github.io/category/devices";
-        case "أنظمة":
+        case "أنظمة تشغيل":
           return "https://bidjadraft.github.io/category/system";
         case "تواصل اجتماعي":
         case "منصات تواصل":
@@ -606,6 +604,30 @@
         default:
           return "https://bidjadraft.github.io/";
       }
+    }
+
+    // دالة لمراقبة الصور وتحميلها كسولاً مع تأثير التلاشي
+    function lazyLoadImages() {
+      const lazyImages = document.querySelectorAll('.news-thumb');
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const src = img.getAttribute('data-src');
+            if (src) {
+              img.src = src;
+              img.onload = () => {
+                img.classList.add('loaded'); // أضف فئة 'loaded' لتشغيل تأثير التلاشي
+              };
+              observer.unobserve(img); // توقف عن مراقبة الصورة بمجرد تحميلها
+            }
+          }
+        });
+      }, { rootMargin: '0px 0px 100px 0px' }); // تحميل الصور عندما تكون على بعد 100 بكسل من الشاشة
+
+      lazyImages.forEach(img => {
+        observer.observe(img);
+      });
     }
 
     async function loadRelatedArticles() {
@@ -642,8 +664,7 @@
           newsItem.className = 'news-item';
           newsItem.innerHTML = `
             <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-thumb-link" aria-label="خبر: ${n.title}">
-              <img class="news-thumb" src="${n.image}" alt="صورة الخبر: ${n.title}">
-            </a>
+              <img class="news-thumb" data-src="${n.image}" alt="صورة الخبر: ${n.title}"> </a>
             <div class="news-info">
               <a href="${n.pageUrl}" target="_blank" rel="noopener noreferrer" class="news-title">${n.title}</a>
               <div class="news-meta-time">
@@ -660,6 +681,7 @@
         loadingContainer.style.display = "none";
         container.style.display = "flex";
         updateTimes();
+        lazyLoadImages(); // استدعاء دالة التحميل الكسول بعد إضافة الصور إلى DOM
       } catch (error) {
         document.getElementById('loading-container').innerHTML = "<div style='color:#f00;text-align:center;padding:20px'>حدث خطأ أثناء تحميل المقالات.</div>";
       }
@@ -669,11 +691,23 @@
       const categoryName = "{{ page.category }}".trim();
       const categoryLink = document.querySelector('.article-meta-link');
       if (categoryLink && categoryName) {
-        categoryLink.textContent = removeAlPrefix(categoryName);
+        categoryLink.textContent = removeAlPrefix(categoryName); 
         categoryLink.href = getCategoryUrl(categoryName);
         categoryLink.target = "_blank";
         categoryLink.rel = "noopener noreferrer";
       }
+
+      document.querySelectorAll('.sidebar ul li a').forEach(link => {
+        const originalText = link.textContent.trim();
+        if (originalText === "الأنظمة" || originalText === "أنظمة") {
+          link.textContent = "أنظمة تشغيل";
+          if (link.getAttribute('href') !== "https://bidjadraft.github.io/category/system") {
+            link.setAttribute('href', "https://bidjadraft.github.io/category/system");
+          }
+        } else if (originalText.startsWith("ال")) {
+          link.textContent = removeAlPrefix(originalText);
+        }
+      });
 
       updateTimes();
       loadRelatedArticles();
