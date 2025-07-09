@@ -1,0 +1,16 @@
+---
+layout: default
+title: "Amarok 3.3 تحديث ضخم بمحرك GStreamer وتقنية Qt6
+"
+image: "https://d4.alternativeto.net/9XzPB7LSljTahMtv4nQqGw3RF9fqCCZoT70nHjh8lQ0/rs:fill:1520:760:0/g:ce:0:0/YWJzOi8vZGlzdC9jb250ZW50LzE3NTIwMDc4ODAwODkucG5n.png"
+category: تطبيقات
+date: 2025-07-09T07:50:00
+---
+
+أطلق برنامج تشغيل الموسيقى مفتوح المصدر الكلاسيكي Amarok الإصدار 3.3، الملقب بـ "فوق الغيوم"، والذي يمثل قفزة تقنية كبيرة. يعتمد الإصدار الجديد على Qt6 framework و KDE Frameworks 6، وهو تحول جذري في البنية التحتية للبرنامج بعد أكثر من عقد، مما يمهد الطريق لتطويرات وميزات جديدة في المستقبل.
+
+أجرى Amarok تغييرات جوهرية في نظام الصوت، حيث يعتمد الآن على GStreamer لتشغيل الصوت. هذا التغيير يوحد ويحسن الميزات مثل ReplayGain ودعم المؤثرات البصرية لجميع المستخدمين بغض النظر عن المنصة أو الخلفية التقنية المستخدمة. كما يعالج هذا التحديث مشاكل عدم الاتساق السابقة الناجمة عن الاعتماد على خلفيات Phonon مختلفة، مما يوفر تجربة صوتية موحدة ومستقبلية.
+
+بالإضافة إلى تحسينات نظام الصوت، يدعم نظام قاعدة البيانات في Amarok الآن مجموعة أوسع من الأحرف، بما في ذلك الرموز التعبيرية المستخدمة في وصف البودكاست والرموز النادرة الأخرى. كما تم إصلاح مشكلات معالجة التاريخ، مثل "مشكلة عام 2038"، وعدة أخطاء متعلقة بالبيانات، مما يعزز موثوقية البرنامج. يأتي هذا الإصدار بعد 15 شهرًا من الإصدار 3.0 و 5 أشهر من الإصدار 3.2.2، مع التركيز بشكل أساسي على التغييرات الهيكلية الداخلية أكثر من تغيير واجهة المستخدم أو سير العمل الأساسي.
+
+<div style="margin-top:2px; margin-bottom:2px;"><a href="https://bidjadraft.github.io/?query=Amarok" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Amarok</a> <a href="https://bidjadraft.github.io/?query=Qt6" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Qt6</a> <a href="https://bidjadraft.github.io/?query=KDE" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">KDE</a> <a href="https://bidjadraft.github.io/?query=Frameworks" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Frameworks</a> <a href="https://bidjadraft.github.io/?query=6" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">6</a> <a href="https://bidjadraft.github.io/?query=GStreamer" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">GStreamer</a> <a href="https://bidjadraft.github.io/?query=Phonon" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Phonon</a></div><br><br>
