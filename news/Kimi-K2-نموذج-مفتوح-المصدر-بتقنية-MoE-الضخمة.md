@@ -1,0 +1,16 @@
+---
+layout: default
+title: "Kimi K2 نموذج مفتوح المصدر بتقنية MoE الضخمة
+"
+image: "https://d4.alternativeto.net/9QE83lEgpx-3g7nLHK5sX2LnbvvVTRlaIYiSFnUU-bc/rs:fill:1520:760:0/g:ce:0:0/YWJzOi8vZGlzdC9jb250ZW50LzE3NTI0ODA5MDg1MTgucG5n.png"
+category: ذكاء اصطناعي
+date: 2025-07-14T08:15:08
+---
+
+أطلقت شركة Kimi.ai نموذج Kimi K2، وهو نموذج مفتوح المصدر يعتمد على تقنية "الوكيل الذكي" (agentic model) ويتميز بضخامة حجمه حيث يضم تريليون معلمة. يعتمد النموذج على معمارية "خليط الخبراء" (Mixture-of-Experts - MoE) النشطة التي تتكون من 32 مليار معلمة.
+
+يحقق Kimi K2 نتائج متقدمة في الاختبارات القياسية مثل SWE Bench Verified و Tau2 و AceBench، متفوقاً على النماذج المفتوحة الأخرى. يتميز هذا النموذج بتخصصه في مجالات البرمجة ومهام "الوكيل الذكي"، مما يجعله أداة قوية للمطورين والباحثين.
+
+يتوفر Kimi K2 الآن عبر واجهة برمجة التطبيقات (API) مع نظام تسعير متدرج للرموز (tiered token pricing)، مما يتيح للمستخدمين الوصول إليه واستخدامه في تطبيقاتهم ومشاريعهم المختلفة.
+
+<div style="margin-top:2px; margin-bottom:2px;"><a href="https://bidjadraft.github.io/?query=Kimiai" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Kimiai</a> <a href="https://bidjadraft.github.io/?query=Kimi" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Kimi</a> <a href="https://bidjadraft.github.io/?query=K2" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">K2</a> <a href="https://bidjadraft.github.io/?query=SWE" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">SWE</a> <a href="https://bidjadraft.github.io/?query=Bench" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Bench</a> <a href="https://bidjadraft.github.io/?query=Verified" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Verified</a> <a href="https://bidjadraft.github.io/?query=Tau2" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Tau2</a> <a href="https://bidjadraft.github.io/?query=AceBench" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">AceBench</a> <a href="https://bidjadraft.github.io/?query=API" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">API</a></div><br><br>
