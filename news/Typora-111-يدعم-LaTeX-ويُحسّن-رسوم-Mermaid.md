@@ -1,0 +1,16 @@
+---
+layout: default
+title: "Typora 1.11 يدعم LaTeX ويُحسّن رسوم Mermaid
+"
+image: "https://d4.alternativeto.net/aFmcUNfzflMnwLC-EGS67oXQuEPf_jQSdT3roKU2e18/rs:fill:1520:760:0/g:ce:0:0/YWJzOi8vZGlzdC9jb250ZW50LzE3NTI2NzUzMTkwMTcucG5n.png"
+category: تطبيقات
+date: 2025-07-17T09:30:00
+---
+
+أصدر محرر Markdown البسيط "Typora" تحديثه الجديد 1.11 لأنظمة التشغيل Mac و Windows و Linux، حاملاً معه مجموعة من الميزات التي تستهدف تحسين تجربة المستخدمين في الكتابة التقنية والأكاديمية. التحديث يضيف دعماً مُحسّناً لـ LaTeX عبر قائمة الإعدادات، مما يوسع نطاق توافقه مع معايير Markdown ويجعله أداة أكثر مرونة.
+
+ويقدم الإصدار الجديد اختصاراً عبر لوحة المفاتيح (Alt + Up/Down) لنقل الفقرات والصفوف داخل القوائم وجميع أنواع الكتل النصية، مما يسرع عملية تنظيم المحتوى وتعديله. علاوة على ذلك، تم تحديث مكتبة الرسوم البيانية المدمجة Mermaid إلى الإصدار 11.7، مما يتيح إنشاء أنواع جديدة من الرسوم البيانية مثل radar و treemap، بالإضافة إلى تحسينات أخرى في إمكانيات الرسم البياني.
+
+كما شملت التحسينات تسهيل عمليات النسخ واللصق عبر مختلف الصيغ، ومعالجة محسنة لمقاطع الفيديو والصور والرموز التعبيرية. بالإضافة إلى ذلك، يوفر Typora 1.11 توافقاً أفضل مع بروتوكول العرض Wayland على نظام Linux. ويختتم التحديث قائمة التغييرات بتصحيح العديد من الأخطاء لتحسين سهولة الاستخدام والاستقرار العام للبرنامج.
+
+<div style="margin-top:2px; margin-bottom:2px;"><a href="https://bidjadraft.github.io/?query=Markdown" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Markdown</a> <a href="https://bidjadraft.github.io/?query=Typora" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Typora</a> <a href="https://bidjadraft.github.io/?query=Mac" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Mac</a> <a href="https://bidjadraft.github.io/?query=Windows" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Windows</a> <a href="https://bidjadraft.github.io/?query=Linux" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Linux</a> <a href="https://bidjadraft.github.io/?query=LaTeX" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">LaTeX</a> <a href="https://bidjadraft.github.io/?query=Mermaid" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Mermaid</a> <a href="https://bidjadraft.github.io/?query=Wayland" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Wayland</a></div><br><br>
