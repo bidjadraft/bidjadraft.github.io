@@ -1,0 +1,16 @@
+---
+layout: default
+title: "أوداسيتي 3.7.5 يدعم ARM ويندوز ويحسن استيراد FLAC
+"
+image: "https://d4.alternativeto.net/TPMtTZbbzoZkhBZnonacDqJHf0m0vc-Uml4TQAh0fUo/rs:fill:1520:760:0/g:ce:0:0/YWJzOi8vZGlzdC9jb250ZW50LzE3NTQ5MDAwOTU5MzEucG5n.png"
+category: تطبيقات
+date: 2025-08-11T08:14:55
+---
+
+أصدر برنامج تحرير الصوت الشهير والمجاني Audacity تحديثه الجديد 3.7.5، حاملاً معه أخباراً سارة لمستخدمي نظام Windows 11 على معالجات ARM. هذا التحديث يوسع دائرة التوافق ليشمل شريحة أوسع من المستخدمين، مما يتيح لهم الاستفادة من قدرات البرنامج على أجهزتهم المحمولة والحديثة.
+
+وبالإضافة إلى دعم معالجات ARM، يشمل التحديث تحسينات ملحوظة في استيراد ملفات FLAC، حيث أصبح يدعم الآن تنسيق PCM ذو 32 بت. كما تم تحديث العديد من المكتبات البرمجية الخارجية المستخدمة في البرنامج، مما يعزز الأداء والاستقرار.
+
+أخيرًا، يعالج التحديث الجديد مجموعة من المشاكل التي كانت تتسبب في توقف البرنامج بشكل غير متوقع، بما في ذلك المشاكل المتعلقة بعرض الطيف الصوتي (spectrum view)، واستيراد ملفات WAV، واستخدام معالج الماكرو (Macro Wizard)، مما يضمن تجربة استخدام أكثر سلاسة وموثوقية.
+
+<div style="margin-top:2px; margin-bottom:2px;"><a href="https://bidjadraft.github.io/?query=Audacity" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Audacity</a> <a href="https://bidjadraft.github.io/?query=Windows" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Windows</a> <a href="https://bidjadraft.github.io/?query=11" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">11</a> <a href="https://bidjadraft.github.io/?query=ARM" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">ARM</a> <a href="https://bidjadraft.github.io/?query=FLAC" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">FLAC</a> <a href="https://bidjadraft.github.io/?query=PCM" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">PCM</a> <a href="https://bidjadraft.github.io/?query=WAV" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">WAV</a> <a href="https://bidjadraft.github.io/?query=Macro" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Macro</a> <a href="https://bidjadraft.github.io/?query=Wizard" style="background:#e3f2fd; color:#1565c0; font-size:80%; border-radius:12px; padding:3px 10px; margin:2px 4px 2px 0; display:inline-block; border:1px solid #bbdefb; text-decoration:none;">Wizard</a></div><br><br>
