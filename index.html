@@ -3,6 +3,18 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <meta name="description" content="بجاد الأثري: صانع محتوى تقني ونفسي وديني، خبير في التصميم وتعديل الصوتيات. اكتشف قنواتي ومشاريعي." />
+    
+    <meta property="og:title" content="بجاد الأثري - صانع محتوى تقني ونفسي وديني" />
+    <meta property="og:description" content="صانع محتوى تقني ونفسي وديني، خبير في التصميم وتعديل الصوتيات. اكتشف قنواتي ومشاريعي." />
+    <meta property="og:image" content="https://i.imgur.com/18pNRZL.jpeg" /> 
+    <meta property="og:url" content="https://bidjadraft.github.io" /> 
+    <meta property="og:type" content="website" />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@bidjadq" /> 
+    
     <title>بجاد الأثري</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
@@ -121,9 +133,7 @@
             line-height: 1.2;
             letter-spacing: 0.5px;
         }
-        h1 .accent {
-            color: var(--accent-color);
-        }
+        /* تم حذف نمط h1 .accent من CSS لأننا حذفنا وسم span */
         .desc {
             color: #a8b3bf;
             margin-bottom: 30px;
@@ -297,7 +307,8 @@
                     data-person-id="termux" 
                     data-original-src="https://i.imgur.com/4qJtHw9.png" />
         </div>
-        <h1>بجاد <span class="accent">الأثري</span></h1>
+        
+        <h1>بجاد الأثري</h1>
         
         <div class="desc">
             صانع محتوى تقني ونفسي وديني، خبير في التصميم وتعديل الصوتيات.
@@ -356,8 +367,8 @@
         const personas = {
             'main': { // بجاد الأثري 
                 img: 'https://i.imgur.com/18pNRZL.jpeg',
-                title: 'بجاد <span class="accent">الأثري</span>',
-                desc: 'صانع محتوى تقني ونفسي وديني، خبير في التصميم وتعديل الصوتيات.', // <--- التعديل النهائي هنا
+                title: 'بجاد الأثري', // <--- التعديل في العنوان
+                desc: 'صانع محتوى تقني ونفسي وديني، خبير في التصميم وتعديل الصوتيات.', 
                 links: {
                     'split-social-button': 'visible', 
                     'tiktok-link': 'https://www.tiktok.com/@bidatary?lang=ar', 
@@ -376,7 +387,7 @@
             },
             'tech': { // بجاد التقني 
                 img: 'https://i.imgur.com/3dM0R7L.png',
-                title: 'بجاد <span class="accent">التقني</span>',
+                title: 'بجاد التقني', // <--- التعديل في العنوان
                 desc: 'منصات التواصل المتعلقة بالجزء التقني وشخصية "بجاد" العامة.',
                 links: {
                     'split-social-button': '#', 
@@ -394,16 +405,16 @@
                     'telegram-profile': '#' 
                 }
             },
-            'termux': { // ترمكس بالعربي - **رابط يوتيوب محدث إلى قائمة تشغيل**
+            'termux': { // ترمكس بالعربي
                 img: 'https://i.imgur.com/4qJtHw9.png',
-                title: 'ترمكس <span class="accent">بالعربي</span>',
+                title: 'ترمكس بالعربي', // <--- التعديل في العنوان
                 desc: 'المشاريع والقنوات الرسمية لمجتمع "ترمكس بالعربي".',
                 links: {
                     'split-social-button': '#', 
                     'tiktok-link': '#', 
                     'instagram-link': '#', 
                     'telegram-channel': 'https://t.me/termuxarabi', 
-                    'youtube-channel': 'https://youtube.com/playlist?list=PLjawUtkbxgjrlOTLo-8J3Zd9oFlj7hGc1', // <--- التحديث هنا
+                    'youtube-channel': 'https://youtube.com/playlist?list=PLjawUtkbxgjrlOTLo-8J3Zd9oFlj7hGc1',
                     'x-button': '#', 
                     'facebook-button': '#', 
                     'mastodon-button': '#', 
