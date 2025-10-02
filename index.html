@@ -3,728 +3,561 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="بجاد التقني: موقعك الشامل لأحدث الأخبار والمقالات في عالم التقنية." />
-    <link rel="icon" href="https://i.imgur.com/2VWewgH.png" type="image/png" />
-
-    <meta property="og:title" content="الرئيسية | بجاد التقني" />
-    <meta property="og:description" content="بجاد التقني: موقعك الشامل لأحدث الأخبار والمقالات في عالم التقنية." />
-    <meta property="og:image" content="https://i.imgur.com/GaPGMgJ_d.png" />
-    <meta property="og:url" content="https://bidjadraft.github.io" />
-    <meta property="og:type" content="website" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="الرئيسية | بجاد التقني" />
-    <meta name="twitter:description" content="بجاد التقني: موقعك الشامل لأحدث الأخبار والمقالات في عالم التقنية." />
-    <meta name="twitter:image" content="https://i.imgur.com/GaPGMgJ_d.png" />
-    
-
-    <title>الرئيسية | بجاد التقني</title> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <title>بجاد الأثري</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
     <style>
-        body {
+        /* تعريف المتغيرات لتسهيل تغيير الألوان لاحقاً */
+        :root {
+            --bg-color: #0d1117;
+            --text-color: #c9d1d9;
+            --card-bg: #161b22;
+            --accent-color: #58a6ff;
+            --border-color: #30363d;
+            --main-img-size: 88px; /* حجم الصورة الرئيسية */
+            --secondary-img-size: 50px; /* حجم الصور المصغرة */
+            --offset-distance: 80px; /* المسافة من مركز الصورة الرئيسية لمركز المصغرة */
+        }
+
+        /* إعادة تعيين الأساسيات */
+        html, body {
             margin: 0;
-            font-family: "Cairo", "Segoe UI", "Arial", sans-serif;
-            background: #18181b;
-            color: #e5e7eb;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        body.no-scroll {
-            overflow: hidden;
-            user-select: none;
-        }
-        header {
-            background: #18181b;
-            padding: 8px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid #23232a;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 8px #0008;
-        }
-        .profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .profile a {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
-        .profile-img {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #23232a;
-            box-shadow: 0 2px 8px #0003;
-            transition: transform 0.3s ease;
-        }
-        .profile-img:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 16px #2563ebaa;
-        }
-        .username {
-            font-size: 1.1em;
-            color: #e5e7eb;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            user-select: none;
-        }
-        .username a {
-            color: inherit;
-            font-weight: 700;
-            text-decoration: none;
-            display: flex;
-            gap: 6px;
-        }
-        .username .blue {
-            color: #60a5fa;
-        }
-        .menu-button {
-            background: none;
-            border: none;
-            color: #e5e7eb;
-            font-size: 1.5em;
-            cursor: pointer;
-        }
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 150;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        .sidebar-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        .sidebar {
-            position: fixed;
-            left: -100%;
-            top: 0;
-            width: 200px;
-            height: 100%;
-            background: #23232a;
-            transition: left 0.3s ease;
-            padding: 20px 20px 35px 20px;
-            z-index: 200;
-            display: flex;
-            flex-direction: column;
-        }
-        .sidebar.show {
-            left: 0;
-        }
-        .sidebar-search-box {
-            margin-bottom: 25px;
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-        .sidebar-search-box input {
-            width: 100%;
-            padding: 10px 15px 10px 40px;
-            border: 1px solid #3a3a41;
-            border-radius: 8px;
-            background-color: #33333a;
-            color: #e5e7eb;
-            font-size: 0.95em;
-            outline: none;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            box-sizing: border-box;
-        }
-        .sidebar-search-box input::placeholder {
-            color: #a1a1aa;
-        }
-        .sidebar-search-box input:focus {
-            border-color: #60a5fa;
-            box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(96, 165, 250, 0.3);
-        }
-        .sidebar-search-box .search-icon {
-            position: absolute;
-            left: 15px;
-            color: #a1a1aa;
-            font-size: 1.1em;
-        }
-        .sidebar ul {
-            list-style-type: none;
             padding: 0;
-            margin: 0;
-            flex-grow: 1;
+            height: 100%;
+            scroll-behavior: smooth;
+            background: var(--bg-color);
+            font-family: 'Cairo', 'Segoe UI', 'Arial', sans-serif;
+            color: var(--text-color);
+            overflow-x: hidden;
             overflow-y: auto;
         }
-        .sidebar ul li {
-            margin: 15px 0;
+
+        /* إخفاء عناصر التنقل غير المستخدمة في هذا التصميم */
+        .navbar, .github-btn, .sidebar, .overlay {
+            display: none !important;
         }
-        .sidebar ul li a {
-            color: #60a5fa;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        /* Update the highlighting for 'home' and reset others */
-        .sidebar ul li.home-link a {
-            color: #ffffff; /* White for Home */
-        }
-        .sidebar ul li.apps-link a {
-            color: #60a5fa; /* Blue for Apps */
-        }
-        .sidebar ul li.socialmedia-link a {
-            color: #60a5fa; /* Blue for Social Media */
-        }
-        .sidebar ul li.ai-link a {
-            color: #60a5fa; /* Blue for AI */
-        }
-        .sidebar ul li.system-link a {
-            color: #60a5fa; /* Blue for Systems */
-        }
-        /* End new styles */
-        .sidebar ul li a:hover {
-            color: #fff;
-        }
-        .sidebar-social {
-            display: flex;
-            justify-content: space-around;
-            padding: 15px 0;
-            border-top: 1px solid #3a3a41;
-            margin-top: 15px;
-        }
-        .sidebar-social a {
-            color: #a1a1aa;
-            font-size: 1.5em;
-            text-decoration: none;
-            transition: color 0.3s ease, transform 0.2s ease;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-        .sidebar-social a:hover {
-            color: #60a5fa;
-            transform: translateY(-3px) scale(1.1);
-            background-color: rgba(96, 165, 250, 0.1);
-        }
-        .sidebar-social a .fa-x-twitter:hover {
-            color: #000;
-            background-color: #fff;
-        }
-        .sidebar-social a .fa-facebook-f:hover {
-            color: #1877f2;
-        }
-        .sidebar-social a .fa-telegram-plane:hover {
-            color: #0088cc;
-        }
-        .sidebar-social a .fa-rss-square:hover {
-            color: #f26522;
-        }
-        main {
-            max-width: 600px;
-            margin: 24px auto 0 auto;
-            padding: 0 8px;
-            flex-grow: 1;
-        }
-        .main-news-box {
+        
+        /* الحاوية الرئيسية (الصفحة الواحدة) */
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: transparent !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
             position: relative;
-            width: 100%;
-            margin-bottom: 18px;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .main-news-meta {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 4;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            user-select: none;
-            transition: opacity 0.3s ease;
-        }
-        .main-news-meta .news-category {
-            color: #60a5fa;
-            font-weight: bold;
-            font-size: 0.7em;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .main-news-meta .news-category:hover {
-            color: #fff;
-        }
-        .main-news-meta .news-time {
-            font-size: 0.7em;
-            color: #e5e7eb;
-        }
-        .main-article-link {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-            position: relative;
-        }
-        .main-news-img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            border-radius: 8px;
-            display: block;
-            z-index: 1;
-            transition: filter 0.3s ease;
-        }
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 50%), linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 50%);
-            opacity: 0.8;
-            border-radius: 8px;
-            z-index: 2;
-        }
-        .main-news-info {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            left: 0;
-            padding: 10px 14px 10px 14px;
-            z-index: 3;
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-            border-radius: 0 0 8px 8px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-        }
-        .main-news-title {
-            color: #fff;
-            font-size: 1.1em;
-            font-weight: bold;
-            text-shadow: 0 2px 8px #000a;
-            margin: 0 0 5px 0;
-            padding: 0;
-            user-select: none;
-            transition: opacity 0.3s ease;
-            text-decoration: none;
-            color: #fff;
-        }
-        .news-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            margin-top: 8px;
-        }
-        .news-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px 0;
-            border-bottom: 1px solid #fff;
-            background: none;
-            min-height: 90px;
-            position: relative;
-            z-index: 1;
-            transition: filter 0.3s ease;
-        }
-        .news-thumb {
-            width: 180px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 8px;
-            flex-shrink: 0;
-            background: #23232a;
-            position: relative;
-            z-index: 1;
-            transition: filter 0.3s ease;
-        }
-        .news-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            height: 100%;
-            position: relative;
-            z-index: 1;
-            flex: 1;
-        }
-        .news-title {
-            color: #e5e7eb;
-            font-size: 1em;
-            font-weight: 500;
-            text-decoration: none;
-            transition: color 0.2s;
-            margin: 0 0 4px 0;
-            padding: 0;
-            position: relative;
-            user-select: none;
-            min-height: 60px;
-        }
-        .news-title:hover {
-            color: #60a5fa;
-        }
-        .news-meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #a1a1aa;
-            margin-top: 2px;
-            user-select: none;
-            transition: opacity 0.3s ease;
-        }
-        .news-meta .news-category {
-            background-color: transparent;
-            padding: 0;
-            border-radius: 0;
-            color: #60a5fa;
-            font-weight: bold;
-            font-size: 0.7em;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .news-meta .news-category:hover {
-            color: #fff;
-        }
-        .news-time {
-            font-size: 0.7em;
-        }
-        footer {
             text-align: center;
-            color: #71717a;
-            font-size: 0.80em;
-            padding: 12px 12px 10px 12px;
-            margin-top: 40px;
-            border-top: 1px solid #2c2c36;
-            letter-spacing: 0.06em;
-            user-select: none;
-            background: #18181b;
-            transition: color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            box-sizing: border-box;
+            padding: 40px 24px 30px 24px;
+            transition: none;
+            min-height: 100vh; /* التأكد من أن الحاوية تغطي الارتفاع الكامل */
         }
-        footer:hover {
-            color: #60a5fa;
+
+        /* حاوية الصورة الشخصية، تشمل الرئيسية والمصغرات */
+        .profile-img-group {
+            position: relative;
+            width: fit-content;
+            margin: 0 auto 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: var(--main-img-size);
         }
-        .fade-in-up {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+        /* الصورة الرئيسية */
+        #mainProfileImg {
+            width: var(--main-img-size);
+            height: var(--main-img-size);
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--card-bg);
+            box-shadow: 0 0 0 2px var(--accent-color), 0 4px 10px rgba(0, 0, 0, 0.5);
+            background: var(--card-bg);
+            z-index: 10;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, border-color 0.3s;
+            position: relative;
         }
-        .fade-in-up.visible {
-            opacity: 1;
-            transform: translateY(0);
+
+        /* الصور المصغرة على الجانبين */
+        .side-profile-img {
+            position: absolute;
+            width: var(--secondary-img-size);
+            height: var(--secondary-img-size);
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+            opacity: 0.5;
+            cursor: pointer;
+            z-index: 8;
+            transition: transform 0.5s ease-in-out, opacity 0.3s ease, border-color 0.3s;
+        }
+
+        .side-profile-img:hover {
+            opacity: 0.8;
+            border-color: var(--accent-color);
+        }
+
+        /* تحديد موضع الصور المصغرة بالنسبة للصورة الرئيسية */
+        #leftSideImg {
+            left: calc(50% - (var(--main-img-size) / 2) - var(--offset-distance));
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        #rightSideImg {
+            right: calc(50% - (var(--main-img-size) / 2) - var(--offset-distance));
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        /* العناوين والوصف */
+        h1 {
+            font-size: 2.2em;
+            margin: 8px 0;
+            color: var(--text-color);
+            font-weight: 900;
+            line-height: 1.2;
+            letter-spacing: 0.5px;
+        }
+        h1 .accent {
+            color: var(--accent-color);
+        }
+        .desc {
+            color: #a8b3bf;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        /* أنماط الأزرار العامة */
+        .btn-link { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1.1em;
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            padding: 14px 0;
+            width: 100%;
+            margin-bottom: 15px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+            text-decoration: none;
+            color: var(--text-color);
+            background: var(--card-bg);
+            box-sizing: border-box; 
+        }
+
+        .btn-link:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* التخصيص اللوني للأزرار الرئيسية */
+        .btn-link.telegram-bg { background: #0088cc; color: #fff; border: none; }
+        .btn-link.telegram-bg:hover { background: #006da3; }
+
+        .btn-link.youtube-bg { background: #ff0000; color: #fff; border: none; }
+        .btn-link.youtube-bg:hover { background: #cc0000; }
+
+        .btn-link.podcast-bg { background: #8b5cf6; color: #fff; border: none; }
+        .btn-link.podcast-bg:hover { background: #7c3aed; }
+        
+        /* ألوان الأزرار المخصصة */
+        .btn-link.github-bg, .btn-link.x-bg { background: #24292e; color: #fff; border: none; }
+        .btn-link.github-bg:hover, .btn-link.x-bg:hover { background: #1b1f23; }
+
+        .btn-link.facebook-bg { background: #1877F2; color: #fff; border: none; }
+        .btn-link.facebook-bg:hover { background: #156ac6; }
+
+        .btn-link.mastodon-bg { background: #5a3e74; color: #fff; border: none; }
+        .btn-link.mastodon-bg:hover { background: #4a3260; }
+
+        /* ------------------------------------------- */
+        /* أنماط زر TikTok/Instagram المقسّم الجديد */
+        /* ------------------------------------------- */
+
+        /* حاوية الأزرار المقسمة */
+        .split-button-container {
+            display: flex;
+            width: 100%;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+            border-radius: 999px; /* تطبيق الانحناء على الحاوية بدلاً من الأزرار الفردية */
+            overflow: hidden; /* لضمان أن الحواف المنحنية تعمل بشكل صحيح */
+        }
+        
+        /* تجاوز أنماط .btn-link الافتراضية داخل الحاوية */
+        .split-button-container .btn-link {
+            width: 50%;
+            margin-bottom: 0; 
+            border: none;
+            box-shadow: none; 
+            border-radius: 0; 
+        }
+
+        /* تطبيق انحناء الحواف فقط على الأزرار الداخلية المطلوبة */
+        /* الجزء الأيمن (Instagram - سيكون في اليمين في تصميم RTL) */
+        .split-button-container .btn-link:last-child { 
+            border-top-left-radius: 999px;
+            border-bottom-left-radius: 999px;
+        }
+
+        /* الجزء الأيسر (TikTok - سيكون في اليسار في تصميم RTL) */
+        .split-button-container .btn-link:first-child {
+            border-top-right-radius: 999px;
+            border-bottom-right-radius: 999px;
+        }
+        
+        /* ألوان الأزرار المقسمة */
+        .btn-link.tiktok-bg { background: #000000; color: #fff; }
+        .btn-link.tiktok-bg:hover { background: #303030; transform: none; } 
+
+        .btn-link.instagram-bg { background: #C13584; color: #fff; }
+        .btn-link.instagram-bg:hover { background: #a52b71; transform: none; } 
+
+        /* أيقونات التواصل الاجتماعي */
+        .socials {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        /* لمنع ظهور الفراغ عندما تكون كل الأيقونات مخفية */
+        .socials:empty {
+            margin-top: 0;
+            /* يتم إخفاء الحاوية بالكامل بواسطة JS عند عدم وجود أيقونات مرئية */
+        }
+
+        .socials a {
+            background: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            transition: background 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+        }
+        .socials a:hover {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            transform: scale(1.05);
+            box-shadow: 0 0 8px var(--accent-color);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                max-width: 95vw;
+                padding: 30px 16px 20px 16px;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="profile">
-            <a href="https://bidjadraft.github.io/links" title="زيارة صفحة بجاد ">
-                <img class="profile-img" src="https://i.imgur.com/GaPGMgJ.png" alt="Profile" />
+
+    <section class="container" id="page1">
+        <div class="profile-img-group">
+            <img class="side-profile-img" id="leftSideImg" 
+                 src="https://i.imgur.com/NbYVJOU.jpeg" 
+                 alt="بجاد التقني" 
+                 data-person-id="tech" 
+                 data-original-src="https://i.imgur.com/3dM0R7L.png" />
+
+            <img class="profile-img" id="mainProfileImg" 
+                 src="https://i.imgur.com/0mOuFrM_d.jpeg" 
+                 alt="Main Profile" 
+                 data-current-person="main" 
+                 data-original-src="https://i.imgur.com/18pNRZL.jpeg" />
+
+            <img class="side-profile-img" id="rightSideImg" 
+                 src="https://i.imgur.com/jsnGaFi.jpeg" 
+                 alt="ترمكس بالعربي" 
+                 data-person-id="termux" 
+                 data-original-src="https://i.imgur.com/4qJtHw9.png" />
+        </div>
+        <h1>بجاد <span class="accent">الأثري</span></h1>
+        <div class="desc">
+            خبير في المجال التقني و النفسي<br />
+            مصمم غرافيك و منتج بودكاست
+        </div>
+        
+        <a class="btn-link telegram-bg" href="https://t.me/s/bidjadraft" target="_blank" data-link-id="telegram-channel">
+            <i class="fab fa-telegram"></i> قناة التليجرام
+        </a>
+        <a class="btn-link youtube-bg" href="https://www.youtube.com/@bidjadraft" target="_blank" data-link-id="youtube-channel">
+            <i class="fab fa-youtube"></i> قناة اليوتيوب
+        </a>
+        
+        <a class="btn-link x-bg" href="#" target="_blank" data-link-id="x-button">
+            <i class="fab fa-x-twitter"></i> تويتر (X)
+        </a>
+        <a class="btn-link facebook-bg" href="#" target="_blank" data-link-id="facebook-button">
+            <i class="fab fa-facebook-f"></i> فيسبوك
+        </a>
+        <a class="btn-link mastodon-bg" href="#" target="_blank" data-link-id="mastodon-button">
+            <i class="fab fa-mastodon"></i> ماستودون
+        </a>
+        
+        <a class="btn-link github-bg" href="#" target="_blank" data-link-id="github-button">
+            <i class="fab fa-github"></i> المشاريع على GitHub
+        </a>
+
+        <a class="btn-link podcast-bg" href="https://ar-podcast.com/meliontech/" target="_blank" data-link-id="podcast">
+            <i class="fas fa-podcast"></i> البودكاست التقني
+        </a>
+        
+        <div class="split-button-container" data-link-id="split-social-button">
+            <a class="btn-link tiktok-bg" href="https://www.tiktok.com/@bidatary?lang=ar" target="_blank" data-link-id="tiktok-link">
+                <i class="fab fa-tiktok"></i> TikTok
             </a>
-            <div class="username">
-                <a href="https://bidjadraft.github.io/" title="زيارة صفحة بجاد التقني">
-                    <span>بجاد</span> <span class="blue">التقني</span>
-                </a>
-            </div>
+             <a class="btn-link instagram-bg" href="https://www.instagram.com/bidatary/" target="_blank" data-link-id="instagram-link">
+                <i class="fab fa-instagram"></i> Instagram
+            </a>
         </div>
-        <button class="menu-button" onclick="toggleSidebar()">
-            <i class="fas fa-bars"></i>
-        </button>
-    </header>
-    <div class="sidebar-overlay" id="sidebar-overlay"></div>
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-search-box">
-            <i class="fas fa-search search-icon"></i>
-            <form id="search-form" action="/" method="GET">
-                <input type="search" name="query" placeholder="ابحث في العناوين والمقالات..." aria-label="Search articles" />
-            </form>
+        
+        <div class="socials">
+            <a href="#" target="_blank" rel="noopener" aria-label="GitHub" data-link-id="github">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://twitter.com/bidjadq" target="_blank" rel="noopener" aria-label="Twitter/X" data-link-id="twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://t.me/bidjadq" target="_blank" rel="noopener" aria-label="Telegram Profile" data-link-id="telegram-profile">
+                <i class="fab fa-telegram-plane"></i>
+            </a>
         </div>
-        <ul>
-            <li class="home-link"><a href="https://bidjadraft.github.io/">الرئيسية</a></li>
-            <li class="apps-link"><a href="https://bidjadraft.github.io/category/apps">تطبيقات</a></li>
-            <li class="socialmedia-link"><a href="https://bidjadraft.github.io/category/socialmedia">تواصل اجتماعي</a></li>
-            <li class="ai-link"><a href="https://bidjadraft.github.io/category/ai">ذكاء اصطناعي</a></li>
-            <li class="system-link"><a href="https://bidjadraft.github.io/category/system">أنظمة تشغيل</a></li>
-        </ul>
-        <div class="sidebar-social">
-            <a href="https://x.com/bidjadraft" aria-label="منصة X"><i class="fab fa-x-twitter"></i></a>
-            <a href="https://www.facebook.com/bidjadtech/" aria-label="فيسبوك"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://t.me/bidjadtech" aria-label="تيليجرام"><i class="fab fa-telegram-plane"></i></a>
-            <a href="https://bidjadraft.github.io/feed.xml" aria-label="RSS"><i class="fas fa-rss-square"></i></a>
-        </div>
-    </div>
-    <main id="news-container" tabindex="-1" aria-live="polite" aria-label="الرئيسية بجاد التقني" class="loading"></main> <footer>© جميع الحقوق محفوظة بجاد الأثري</footer>
+    </section>
+
     <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById("sidebar");
-            const overlay = document.getElementById("sidebar-overlay");
-            sidebar.classList.toggle("show");
-            overlay.classList.toggle("show");
-            document.body.classList.toggle("no-scroll", sidebar.classList.contains("show"));
-        }
-        document.addEventListener("click", function (event) {
-            const sidebar = document.getElementById("sidebar");
-            const menuButton = document.querySelector(".menu-button");
-            const overlay = document.getElementById("sidebar-overlay");
-            const searchInput = document.querySelector(".sidebar-search-box input");
-            if (sidebar.classList.contains("show")) {
-                if (
-                    event.target === overlay ||
-                    (!sidebar.contains(event.target) &&
-                        !menuButton.contains(event.target) &&
-                        !searchInput.contains(event.target))
-                ) {
-                    sidebar.classList.remove("show");
-                    overlay.classList.remove("show");
-                    document.body.classList.remove("no-scroll");
+        // بيانات الشخصيات وروابطها
+        const personas = {
+            'main': { // بجاد الأثري - تم إزالة روابط GitHub
+                img: 'https://i.imgur.com/18pNRZL.jpeg',
+                title: 'بجاد <span class="accent">الأثري</span>',
+                desc: 'خبير في المجال التقني و النفسي<br />مصمم غرافيك و منتج بودكاست',
+                links: {
+                    'split-social-button': 'visible', 
+                    'tiktok-link': 'https://www.tiktok.com/@bidatary?lang=ar', 
+                    'instagram-link': 'https://www.instagram.com/bidatary/', 
+                    'telegram-channel': 'https://t.me/s/bidjadraft',
+                    'youtube-channel': 'https://www.youtube.com/@bidjadraft',
+                    'x-button': '#', 
+                    'facebook-button': '#', 
+                    'mastodon-button': '#', 
+                    'github-button': '#', // تم التعديل: إزالة الزر
+                    'podcast': 'https://ar-podcast.com/meliontech/',
+                    'github': '#', // تم التعديل: إزالة الأيقونة السفلية
+                    'twitter': '#', 
+                    'telegram-profile': '#' 
+                }
+            },
+            'tech': { // بجاد التقني 
+                img: 'https://i.imgur.com/3dM0R7L.png',
+                title: 'بجاد <span class="accent">التقني</span>',
+                desc: 'منصات التواصل المتعلقة بالجزء التقني وشخصية "بجاد" العامة.',
+                links: {
+                    'split-social-button': '#', 
+                    'tiktok-link': '#', 
+                    'instagram-link': '#', 
+                    'telegram-channel': 'https://t.me/+9nmQrLGT_lxkYjA5', 
+                    'youtube-channel': '#', 
+                    'x-button': 'https://x.com/bidjadraft', 
+                    'facebook-button': 'https://web.facebook.com/bidjadtech', 
+                    'mastodon-button': 'https://mastodon.social/@bidjadtech', 
+                    'github-button': '#', 
+                    'podcast': '#', 
+                    'github': '#', 
+                    'twitter': '#', 
+                    'telegram-profile': '#' 
+                }
+            },
+            'termux': { // ترمكس بالعربي - **رابط يوتيوب محدث إلى قائمة تشغيل**
+                img: 'https://i.imgur.com/4qJtHw9.png',
+                title: 'ترمكس <span class="accent">بالعربي</span>',
+                desc: 'المشاريع والقنوات الرسمية لمجتمع "ترمكس بالعربي".',
+                links: {
+                    'split-social-button': '#', 
+                    'tiktok-link': '#', 
+                    'instagram-link': '#', 
+                    'telegram-channel': 'https://t.me/termuxarabi', 
+                    'youtube-channel': 'https://youtube.com/playlist?list=PLjawUtkbxgjrlOTLo-8J3Zd9oFlj7hGc1', // <--- التحديث هنا
+                    'x-button': '#', 
+                    'facebook-button': '#', 
+                    'mastodon-button': '#', 
+                    'github-button': 'https://github.com/bidjadraft', 
+                    'podcast': '#',
+                    'github': '#', 
+                    'twitter': '#',
+                    'telegram-profile': '#'
+                }
+            },
+        };
+
+        const mainProfileImg = document.getElementById('mainProfileImg');
+        const leftSideImg = document.getElementById('leftSideImg');
+        const rightSideImg = document.getElementById('rightSideImg');
+        const mainTitle = document.querySelector('h1');
+        const mainDesc = document.querySelector('.desc');
+
+        // دالة تحديث محتوى الصفحة
+        function updatePageContent(personId) {
+            const data = personas[personId];
+            if (!data) return;
+
+            // تحديث العناوين والأوصاف
+            mainTitle.innerHTML = data.title;
+            mainDesc.innerHTML = data.desc;
+
+            // تحديث الروابط
+            for (const linkId in data.links) {
+                const newHref = data.links[linkId];
+                
+                // حالة خاصة للزر المقسم (الحاوية)
+                if (linkId === 'split-social-button') {
+                    const containerElement = document.querySelector(`[data-link-id="${linkId}"]`);
+                    if (containerElement) {
+                        // إظهار إذا كانت القيمة 'visible' وإخفاء في أي حالة أخرى
+                        containerElement.style.display = (newHref === 'visible') ? 'flex' : 'none';
+                    }
+                    continue; 
+                }
+
+                const linkElement = document.querySelector(`[data-link-id="${linkId}"]`);
+                if (linkElement) {
+                    linkElement.href = newHref;
+                    
+                    // يتم إخفاء العنصر إذا كان الرابط هو '#'
+                    const isHidden = (newHref === '#');
+                    linkElement.style.display = isHidden ? 'none' : 'flex';
+
+                    // منطق التحكم في كلاسات الألوان للأزرار الرئيسية (غير الأيقونات السفلية)
+                    if (!linkElement.parentNode.classList.contains('socials')) {
+                        // إزالة جميع كلاسات الألوان قبل تطبيق الجديد
+                        linkElement.classList.remove('x-bg', 'facebook-bg', 'mastodon-bg', 'github-bg', 'telegram-bg', 'youtube-bg', 'podcast-bg', 'tiktok-bg', 'instagram-bg');
+
+                        if (!isHidden) {
+                            if (linkId === 'x-button') { linkElement.classList.add('x-bg'); } 
+                            else if (linkId === 'facebook-button') { linkElement.classList.add('facebook-bg'); } 
+                            else if (linkId === 'mastodon-button') { linkElement.classList.add('mastodon-bg'); } 
+                            else if (linkId === 'github-button') { linkElement.classList.add('github-bg'); }
+                            else if (linkId === 'telegram-channel') { linkElement.classList.add('telegram-bg'); } 
+                            else if (linkId === 'youtube-channel') { linkElement.classList.add('youtube-bg'); } 
+                            else if (linkId === 'podcast') { linkElement.classList.add('podcast-bg'); }
+                            else if (linkId === 'tiktok-link') { linkElement.classList.add('tiktok-bg'); }
+                            else if (linkId === 'instagram-link') { linkElement.classList.add('instagram-bg'); }
+                        }
+                    } else {
+                        // الأيقونات السفلية (Socials)
+                        linkElement.style.display = isHidden ? 'none' : 'flex';
+                    }
                 }
             }
-        });
-        const githubUser = "bidjadraft";
-        const repoName = "bidjadraft.github.io";
-        const folder = "news";
-        const baseUrl = `https://${githubUser}.github.io`;
-        let allNewsData = [];
-
-        function getCategoryLink(categoryName) {
-            let slug;
-
-            switch (categoryName) {
-                case "تطبيقات":
-                    slug = "apps";
-                    break;
-                case "ذكاء اصطناعي":
-                case "الذكاء الاصطناعي":
-                    slug = "ai";
-                    break;
-                case "أنظمة تشغيل":
-                case "أنظمة":
-                    slug = "system";
-                    break;
-                case "تواصل اجتماعي":
-                    slug = "socialmedia";
-                    break;
-                default:
-                    slug = categoryName.toLowerCase().replace(/\s+/g, "");
-                    return `${baseUrl}/category/${slug}`;
-            }
-            return `${baseUrl}/category/${slug}`;
+            
+            // لإخفاء حاوية الأيقونات السفلية بالكامل إذا كانت فارغة
+            const socialsContainer = document.querySelector('.socials');
+            const visibleSocials = Array.from(socialsContainer.children).some(child => child.style.display !== 'none');
+            socialsContainer.style.display = visibleSocials ? 'flex' : 'none';
         }
 
-        function parseArticleMarkdown(mdText, fileName) {
-            const fmMatch = mdText.match(/^---\s*([\s\S]*?)\s*---/);
-            let meta = {};
-            let rawContent = mdText;
-            if (fmMatch) {
-                const lines = fmMatch[1].split("\n");
-                lines.forEach((line) => {
-                    const match = line.match(
-                        /^([\w\u0600-\u06FF\-]+):\s*["']?(.+?)["']?$/
-                    );
-                    if (match) meta[match[1]] = match[2];
-                });
-                rawContent = mdText.substring(fmMatch[0].length).trim();
-            }
-            const title = meta.title || fileName.replace(".md", "").replace(/-/g, " ");
-            const image = meta.image || "https://via.placeholder.com/600x400?text=خبر";
-            const date = meta.date || "";
-            const category = meta.category || "عام";
-            const pageUrl = `${baseUrl}/${folder}/${fileName.replace(/\.md$/, "")}`;
-            return {
-                title,
-                image,
-                date,
-                category,
-                pageUrl,
-                rawContent,
-            };
-        }
+        // دالة تبديل الصور مع الحركة (حركة دائرية - التعديل المطلوب)
+        function swapImages(clickedSideImg) {
+            const currentMainPersonId = mainProfileImg.getAttribute('data-current-person');
+            const clickedPersonId = clickedSideImg.getAttribute('data-person-id');
 
-        function timeAgo(dateString) {
-            const now = new Date();
-            const past = new Date(dateString);
-            const diffMs = now - past;
-            const diffSeconds = Math.floor(diffMs / 1000);
-            const diffMinutes = Math.floor(diffSeconds / 60);
-            const diffHours = Math.floor(diffMinutes / 60);
-            const diffDays = Math.floor(diffHours / 24);
-            const diffMonths = Math.floor(diffDays / 30);
-            if (diffSeconds < 60) return "الآن";
-            if (diffMinutes < 60)
-                return `منذ ${diffMinutes} ${
-                    diffMinutes === 1 ? "دقيقة" : "دقائق"
-                }`;
-            if (diffHours < 24)
-                return `منذ ${diffHours} ${diffHours === 1 ? "ساعة" : "ساعات"}`;
-            if (diffDays < 30)
-                return `منذ ${diffDays} ${diffDays === 1 ? "يوم" : "أيام"}`;
-            if (diffMonths < 12)
-                return `منذ ${diffMonths} ${diffMonths === 1 ? "شهر" : "أشهر"}`;
-            const diffYears = Math.floor(diffMonths / 12);
-            return `منذ ${diffYears} ${diffYears === 1 ? "سنة" : "سنوات"}`;
-        }
-
-        async function fetchAllArticlesAndPrepareData() {
-            try {
-                const res = await fetch(
-                    `https://api.github.com/repos/${githubUser}/${repoName}/contents/${folder}`
-                );
-                const files = await res.json();
-                if (!Array.isArray(files)) {
-                    console.error("لم يتم جلب الملفات بشكل صحيح");
-                    return;
-                }
-                const mdFiles = files.filter((f) => f.name.endsWith(".md"));
-                const fetchPromises = mdFiles.map(async (file) => {
-                    const mdText = await fetch(file.download_url).then((r) => r.text());
-                    return parseArticleMarkdown(mdText, file.name);
-                });
-                allNewsData = await Promise.all(fetchPromises);
-                allNewsData.sort((a, b) => new Date(b.date) - new Date(a.date));
-            } catch (error) {
-                console.error("حدث خطأ أثناء جلب وإعداد بيانات الأخبار:", error);
-            }
-        }
-
-        function displayArticles(newsItems, headingText = "") {
-            const mainContainer = document.getElementById("news-container");
-            mainContainer.innerHTML = "";
-            if (headingText) {
-                const heading = document.createElement("h2");
-                heading.textContent = headingText;
-                heading.style.color = "#e5e7eb";
-                heading.style.textAlign = "center";
-                heading.style.marginBottom = "25px";
-                mainContainer.appendChild(heading);
-            }
-            if (newsItems.length === 0) {
-                const noResults = document.createElement("p");
-                noResults.textContent = "لا توجد نتائج مطابقة.";
-                noResults.style.textAlign = "center";
-                noResults.style.marginTop = "50px";
-                mainContainer.appendChild(noResults);
+            if (!clickedPersonId || currentMainPersonId === clickedPersonId) {
                 return;
             }
-            // عرض الخبر الرئيسي
-            const mainNewsBox = document.createElement("div");
-            mainNewsBox.className = "main-news-box fade-in-up";
-            mainNewsBox.innerHTML = `
-                <div class="main-news-meta">
-                    <a href="${getCategoryLink(newsItems[0].category)}" class="news-category">${newsItems[0].category}</a>
-                    <span class="news-time">${timeAgo(newsItems[0].date)}</span>
-                </div>
-                <a href="${newsItems[0].pageUrl}" class="main-article-link" aria-label="الخبر الرئيسي: ${newsItems[0].title}">
-                    <img class="main-news-img" src="${newsItems[0].image}" alt="صورة الخبر الرئيسي: ${newsItems[0].title}">
-                    <div class="overlay"></div>
-                    <div class="main-news-info">
-                        <h2 class="main-news-title">${newsItems[0].title}</h2>
-                    </div>
-                </a>
-            `;
-            mainContainer.appendChild(mainNewsBox);
-            // عرض باقي الأخبار
-            if (newsItems.length > 1) {
-                const newsList = document.createElement("section");
-                newsList.className = "news-list";
-                newsItems.slice(1).forEach((n) => {
-                    const newsItem = document.createElement("div");
-                    newsItem.className = "news-item fade-in-up";
-                    newsItem.innerHTML = `
-                        <a href="${n.pageUrl}" class="news-thumb-link" aria-label="خبر: ${n.title}">
-                            <img class="news-thumb" src="${n.image}" alt="صورة الخبر: ${n.title}">
-                        </a>
-                        <div class="news-info">
-                            <a href="${n.pageUrl}" class="news-title">
-                                <span>${n.title}</span>
-                            </a>
-                            <div class="news-meta">
-                                <a href="${getCategoryLink(n.category)}" class="news-category">${n.category}</a>
-                                <span class="news-time">${timeAgo(n.date)}</span>
-                            </div>
-                        </div>
-                    `;
-                    newsList.appendChild(newsItem);
-                });
-                mainContainer.appendChild(newsList);
-            }
-            setupScrollReveal();
-        }
 
-        function setupScrollReveal() {
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("visible");
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            document.querySelectorAll(".fade-in-up:not(.visible)").forEach((el) => {
-                observer.observe(el);
-            });
-        }
-
-        function searchArticles(query) {
-            const lowerCaseQuery = query.toLowerCase();
-            return allNewsData.filter(
-                (article) =>
-                    article.title.toLowerCase().includes(lowerCaseQuery) ||
-                    article.rawContent.toLowerCase().includes(lowerCaseQuery)
-            );
-        }
-
-        document.addEventListener("DOMContentLoaded", async () => {
-            const mainContainer = document.getElementById("news-container");
-            mainContainer.classList.add("loading");
-            await fetchAllArticlesAndPrepareData();
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const searchQuery = urlParams.get("query");
-            currentIndex = 0;
-
-            if (searchQuery) {
-                // If there's a search query, show results across all categories
-                document.title = `نتائج البحث عن "${searchQuery}" | بجاد التقني`;
-                const results = searchArticles(searchQuery);
-                displayArticles(results, `نتائج البحث عن: "${searchQuery}"`);
+            // تحديد الصورة الجانبية الأخرى
+            let otherSideImg;
+            if (clickedSideImg.id === 'leftSideImg') {
+                otherSideImg = rightSideImg;
             } else {
-                // Default display: show all news (home page)
-                document.title = "الرئيسية | بجاد التقني"; // Updated title for default page
-                displayArticles(allNewsData, ""); // Display all news without a heading
+                otherSideImg = leftSideImg;
             }
 
-            // Highlighting the active link in the sidebar based on the displayed category
-            const currentPath = window.location.pathname;
-            document.querySelectorAll('.sidebar ul li a').forEach(link => {
-                link.classList.remove('active'); // Remove existing active classes
-                link.style.color = '#60a5fa'; // Reset all to default blue
-            });
+            // تخزين بيانات الصور الثلاث الحالية
+            const tempMain = {
+                src: mainProfileImg.src,
+                id: mainProfileImg.getAttribute('data-current-person'),
+                alt: mainProfileImg.alt
+            };
+            const tempClickedSide = {
+                src: clickedSideImg.src,
+                id: clickedSideImg.getAttribute('data-person-id'),
+                alt: clickedSideImg.alt
+            };
+            const tempOtherSide = {
+                src: otherSideImg.src,
+                id: otherSideImg.getAttribute('data-person-id'),
+                alt: otherSideImg.alt
+            };
 
-            if (currentPath === '/' || currentPath === '/index.html' || currentPath === '/home' || !searchQuery && !currentPath.includes('/category/')) {
-                document.querySelector('.sidebar ul li.home-link a').style.color = '#ffffff'; // Highlight Home
-            } else if (currentPath.includes('/category/apps')) {
-                document.querySelector('.sidebar ul li.apps-link a').style.color = '#ffffff'; // Highlight Apps
-            } else if (currentPath.includes('/category/socialmedia')) {
-                document.querySelector('.sidebar ul li.socialmedia-link a').style.color = '#ffffff'; // Highlight Social Media
-            } else if (currentPath.includes('/category/ai')) {
-                document.querySelector('.sidebar ul li.ai-link a').style.color = '#ffffff'; // Highlight AI
-            } else if (currentPath.includes('/category/system')) {
-                document.querySelector('.sidebar ul li.system-link a').style.color = '#ffffff'; // Highlight Systems
+            // تطبيق الحركة الدائرية:
+            // 1. الصورة الرئيسية الجديدة هي الصورة المنقورة
+            mainProfileImg.src = tempClickedSide.src;
+            mainProfileImg.setAttribute('data-current-person', tempClickedSide.id);
+            mainProfileImg.alt = tempClickedSide.alt;
+            mainProfileImg.style.transform = 'scale(1.1)';
+
+            // 2. تحديث الصورة الجانبية المنقورة: تنتقل إليها محتويات الصورة الجانبية الأخرى
+            if (clickedSideImg.id === 'leftSideImg') {
+                // إذا تم النقر على اليسار: اليسار (المنقورة) تأخذ بيانات اليمين (حركة لليسار)
+                clickedSideImg.src = tempOtherSide.src;
+                clickedSideImg.setAttribute('data-person-id', tempOtherSide.id);
+                clickedSideImg.alt = tempOtherSide.alt;
+
+                // واليمين يأخذ بيانات الصورة الرئيسية القديمة
+                otherSideImg.src = tempMain.src;
+                otherSideImg.setAttribute('data-person-id', tempMain.id);
+                otherSideImg.alt = tempMain.alt;
+            } else { // أي: clickedSideImg.id === 'rightSideImg'
+                // إذا تم النقر على اليمين: اليمين (المنقورة) تأخذ بيانات اليسار (حركة لليمين)
+                clickedSideImg.src = tempOtherSide.src;
+                clickedSideImg.setAttribute('data-person-id', tempOtherSide.id);
+                clickedSideImg.alt = tempOtherSide.alt;
+
+                // واليسار يأخذ بيانات الصورة الرئيسية القديمة
+                otherSideImg.src = tempMain.src;
+                otherSideImg.setAttribute('data-person-id', tempMain.id);
+                otherSideImg.alt = tempMain.alt;
             }
+            
+            clickedSideImg.style.transform = 'scale(0.9)';
+            otherSideImg.style.transform = 'scale(0.9)';
 
+
+            // 3. تحديث محتوى الصفحة بالبيانات الجديدة (الصورة المنقورة)
+            updatePageContent(tempClickedSide.id);
+
+            // 4. إعادة تأثيرات التحويل بعد فترة قصيرة
             setTimeout(() => {
-                mainContainer.classList.remove("loading");
-            }, 1200);
-        });
+                mainProfileImg.style.transform = 'scale(1)';
+                leftSideImg.style.transform = 'scale(1)';
+                rightSideImg.style.transform = 'scale(1)';
+            }, 500);
+        }
+
+        // إضافة مستمعي الأحداث للصور الجانبية
+        leftSideImg.addEventListener('click', () => swapImages(leftSideImg));
+        rightSideImg.addEventListener('click', () => swapImages(rightSideImg));
+
+        // تهيئة الصفحة عند التحميل
+        updatePageContent(mainProfileImg.getAttribute('data-current-person'));
     </script>
+
 </body>
 </html>
