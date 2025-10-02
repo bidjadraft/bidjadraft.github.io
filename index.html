@@ -161,8 +161,9 @@
         }
         
         /* التخصيص اللوني للأزرار الرئيسية */
-        .btn-link.telegram-bg { background: #0088cc; color: #fff; border: none; }
-        .btn-link.telegram-bg:hover { background: #006da3; }
+        /* تحديث لون التلغرام */
+        .btn-link.telegram-bg { background: #2299DD; color: #fff; border: none; }
+        .btn-link.telegram-bg:hover { background: #1a7bb5; }
 
         .btn-link.youtube-bg { background: #ff0000; color: #fff; border: none; }
         .btn-link.youtube-bg:hover { background: #cc0000; }
@@ -217,8 +218,16 @@
         }
         
         /* ألوان الأزرار المقسمة */
-        .btn-link.tiktok-bg { background: #000000; color: #fff; }
-        .btn-link.tiktok-bg:hover { background: #303030; transform: none; } 
+        /* تحديث لون التيكتوك */
+        .btn-link.tiktok-bg { 
+            background: #ffffff; 
+            color: #000000; 
+            border: 1px solid var(--border-color); 
+        }
+        .btn-link.tiktok-bg:hover { 
+            background: #f0f0f0; 
+            transform: none; 
+        } 
 
         .btn-link.instagram-bg { background: #C13584; color: #fff; }
         .btn-link.instagram-bg:hover { background: #a52b71; transform: none; } 
@@ -271,27 +280,27 @@
     <section class="container" id="page1">
         <div class="profile-img-group">
             <img class="side-profile-img" id="leftSideImg" 
-                 src="https://i.imgur.com/NbYVJOU.jpeg" 
-                 alt="بجاد التقني" 
-                 data-person-id="tech" 
-                 data-original-src="https://i.imgur.com/3dM0R7L.png" />
+                    src="https://i.imgur.com/NbYVJOU.jpeg" 
+                    alt="بجاد التقني" 
+                    data-person-id="tech" 
+                    data-original-src="https://i.imgur.com/3dM0R7L.png" />
 
             <img class="profile-img" id="mainProfileImg" 
-                 src="https://i.imgur.com/0mOuFrM_d.jpeg" 
-                 alt="Main Profile" 
-                 data-current-person="main" 
-                 data-original-src="https://i.imgur.com/18pNRZL.jpeg" />
+                    src="https://i.imgur.com/0mOuFrM_d.jpeg" 
+                    alt="Main Profile" 
+                    data-current-person="main" 
+                    data-original-src="https://i.imgur.com/18pNRZL.jpeg" />
 
             <img class="side-profile-img" id="rightSideImg" 
-                 src="https://i.imgur.com/jsnGaFi.jpeg" 
-                 alt="ترمكس بالعربي" 
-                 data-person-id="termux" 
-                 data-original-src="https://i.imgur.com/4qJtHw9.png" />
+                    src="https://i.imgur.com/jsnGaFi.jpeg" 
+                    alt="ترمكس بالعربي" 
+                    data-person-id="termux" 
+                    data-original-src="https://i.imgur.com/4qJtHw9.png" />
         </div>
         <h1>بجاد <span class="accent">الأثري</span></h1>
+        
         <div class="desc">
-            خبير في المجال التقني و النفسي<br />
-            مصمم غرافيك و منتج بودكاست
+            صانع محتوى تقني ونفسي وديني، خبير في التصميم وتعديل الصوتيات.
         </div>
         
         <a class="btn-link telegram-bg" href="https://t.me/s/bidjadraft" target="_blank" data-link-id="telegram-channel">
@@ -302,8 +311,9 @@
         </a>
         
         <a class="btn-link x-bg" href="#" target="_blank" data-link-id="x-button">
-            <i class="fab fa-x-twitter"></i> تويتر (X)
+            <i class="fab fa-x-twitter"></i> تويتر
         </a>
+
         <a class="btn-link facebook-bg" href="#" target="_blank" data-link-id="facebook-button">
             <i class="fab fa-facebook-f"></i> فيسبوك
         </a>
@@ -316,7 +326,7 @@
         </a>
 
         <a class="btn-link podcast-bg" href="https://ar-podcast.com/meliontech/" target="_blank" data-link-id="podcast">
-            <i class="fas fa-podcast"></i> البودكاست التقني
+            <i class="fas fa-podcast"></i> بودكاست قرين
         </a>
         
         <div class="split-button-container" data-link-id="split-social-button">
@@ -344,10 +354,10 @@
     <script>
         // بيانات الشخصيات وروابطها
         const personas = {
-            'main': { // بجاد الأثري - تم إزالة روابط GitHub
+            'main': { // بجاد الأثري 
                 img: 'https://i.imgur.com/18pNRZL.jpeg',
                 title: 'بجاد <span class="accent">الأثري</span>',
-                desc: 'خبير في المجال التقني و النفسي<br />مصمم غرافيك و منتج بودكاست',
+                desc: 'صانع محتوى تقني ونفسي وديني، خبير في التصميم وتعديل الصوتيات.', // <--- التعديل النهائي هنا
                 links: {
                     'split-social-button': 'visible', 
                     'tiktok-link': 'https://www.tiktok.com/@bidatary?lang=ar', 
@@ -357,9 +367,9 @@
                     'x-button': '#', 
                     'facebook-button': '#', 
                     'mastodon-button': '#', 
-                    'github-button': '#', // تم التعديل: إزالة الزر
+                    'github-button': '#', 
                     'podcast': 'https://ar-podcast.com/meliontech/',
-                    'github': '#', // تم التعديل: إزالة الأيقونة السفلية
+                    'github': '#', 
                     'twitter': '#', 
                     'telegram-profile': '#' 
                 }
@@ -441,8 +451,7 @@
                     
                     // يتم إخفاء العنصر إذا كان الرابط هو '#'
                     const isHidden = (newHref === '#');
-                    linkElement.style.display = isHidden ? 'none' : 'flex';
-
+                    
                     // منطق التحكم في كلاسات الألوان للأزرار الرئيسية (غير الأيقونات السفلية)
                     if (!linkElement.parentNode.classList.contains('socials')) {
                         // إزالة جميع كلاسات الألوان قبل تطبيق الجديد
@@ -459,6 +468,8 @@
                             else if (linkId === 'tiktok-link') { linkElement.classList.add('tiktok-bg'); }
                             else if (linkId === 'instagram-link') { linkElement.classList.add('instagram-bg'); }
                         }
+                         // إظهار أو إخفاء الزر بالكامل (ينطبق على الأزرار الرئيسية)
+                        linkElement.style.display = isHidden ? 'none' : 'flex';
                     } else {
                         // الأيقونات السفلية (Socials)
                         linkElement.style.display = isHidden ? 'none' : 'flex';
