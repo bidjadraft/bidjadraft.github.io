@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
@@ -56,7 +56,9 @@
         "https://www.youtube.com/@bidjadraft",
         "https://github.com/bidjadraft",
         "https://www.tiktok.com/@bidjadraft",
-        "https://www.instagram.com/bidjadraft/"
+        "https://www.instagram.com/bidjadraft/",
+        "https://mastodon.social/@bidjadtech",
+        "https://www.noor-book.com/u/%D8%A8%D8%AC%D8%A7%D8%AF-%D8%A7%D9%84%D8%A3%D8%AB%D8%B1%D9%8A/books"
       ]
     }
     </script>
@@ -495,6 +497,7 @@
         .link-card-icon.tiktok   { background: rgba(255, 255, 255, 0.08); color: #fff; }
         .link-card-icon.instagram{ background: rgba(244, 63, 94, 0.15); color: #fb7185; }
         .link-card-icon.mastodon { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; }
+        .link-card-icon.noor    { background: rgba(245, 158, 11, 0.15); color: #fcd34d; }
 
         .link-card-info h4 {
             font-size: 0.95em;
@@ -516,6 +519,86 @@
         .link-card:hover .link-card-arrow {
             transform: translateX(-4px);
             color: rgba(255,255,255,0.5);
+        }
+
+        .toggle-more-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px dashed rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.5);
+            font-family: inherit;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
+            margin-top: 8px;
+        }
+
+        .toggle-more-btn:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.25);
+            color: #fff;
+        }
+
+        .toggle-more-btn .chevron {
+            transition: transform 0.3s;
+        }
+
+        .toggle-more-btn.open .chevron {
+            transform: rotate(180deg);
+        }
+
+        .extra-channels {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .extra-channels.open {
+            display: flex;
+        }
+
+        .extra-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            text-decoration: none;
+            color: #fff;
+            transition: background 0.25s, transform 0.25s;
+        }
+
+        .extra-link:hover {
+            background: rgba(255,255,255,0.06);
+            transform: translateX(-4px);
+        }
+
+        .extra-link i {
+            font-size: 1em;
+            color: #5eb8e6;
+            width: 20px;
+            text-align: center;
+        }
+
+        .extra-link span {
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .extra-link small {
+            font-size: 0.75em;
+            color: rgba(255,255,255,0.35);
+            margin-right: auto;
         }
 
         /* Stats */
@@ -671,7 +754,7 @@
     </nav>
 
     <!-- Mastodon verification -->
-    <a href="https://aus.social/@bidjad" rel="me" style="display:none;">Mastodon</a>
+    <a href="https://mastodon.social/@bidjadtech" rel="me" style="display:none;">Mastodon</a>
 
     <div class="wrapper">
         <!-- Hero -->
@@ -756,7 +839,7 @@
                     <div class="link-card-icon telegram"><i class="fab fa-telegram-plane"></i></div>
                     <div class="link-card-info">
                         <h4>قناة التليجرام</h4>
-                        <span>آخر المقالات والمحتوى</span>
+                        <span>قناتي الرسمية</span>
                     </div>
                     <div class="link-card-arrow"><i class="fas fa-arrow-left"></i></div>
                 </a>
@@ -766,24 +849,6 @@
                     <div class="link-card-info">
                         <h4>قناة اليوتيوب</h4>
                         <span>فيديوهات ودروس</span>
-                    </div>
-                    <div class="link-card-arrow"><i class="fas fa-arrow-left"></i></div>
-                </a>
-
-                <a class="link-card reveal" href="https://github.com/bidjadraft" target="_blank">
-                    <div class="link-card-icon github"><i class="fab fa-github"></i></div>
-                    <div class="link-card-info">
-                        <h4>GitHub</h4>
-                        <span>الأكواد والمشاريع</span>
-                    </div>
-                    <div class="link-card-arrow"><i class="fas fa-arrow-left"></i></div>
-                </a>
-
-                <a class="link-card reveal" href="https://ar-podcast.com/meliontech/" target="_blank">
-                    <div class="link-card-icon podcast"><i class="fas fa-podcast"></i></div>
-                    <div class="link-card-info">
-                        <h4>بودكاست قرين</h4>
-                        <span>نقاشات وحوارات</span>
                     </div>
                     <div class="link-card-arrow"><i class="fas fa-arrow-left"></i></div>
                 </a>
@@ -806,13 +871,68 @@
                     <div class="link-card-arrow"><i class="fas fa-arrow-left"></i></div>
                 </a>
 
-                <a class="link-card reveal" href="https://aus.social/@bidjad" target="_blank">
+                <a class="link-card reveal" href="https://mastodon.social/@bidjadtech" target="_blank">
                     <div class="link-card-icon mastodon"><i class="fab fa-mastodon"></i></div>
                     <div class="link-card-info">
                         <h4>Mastodon</h4>
-                        <span>منشن فيديفيرس</span>
+                        <span>أخبار التقنية</span>
                     </div>
                     <div class="link-card-arrow"><i class="fas fa-arrow-left"></i></div>
+                </a>
+
+                <a class="link-card reveal" href="https://ar-podcast.com/meliontech/" target="_blank">
+                    <div class="link-card-icon podcast"><i class="fas fa-podcast"></i></div>
+                    <div class="link-card-info">
+                        <h4>بودكاست قرين</h4>
+                        <span>نقاشات وحوارات</span>
+                    </div>
+                    <div class="link-card-arrow"><i class="fas fa-arrow-left"></i></div>
+                </a>
+
+                <a class="link-card reveal" href="https://www.noor-book.com/u/%D8%A8%D8%AC%D8%A7%D8%AF-%D8%A7%D9%84%D8%A3%D8%AB%D8%B1%D9%8A/books" target="_blank">
+                    <div class="link-card-icon noor"><i class="fas fa-book"></i></div>
+                    <div class="link-card-info">
+                        <h4>مكتبة النور</h4>
+                        <span>كتبي ومؤلفاتي</span>
+                    </div>
+                    <div class="link-card-arrow"><i class="fas fa-arrow-left"></i></div>
+                </a>
+
+                <a class="link-card reveal" href="https://github.com/bidjadraft" target="_blank">
+                    <div class="link-card-icon github"><i class="fab fa-github"></i></div>
+                    <div class="link-card-info">
+                        <h4>GitHub</h4>
+                        <span>الأكواد والمشاريع</span>
+                    </div>
+                    <div class="link-card-arrow"><i class="fas fa-arrow-left"></i></div>
+                </a>
+            </div>
+
+            <button class="toggle-more-btn reveal" onclick="toggleExtra()" id="moreBtn">
+                <i class="fas fa-plus"></i> قنوات تليجرام إضافية
+                <i class="fas fa-chevron-down chevron"></i>
+            </button>
+
+            <div class="extra-channels" id="extraChannels">
+                <a class="extra-link" href="https://t.me/+Llz52ItjNxJiNmUx" target="_blank">
+                    <i class="fab fa-telegram-plane"></i>
+                    <span>قناة المشاريع</span>
+                    <small>t.me/+Llz52ItjNxJiNmUx</small>
+                </a>
+                <a class="extra-link" href="https://t.me/+4Cg99WxjOF40OTMx" target="_blank">
+                    <i class="fab fa-telegram-plane"></i>
+                    <span>قناة أخبار التقنية</span>
+                    <small>t.me/+4Cg99WxjOF40OTMx</small>
+                </a>
+                <a class="extra-link" href="https://t.me/+nPdOfNI9uFIzYjVh" target="_blank">
+                    <i class="fab fa-telegram-plane"></i>
+                    <span>قناة بوتات تليجرام</span>
+                    <small>t.me/+nPdOfNI9uFIzYjVh</small>
+                </a>
+                <a class="extra-link" href="https://t.me/+k_VpsYcH2rExMWMx" target="_blank">
+                    <i class="fab fa-telegram-plane"></i>
+                    <span>قناة ترمكس بالعربي</span>
+                    <small>t.me/+k_VpsYcH2rExMWMx</small>
                 </a>
             </div>
         </section>
@@ -825,7 +945,8 @@
             <a href="https://t.me/s/bidjadraft" target="_blank" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
             <a href="https://www.youtube.com/@bidjadraft" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             <a href="https://github.com/bidjadraft" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            <a href="https://aus.social/@bidjad" target="_blank" aria-label="Mastodon"><i class="fab fa-mastodon"></i></a>
+            <a href="https://mastodon.social/@bidjadtech" target="_blank" aria-label="Mastodon"><i class="fab fa-mastodon"></i></a>
+            <a href="https://www.noor-book.com/u/%D8%A8%D8%AC%D8%A7%D8%AF-%D8%A7%D9%84%D8%A3%D8%AB%D8%B1%D9%8A/books" target="_blank" aria-label="كتب"><i class="fas fa-book"></i></a>
         </div>
     </footer>
 
@@ -840,6 +961,15 @@
         }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        function toggleExtra() {
+            const btn = document.getElementById('moreBtn');
+            const channels = document.getElementById('extraChannels');
+            const isOpen = channels.classList.toggle('open');
+            btn.classList.toggle('open');
+            btn.querySelector('.fa-plus').style.transform = isOpen ? 'rotate(45deg)' : 'rotate(0deg)';
+            btn.querySelector('.fa-plus').style.transition = 'transform 0.3s';
+        }
     </script>
 
 </body>
